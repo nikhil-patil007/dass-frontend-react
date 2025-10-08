@@ -1,0 +1,24 @@
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+  padding: 4rem;
+}
+
+.grid-item {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.grid-item:hover {
+  transform: translateY(-5px);
+}
+.grid-item img {
+  width: 100%;
+  height: auto;
+}
+.info {
+  padding: 1rem;
+}

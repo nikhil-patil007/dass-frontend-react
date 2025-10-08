@@ -1,31 +1,41 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import Header from "./components/Header";
-
-const Home = lazy(() => import("./pages/Home"));
-const ProductDetails = lazy(() => import("./pages/ProductDetails"));
-const Login = lazy(() => import("./pages/Login"));
-const Signup = lazy(() => import("./pages/Signup"));
-const Cart = lazy(() => import("./pages/Cart"));
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import CanvasView from "./components/CanvasView";
+import GridView from "./components/GridView";
+import "./assets/styles/global.css";
 
 function App() {
-  return (
-    <Router>
-      {/* Header shows on all pages */}
-      <Header />
+  const [viewMode, setViewMode] = useState("canvas"); // "canvas" or "grid"
 
-      <div style={{ paddingTop: "70px" }}>
-        <Suspense fallback={<h2>Loading...</h2>}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/cart" element={<Cart />} />
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+  // Dummy data
+  const images = [
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+    "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp",
+  ];
+
+  const products = [
+    { name: "Plate A", description: "Beautiful ceramic plate", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+    { name: "Plate B", description: "Elegant bowl", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+    { name: "Plate c", description: "Beautiful ceramic plate", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+    { name: "Plate D", description: "Elegant bowl", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+    { name: "Plate E", description: "Beautiful ceramic plate", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+    { name: "Plate F", description: "Elegant bowl", image: "https://cdn.prod.website-files.com/677b8a552071e1f09b594a24/67d96efac6037c23fa15d6c4_Light%20Blue%20Sea%20Bowl%2016.webp" },
+  ];
+
+  return (
+    <div className="App">
+      <Navbar onToggleView={setViewMode} viewMode={viewMode} />
+      {viewMode === "canvas" ? (
+        <CanvasView images={images} />
+      ) : (
+        <GridView products={products} />
+      )}
+    </div>
   );
 }
 
