@@ -1,0 +1,46 @@
+# dependencies
+/node_modules/
+
+# production
+/dist/
+
+# local env files
+.env
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: macOS system file
+.AppleDouble
+.LSOverride
+
+# Optional: Vite cache
+/.vite
+
+# Optional: eslint cache
+.eslintcache
+
+# Optional: testing coverage
+coverage/
+
+# Optional: Parcel cache
+.cache/
+
+# Optional: typescript build output
+*.tsbuildinfo

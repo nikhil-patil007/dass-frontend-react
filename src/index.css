@@ -1,0 +1,28 @@
+.home-container {
+  column-width: 250px;   /* Minimum column width */
+  column-gap: 15px;      /* Gap between columns */
+  padding: 20px;
+}
+
+.image-item {
+  break-inside: avoid;   /* Prevent image from breaking inside column */
+  margin-bottom: 15px;
+}
+
+.image-item img {
+  width: 100%;           /* Fill column width */
+  display: block;
+  border-radius: 8px;
+  height: auto;          /* Maintain aspect ratio */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) { 
+  .home-container { column-width: 200px; } 
+}
+@media (max-width: 768px) { 
+  .home-container { column-width: 150px; } 
+}
+@media (max-width: 480px) { 
+  .home-container { column-width: 100%; } 
+}
