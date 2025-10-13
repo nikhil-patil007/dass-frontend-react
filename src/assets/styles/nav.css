@@ -1,28 +1,154 @@
+/* Transparent navbar stays same */
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1.2rem 2rem;
   display: flex;
   justify-content: space-between;
-  backdrop-filter: blur(10px);
+  align-items: center;
+  background: transparent;
   z-index: 100;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: black;
 }
 
-.links button {
-  margin-left: 1rem;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s;
+/* Center the toggle button at top middle */
+.toggle-center-wrapper {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 101;
 }
-.links button:hover {
-  transform: scale(1.05);
+
+/* Responsive styles for tablets and below */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+  
+  .toggle-center-wrapper {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1rem;
+  }
+
+  /* Move toggle button to top right on mobile */
+  .toggle-center-wrapper {
+    position: absolute;
+    left: auto;
+    right: 1rem;
+    top: 1rem;
+    transform: none;
+  }
+
+  /* Hide text container on mobile */
+  .toggle-text-container-box {
+    display: none !important;
+  }
+
+  /* Keep only dots visible */
+  .toggle-dots-container {
+    display: flex !important;
+  }
+
+  /* Ensure button wrapper doesn't overflow */
+  .toggle-button-wrapper {
+    width: auto !important;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .toggle-center-wrapper {
+    right: 0.5rem;
+    top: 0.8rem;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+  
+  .toggle-dots-container {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* Button layout */
+.view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+/* Dots icon grid */
+.toggle-icon .dots-icon {
+  display: grid;
+  grid-template-columns: repeat(3, 6px);
+  grid-gap: 5px;
+}
+
+.toggle-icon .dots-icon span {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  display: block;
+}
+
+/* === FIX: make text visible === */
+.toggle-text-container {
+  position: relative;
+  min-height: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-text,
+.toggle-text-hover {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  text-align: left;
+  color: white;
+  pointer-events: none;
 }

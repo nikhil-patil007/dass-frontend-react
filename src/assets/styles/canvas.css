@@ -4,28 +4,49 @@
   background-color: #f8f8ef;
   overflow: hidden;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  cursor: grab;
+  overflow: hidden;
+  /* stop scrolling */
+  touch-action: none;
+  /* crucial for mobile drag */
 }
 
-.floating-img {
-  width: 200px;
-  margin: 1rem;
-  border-radius: 12px;
+.canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+.canvas-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+.canvas-item {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  transform-origin: center;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+.canvas-item img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
-  animation: float 5s ease-in-out infinite;
-  transition: transform 0.3s ease;
+  transform: rotate(-45deg);
+  border-radius: 12px;
+  /* box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); */
+  transition: transform 0.3s;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
 }
 
-.floating-img:hover {
-  transform: scale(1.05);
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0); }
+.canvas-item img:hover {
+  transform: rotate(-45deg) scale(1.1);
 }
