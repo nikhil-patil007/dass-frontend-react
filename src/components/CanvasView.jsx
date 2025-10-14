@@ -14,18 +14,18 @@ export default function CanvasView({ products }) {
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [dragEnabled, setDragEnabled] = useState(false);
 
-  const canvasPadding = 50;
+    const canvasPadding = 100;
 
   // Build grid layout
   useEffect(() => {
-    const imgSize = 200;
+    const imgSize = 120; // Further reduced for smaller boxes
     const isMobile = window.innerWidth < 768;
-    const gap = isMobile ? 5 : 10;
+    const gap = isMobile ? 80 : 100; // Increased gap for more spacing
     const cols = 10;
     const rows = Math.ceil(products.length / 5);
 
-    const width = cols * (imgSize + gap);
-    const height = rows * (imgSize + gap);
+    const width = cols * (imgSize + gap) + gap;
+    const height = rows * (imgSize + gap) + gap;
 
     setGridSize({ width, height });
     setDrag((d) => ({
@@ -34,7 +34,6 @@ export default function CanvasView({ products }) {
       y: (window.innerHeight - height) / 2,
     }));
   }, [products]);
-
   // Zoom animation from center
   useEffect(() => {
     if (!surfaceRef.current) return;
@@ -288,9 +287,9 @@ export default function CanvasView({ products }) {
         >
           <div className="surface-inner" style={{ width: "100%", height: "100%" }}>
             {products.map((product, i) => {
-              const imgSize = 200;
+              const imgSize = 120; // Match the grid layout imgSize
               const isMobile = window.innerWidth < 768;
-              const gap = isMobile ? 5 : 10;
+              const gap = isMobile ? 80 : 100; // Match the grid layout gap
               const row = Math.floor(i / 5);
               const indexInRow = i % 5;
               const colIndex = row % 2 === 0 ? indexInRow * 2 : indexInRow * 2 + 1;

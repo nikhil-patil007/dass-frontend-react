@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import "@/assets/styles/nav.css";
@@ -7,15 +7,15 @@ import ToggleButton from "./navbar/ToggleButton";
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const isExperienceView =
-    location.pathname === "/" || location.pathname === "/experience";
+  const [isExperienceView, setIsExperienceView] = useState(location.pathname === "/" || location.pathname === "/experience")
 
   const toggleView = () => {
     if (isExperienceView) {
       navigate("/collections");
+      setIsExperienceView(false)
     } else {
       navigate("/");
+      setIsExperienceView(true)
     }
   };
 
@@ -43,8 +43,8 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="logo">Dass</div>
 
-      <div className="toggle-center-wrapper">
-        <ToggleButton></ToggleButton>
+      <div className="toggle-center-wrapper" onClick={() => { toggleView() }} >
+        <ToggleButton isExperienceView={isExperienceView}></ToggleButton>
       </div>
     </nav>
   );

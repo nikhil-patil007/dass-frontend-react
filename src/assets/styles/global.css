@@ -1,12 +1,32 @@
 :root {
-  --bg: #f5f6ee; /* light cream background like Palmer uses per Awwwards listing */ 
+  --bg: #f5f6ee;
+  /* light cream background like Palmer uses per Awwwards listing */
   --text: #222;
+}
+
+@font-face {
+  font-family: 'Lausanne';
+  src: url('./assets/fonts/Lausanne.woff2') format('woff2'),
+    url('./assets/fonts/Lausanne.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  font-family: 'Lausanne';
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
+
+/* font-family: 'Inter', sans-serif; */
