@@ -38,7 +38,7 @@
   .navbar {
     padding: 1rem 1.5rem;
   }
-  
+
   .toggle-center-wrapper {
     left: 50%;
     transform: translateX(-50%);
@@ -74,7 +74,7 @@
   .toggle-button-wrapper {
     width: auto !important;
   }
-  
+
   .logo {
     font-size: 1.3rem;
   }
@@ -83,7 +83,7 @@
 /* Extra small screens */
 @media (max-width: 480px) {
   .navbar {
-    padding: 0.8rem 0.5rem;
+    padding: 0.8rem 1rem;
   }
 
   .toggle-center-wrapper {
@@ -94,7 +94,7 @@
   .logo {
     font-size: 1.1rem;
   }
-  
+
   .toggle-dots-container {
     width: 36px !important;
     height: 36px !important;

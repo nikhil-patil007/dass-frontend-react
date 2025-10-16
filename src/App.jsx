@@ -14,7 +14,6 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 
 function App() {
-
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -50,7 +49,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/products/:slug" element={<ProductDetails />} />
+        <Route path="/products/:slug" element={<ProductDetails products={products} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

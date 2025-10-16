@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import "@/assets/styles/nav.css";
 import ToggleButton from "./navbar/ToggleButton";
@@ -8,6 +8,8 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isExperienceView, setIsExperienceView] = useState(location.pathname === "/" || location.pathname === "/experience")
+
+  let showViewBtn = location.pathname === "/" || location.pathname === "/experience";
 
   const toggleView = () => {
     if (isExperienceView) {
@@ -41,11 +43,13 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="logo">Dass</div>
+      <div className="logo cp"><Link to={'/'}>Dass</Link></div>
 
-      <div className="toggle-center-wrapper" onClick={() => { toggleView() }} >
-        <ToggleButton isExperienceView={isExperienceView}></ToggleButton>
-      </div>
+      {(location.pathname === "/" || location.pathname === "/experience") &&
+        <div className="toggle-center-wrapper" onClick={() => { toggleView() }} >
+          <ToggleButton isExperienceView={isExperienceView}></ToggleButton>
+        </div>
+      }
     </nav>
   );
 }
