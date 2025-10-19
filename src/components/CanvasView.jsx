@@ -23,7 +23,7 @@ export default function CanvasView({ products }) {
   useEffect(() => {
     const imgSize = 200; // Further reduced for smaller boxes
     const isMobile = window.innerWidth < 768;
-    const gap = isMobile ? 80 : 100; // Increased gap for more spacing
+    const gap = isMobile ? 40 : 50; // Increased gap for more spacing
     const cols = 10;
     const rows = Math.ceil(products.length / 5);
 
@@ -308,7 +308,7 @@ export default function CanvasView({ products }) {
             {products.map((product, i) => {
               const imgSize = 250; // Match the grid layout imgSize
               const isMobile = window.innerWidth < 768;
-              const gap = isMobile ? 80 : 100; // Match the grid layout gap
+              const gap = isMobile ? 65 : 70; // Match the grid layout gap
               const row = Math.floor(i / 5);
               const indexInRow = i % 5;
               const colIndex = row % 2 === 0 ? indexInRow * 2 : indexInRow * 2 + 1;

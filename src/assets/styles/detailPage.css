@@ -14,9 +14,11 @@
     flex-shrink: 0;
 }
 
-.section-padding {
+
+.section-padding-l {
     padding-left: 2rem;
 }
+
 
 .horizontal-section {
     padding: 3.5rem 0;
@@ -82,8 +84,12 @@
     font-size: 0.85rem;
 }
 
+.suggestion-item:hover {
+    transition: all 0.6s ease;
+}
+
 @media only screen and (min-width:992px) {
-    .suggestion-item:hover .item-img {
+    .suggestion-item:hover {
         scale: 1.05;
     }
 }
@@ -114,7 +120,7 @@
         width: 100%;
     }
 
-    .section-padding {
+    .section-padding-l {
         padding: 1rem;
     }
 
@@ -135,7 +141,7 @@
     }
 
     .detail-wrapper .item-name h3 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
 }
@@ -151,4 +157,98 @@
 
 .product-fade-img.fade-out {
     opacity: 0;
+}
+
+/* Product title row with wishlist heart */
+.pd-title-with-heart {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.pd-heart {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.pd-heart:hover {
+    transform: translateY(-1px);
+}
+
+.pd-heart:active {
+    transform: scale(0.95);
+}
+
+.pd-heart.active {
+    color: #ff4d6d;
+}
+
+/* Cart icon next to wishlist */
+.pd-cart {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.pd-cart:hover {
+    transform: translateY(-1px);
+}
+
+.pd-cart:active {
+    transform: scale(0.95);
+}
+
+.pd-cart.active {
+    color: #2ecc71;
+}
+
+/* Tooltips (desktop-only hover) */
+.pd-heart,
+.pd-cart {
+    position: relative;
+}
+
+.pd-tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity .15s ease, transform .15s ease;
+    transform-origin: bottom center;
+}
+
+.pd-heart:hover .pd-tooltip,
+.pd-cart:hover .pd-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+@media (hover: none),
+(pointer: coarse) {
+    .pd-tooltip {
+        display: none;
+    }
 }
