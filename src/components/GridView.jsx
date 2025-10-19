@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "../assets/styles/grid.css";
+import "@/assets/styles/grid.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
@@ -67,7 +67,7 @@ export default function GridView({ products }) {
             key={i}
             ref={(el) => (itemsRef.current[i] = el)}
           >
-            <Link to={`/products/${p.id}`}>
+            <Link to={`/products/${p.slug}`}>
               <div className="item-img">
                 <img src={p.image} alt={p.name} />
               </div>

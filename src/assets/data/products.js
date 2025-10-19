@@ -2,6 +2,7 @@ const products = [
     {
         "id": 1,
         "name": "Garnet Pendant",
+        "slug": "garnet-pendant",
         "category": "Necklaces",
         "price": 479.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG135.png",
@@ -12,6 +13,7 @@ const products = [
     {
         "id": 2,
         "name": "Classic Solitaire Ring",
+        "slug": "classic-solitaire-ring",
         "category": "Rings",
         "price": 299.99,
         "image": "https://pngimg.com/uploads/ring/ring_PNG70.png",
@@ -22,6 +24,7 @@ const products = [
     {
         "id": 3,
         "name": "Gold Twist Bracelet",
+        "slug": "gold-twist-bracelet",
         "category": "Bracelets",
         "price": 199.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG62.png",
@@ -32,6 +35,7 @@ const products = [
     {
         "id": 4,
         "name": "Emerald Halo Pendant",
+        "slug": "emerald-halo-pendant",
         "category": "Pendants",
         "price": 549.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG138.png",
@@ -42,6 +46,7 @@ const products = [
     {
         "id": 5,
         "name": "Minimal Bar Necklace",
+        "slug": "minimal-bar-necklace",
         "category": "Necklaces",
         "price": 69.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG100.png",
@@ -52,6 +57,7 @@ const products = [
     {
         "id": 6,
         "name": "Cubic Zirconia Hoop",
+        "slug": "cubic-zirconia-hoop",
         "category": "Earrings",
         "price": 39.99,
         "image": "https://pngimg.com/uploads/jewelry/jewelry_PNG6740.png",
@@ -62,6 +68,7 @@ const products = [
     {
         "id": 7,
         "name": "Twin Band Wedding Set",
+        "slug": "twin-band-wedding-set",
         "category": "Rings",
         "price": 399.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG84.png",
@@ -72,6 +79,7 @@ const products = [
     {
         "id": 8,
         "name": "Stackable Midi Ring",
+        "slug": "stackable-midi-ring",
         "category": "Rings",
         "price": 19.99,
         "image": "https://pngimg.com/uploads/ring/ring_PNG140.png",
@@ -82,6 +90,7 @@ const products = [
     {
         "id": 9,
         "name": "Lariat Y Necklace",
+        "slug": "lariat-y-necklace",
         "category": "Necklaces",
         "price": 129.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG92.png",
@@ -92,6 +101,7 @@ const products = [
     {
         "id": 10,
         "name": "Beaded Charm Bracelet",
+        "slug": "beaded-charm-bracelet",
         "category": "Bracelets",
         "price": 59.5,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG133.png",
@@ -102,6 +112,7 @@ const products = [
     {
         "id": 11,
         "name": "Pearl Drop Earrings",
+        "slug": "pearl-drop-earrings",
         "category": "Earrings",
         "price": 89.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG29.png",
@@ -112,6 +123,7 @@ const products = [
     {
         "id": 12,
         "name": "Diamond Tennis Bracelet",
+        "slug": "diamond-tennis-bracelet",
         "category": "Bracelets",
         "price": 1299.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG11.png",
@@ -122,6 +134,7 @@ const products = [
     {
         "id": 13,
         "name": "Vintage Sapphire Ring",
+        "slug": "vintage-sapphire-ring",
         "category": "Rings",
         "price": 459.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG4.png",
@@ -132,6 +145,7 @@ const products = [
     {
         "id": 14,
         "name": "Statement Choker",
+        "slug": "statement-choker",
         "category": "Necklaces",
         "price": 45.99,
         "image": "https://pngimg.com/uploads/jewelry/jewelry_PNG6740.png",
@@ -142,6 +156,7 @@ const products = [
     {
         "id": 15,
         "name": "Infinity Bangle",
+        "slug": "infinity-bangle",
         "category": "Bracelets",
         "price": 79.99,
         "image": "https://pngimg.com/uploads/ring/ring_PNG70.png",
@@ -152,6 +167,7 @@ const products = [
     {
         "id": 16,
         "name": "Amethyst Stud Earrings",
+        "slug": "amethyst-stud-earrings",
         "category": "Earrings",
         "price": 119.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG138.png",
@@ -162,6 +178,7 @@ const products = [
     {
         "id": 17,
         "name": "Layered Chain Necklace",
+        "slug": "layered-chain-necklace",
         "category": "Necklaces",
         "price": 59.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG135.png",
@@ -172,6 +189,7 @@ const products = [
     {
         "id": 18,
         "name": "Men's Signet Ring",
+        "slug": "mens-signet-ring",
         "category": "Rings",
         "price": 249.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG84.png",
@@ -182,6 +200,7 @@ const products = [
     {
         "id": 19,
         "name": "Opal Teardrop Pendant",
+        "slug": "opal-teardrop-pendant",
         "category": "Pendants",
         "price": 189.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG133.png",
@@ -192,6 +211,7 @@ const products = [
     {
         "id": 20,
         "name": "Rope Chain Bracelet",
+        "slug": "rope-chain-bracelet",
         "category": "Bracelets",
         "price": 149.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG29.png",
@@ -202,6 +222,7 @@ const products = [
     {
         "id": 21,
         "name": "Citrine Cocktail Ring",
+        "slug": "citrine-cocktail-ring",
         "category": "Rings",
         "price": 349.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG140.png",
@@ -212,6 +233,7 @@ const products = [
     {
         "id": 22,
         "name": "Crystal Drop Earrings",
+        "slug": "crystal-drop-earrings",
         "category": "Earrings",
         "price": 85.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG11.png",
@@ -222,6 +244,7 @@ const products = [
     {
         "id": 23,
         "name": "Personalizable Name Necklace",
+        "slug": "personalizable-name-necklace",
         "category": "Necklaces",
         "price": 79.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG4.png",
@@ -232,6 +255,7 @@ const products = [
     {
         "id": 24,
         "name": "Tungsten Men's Band",
+        "slug": "tungsten-mens-band",
         "category": "Rings",
         "price": 159.99,
         "image": "https://pngimg.com/uploads/ring/ring_PNG70.png",
@@ -242,6 +266,7 @@ const products = [
     {
         "id": 25,
         "name": "Pearl Strand Necklace",
+        "slug": "pearl-strand-necklace",
         "category": "Necklaces",
         "price": 239.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG100.png",
@@ -252,6 +277,7 @@ const products = [
     {
         "id": 26,
         "name": "Ruby Eternity Band",
+        "slug": "ruby-eternity-band",
         "category": "Rings",
         "price": 599.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG92.png",
@@ -262,6 +288,7 @@ const products = [
     {
         "id": 27,
         "name": "Leather Wrap Bracelet",
+        "slug": "leather-wrap-bracelet",
         "category": "Bracelets",
         "price": 35.0,
         "image": "https://pngimg.com/uploads/jewelry/jewelry_PNG6740.png",
@@ -272,6 +299,7 @@ const products = [
     {
         "id": 28,
         "name": "Turquoise Statement Earrings",
+        "slug": "turquoise-statement-earrings",
         "category": "Earrings",
         "price": 65.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG62.png",
@@ -282,6 +310,7 @@ const products = [
     {
         "id": 29,
         "name": "Men's Watch Chain",
+        "slug": "mens-watch-chain",
         "category": "Accessories",
         "price": 89.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG138.png",
@@ -292,6 +321,7 @@ const products = [
     {
         "id": 30,
         "name": "Birthstone Pendant",
+        "slug": "birthstone-pendant",
         "category": "Pendants",
         "price": 99.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG135.png",
@@ -302,6 +332,7 @@ const products = [
     {
         "id": 31,
         "name": "Moonstone Ring",
+        "slug": "moonstone-ring",
         "category": "Rings",
         "price": 129.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG84.png",
@@ -312,6 +343,7 @@ const products = [
     {
         "id": 32,
         "name": "Jade Bangle",
+        "slug": "jade-bangle",
         "category": "Bracelets",
         "price": 279.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG133.png",
@@ -322,6 +354,7 @@ const products = [
     {
         "id": 33,
         "name": "Platinum Wedding Band",
+        "slug": "platinum-wedding-band",
         "category": "Rings",
         "price": 799.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG140.png",
@@ -332,6 +365,7 @@ const products = [
     {
         "id": 34,
         "name": "Chandelier Earrings",
+        "slug": "chandelier-earrings",
         "category": "Earrings",
         "price": 125.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG29.png",
@@ -342,6 +376,7 @@ const products = [
     {
         "id": 35,
         "name": "Silver Chain Anklet",
+        "slug": "silver-chain-anklet",
         "category": "Accessories",
         "price": 29.99,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG11.png",
@@ -352,6 +387,7 @@ const products = [
     {
         "id": 36,
         "name": "Onyx Cufflinks",
+        "slug": "onyx-cufflinks",
         "category": "Accessories",
         "price": 95.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG4.png",
@@ -362,6 +398,7 @@ const products = [
     {
         "id": 37,
         "name": "Rose Gold Huggie Earrings",
+        "slug": "rose-gold-huggie-earrings",
         "category": "Earrings",
         "price": 49.0,
         "image": "https://pngimg.com/uploads/jewelry/jewelry_PNG6740.png",
@@ -372,6 +409,7 @@ const products = [
     {
         "id": 38,
         "name": "Aquamarine Pendant",
+        "slug": "aquamarine-pendant",
         "category": "Pendants",
         "price": 379.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG100.png",
@@ -382,6 +420,7 @@ const products = [
     {
         "id": 39,
         "name": "Black Pearl Earrings",
+        "slug": "black-pearl-earrings",
         "category": "Earrings",
         "price": 259.0,
         "image": "https://pngimg.com/uploads/necklace/necklace_PNG92.png",
@@ -392,6 +431,7 @@ const products = [
     {
         "id": 40,
         "name": "Engagement Ring Setting",
+        "slug": "engagement-ring-setting",
         "category": "Rings",
         "price": 899.0,
         "image": "https://pngimg.com/uploads/ring/ring_PNG70.png",
@@ -399,6 +439,6 @@ const products = [
         "inStock": true,
         "rating": 4.9
     }
-]
+];
 
 export default products;

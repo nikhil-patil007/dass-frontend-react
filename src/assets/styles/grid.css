@@ -33,12 +33,18 @@
   margin-bottom: 10px;
   /* height: 100%; */
   width: 100%;
-  min-height: 50vh;
+  /* Use an aspect ratio so images scale proportionally on smaller screens
+     instead of forcing a large viewport-height. */
+  aspect-ratio: 4 / 3;
+  min-height: 0;
 }
 
 .grid-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  display: block;
+  /* cover keeps focal point and avoids squashing while filling the box */
+  object-fit: cover;
 }
 
 .info {
@@ -53,6 +59,9 @@
 }
 
 @media only screen and (max-width: 767px) {
+
+  /* Increase text sizes on small screens for readability - set individually below */
+
   .grid-wrapper {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -67,6 +76,26 @@
   }
 
   .page-title h2 {
-    font-size: 3rem;
+    font-size: 2.4rem;
+  }
+
+  /* Mobile-specific tweaks for grid items */
+  .grid-item .item-img {
+    /* Limit maximum height so a single image doesn't take up the whole viewport */
+    max-height: 40vh;
+    /* keep defined aspect ratio so height is predictable */
+    aspect-ratio: 4 / 3;
+  }
+
+  .info h3 {
+    font-size: 1.9rem;
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+
+  .info p {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    opacity: 0.95;
   }
 }

@@ -1,0 +1,254 @@
+.detail-wrapper {
+    display: flex;
+    flex-direction: row;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.detail-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.detail-wrapper section {
+    flex-shrink: 0;
+}
+
+
+.section-padding-l {
+    padding-left: 2rem;
+}
+
+
+.horizontal-section {
+    padding: 3.5rem 0;
+    height: 100dvh;
+    width: auto;
+    overflow: hidden;
+}
+
+.spec-item {
+    padding: 5px 0;
+    border-bottom: solid 1px rgba(49, 61, 77, 0.315);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.spec-item p {
+    font-size: 1rem;
+}
+
+.product-image {
+    position: absolute;
+    bottom: 0;
+    height: 60vh;
+    width: 100%;
+    background: transparent;
+    overflow: hidden;
+}
+
+.product-image img {
+    height: 100%;
+}
+
+.grid-suggestion {
+    display: grid;
+    width: 100%;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(200px, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 0 2rem;
+}
+
+.suggestion-item {
+    cursor: pointer;
+}
+
+.item-img {
+    width: 100%;
+    border: solid 1px #000;
+    border-radius: 6px;
+    aspect-ratio: 1 / 1;
+    max-height: 40vh;
+    transition: all 0.3s ease;
+}
+
+.item-img img {
+    object-fit: contain;
+    object-position: center;
+    height: 100%;
+}
+
+.item-name h3 {
+    font-size: 0.85rem;
+}
+
+.suggestion-item:hover {
+    transition: all 0.6s ease;
+}
+
+@media only screen and (min-width:992px) {
+    .suggestion-item:hover {
+        scale: 1.05;
+    }
+}
+
+@media only screen and (max-width:991px) {
+    .horizontal-section {
+        height: auto;
+        width: 100dvw;
+    }
+
+    .detail-wrapper {
+        display: block;
+    }
+
+    .grid-suggestion {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: unset;
+        grid-auto-flow: unset;
+        grid-auto-columns: unset;
+        width: 100%;
+        padding: 1rem;
+    }
+
+
+    .product-image {
+        position: static;
+        height: auto;
+        width: 100%;
+    }
+
+    .section-padding-l {
+        padding: 1rem;
+    }
+
+}
+
+@media only screen and (max-width:767px) {
+    .grid-suggestion {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2.5rem;
+    }
+
+    .detail-wrapper .section-subtitle h2 {
+        font-size: 2.5rem;
+    }
+
+    .detail-wrapper .spec-item p {
+        font-size: 1.8rem;
+    }
+
+    .detail-wrapper .item-name h3 {
+        font-size: 1.5rem;
+    }
+
+}
+
+.product-fade-img {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.product-fade-img.fade-in {
+    opacity: 1;
+}
+
+.product-fade-img.fade-out {
+    opacity: 0;
+}
+
+/* Product title row with wishlist heart */
+.pd-title-with-heart {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.pd-heart {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.pd-heart:hover {
+    transform: translateY(-1px);
+}
+
+.pd-heart:active {
+    transform: scale(0.95);
+}
+
+.pd-heart.active {
+    color: #ff4d6d;
+}
+
+/* Cart icon next to wishlist */
+.pd-cart {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+
+.pd-cart:hover {
+    transform: translateY(-1px);
+}
+
+.pd-cart:active {
+    transform: scale(0.95);
+}
+
+.pd-cart.active {
+    color: #2ecc71;
+}
+
+/* Tooltips (desktop-only hover) */
+.pd-heart,
+.pd-cart {
+    position: relative;
+}
+
+.pd-tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity .15s ease, transform .15s ease;
+    transform-origin: bottom center;
+}
+
+.pd-heart:hover .pd-tooltip,
+.pd-cart:hover .pd-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+@media (hover: none),
+(pointer: coarse) {
+    .pd-tooltip {
+        display: none;
+    }
+}

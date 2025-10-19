@@ -11,6 +11,8 @@
   background: transparent;
   z-index: 100;
   box-sizing: border-box;
+  mix-blend-mode: difference;
+  /* pointer-events: none; */
 }
 
 * {
@@ -21,12 +23,74 @@
   font-size: 1.4rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: black;
+  color: white;
+  mix-blend-mode: difference;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: auto;
+  /* allow clicking the link inside */
+}
+
+.logo a {
+  color: inherit;
+  /* ensures the blend applies to the text, not default link color */
+  text-decoration: none;
+}
+
+/* Cart link opposite of logo */
+.nav-cart-link {
+  margin-left: auto;
+  pointer-events: auto;
+}
+
+.nav-cart-inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: white;
+  text-decoration: none;
+  mix-blend-mode: difference;
+  cursor: pointer;
+}
+
+.nav-cart-inner .nav-cart-text {
+  color: white;
+}
+
+.nav-cart-icon {
+  display: inline-block;
+  color: white;
+  width: 30px;
+  height: 30px;
+}
+
+.nav-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #2ecc71;
+  color: #000;
+  border-radius: 999px;
+  min-width: 16px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 11px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .nav-cart-text {
+    display: none;
+  }
 }
 
 /* Center the toggle button at top middle */
 .toggle-center-wrapper {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
@@ -38,7 +102,7 @@
   .navbar {
     padding: 1rem 1.5rem;
   }
-  
+
   .toggle-center-wrapper {
     left: 50%;
     transform: translateX(-50%);
@@ -55,7 +119,7 @@
   .toggle-center-wrapper {
     position: absolute;
     left: auto;
-    right: 1rem;
+    right: 4.5rem;
     top: 1rem;
     transform: none;
   }
@@ -74,7 +138,7 @@
   .toggle-button-wrapper {
     width: auto !important;
   }
-  
+
   .logo {
     font-size: 1.3rem;
   }
@@ -83,18 +147,18 @@
 /* Extra small screens */
 @media (max-width: 480px) {
   .navbar {
-    padding: 0.8rem 0.5rem;
+    padding: 0.8rem 1rem;
   }
 
   .toggle-center-wrapper {
-    right: 0.5rem;
+    right: 4.5rem;
     top: 0.8rem;
   }
 
   .logo {
     font-size: 1.1rem;
   }
-  
+
   .toggle-dots-container {
     width: 36px !important;
     height: 36px !important;

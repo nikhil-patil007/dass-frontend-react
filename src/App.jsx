@@ -9,16 +9,21 @@ import ProductDetails from "@/pages/ProductDetails";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
 import products from "@/assets/data/products";
+import About from "./pages/About";
+import Wishlist from "./pages/Wishlist";
 import "@/assets/styles/global.css";
 import "aos/dist/aos.css";
 import AOS from "aos";
+import MenuBtn from "./components/MenuBtn";
+import ScrollToTop from "./components/ScrollToTop";
+import { WishlistProvider } from "./context/WishlistContext";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
-
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      easing: "ease-in-out",
+      once: true,
     });
   }, []);
 
@@ -41,19 +46,27 @@ function App() {
   // );
 
   return (
-    <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<CanvasView products={products} />} />
-        <Route path="/experience" element={<Navigate to="/" replace />} />
-        <Route path="/collections" element={<GridView products={products} />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/products/:slug" element={<ProductDetails />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+    <WishlistProvider>
+      <CartProvider>
+        <div className="App">
+          <ScrollToTop />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<CanvasView products={products} />} />
+            <Route path="/experience" element={<Navigate to="/" replace />} />
+            <Route path="/collections" element={<GridView products={products} />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/products/:slug" element={<ProductDetails products={products} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/wishlist" element={<Wishlist products={products} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <MenuBtn />
+        </div>
+      </CartProvider>
+    </WishlistProvider>
   );
 }
 

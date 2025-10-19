@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "../assets/styles/canvas.css";
+import { useNavigate } from "react-router-dom";
 
 export default function CanvasView({ products }) {
   const wrapperRef = useRef(null);
@@ -8,19 +9,21 @@ export default function CanvasView({ products }) {
   const itemRefs = useRef([]);
   const floatNameRef = useRef(null);
   const animationRef = useRef(null);
+  const navigate = useNavigate();
+  const [pointerStart, setPointerStart] = useState({ x: 0, y: 0 });
 
   const [drag, setDrag] = useState({ active: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const [gridSize, setGridSize] = useState({ width: 0, height: 0 });
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [dragEnabled, setDragEnabled] = useState(false);
 
-    const canvasPadding = 100;
+  const canvasPadding = 250;
 
   // Build grid layout
   useEffect(() => {
-    const imgSize = 120; // Further reduced for smaller boxes
+    const imgSize = 200; // Further reduced for smaller boxes
     const isMobile = window.innerWidth < 768;
-    const gap = isMobile ? 80 : 100; // Increased gap for more spacing
+    const gap = isMobile ? 40 : 50; // Increased gap for more spacing
     const cols = 10;
     const rows = Math.ceil(products.length / 5);
 
@@ -62,7 +65,7 @@ export default function CanvasView({ products }) {
         entries.forEach((entry) => {
           const el = entry.target;
           const itemId = el.dataset.itemId;
-          
+
           if (entry.isIntersecting) {
             if (!animatedItems.has(itemId)) {
               gsap.to(el, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.5)" });
@@ -90,9 +93,9 @@ export default function CanvasView({ products }) {
 
     const handleWheel = (e) => {
       if (!dragEnabled) return;
-      
+
       e.preventDefault();
-      
+
       const wrapperWidth = wrapperRef.current.offsetWidth;
       const wrapperHeight = wrapperRef.current.offsetHeight;
 
@@ -167,12 +170,14 @@ export default function CanvasView({ products }) {
 
   const startDrag = (e) => {
     if (!dragEnabled) return;
-    
+
+    const { x, y } = getClientPos(e);
+    setPointerStart({ x, y });
+
     if (animationRef.current) {
       animationRef.current.kill();
     }
-    
-    const { x, y } = getClientPos(e);
+
     setDrag((prev) => ({
       ...prev,
       active: true,
@@ -212,7 +217,7 @@ export default function CanvasView({ products }) {
     if (newY < minY) newY = minY + (newY - minY) * 0.3;
 
     const isMobile = window.innerWidth < 768;
-    
+
     // Smooth follow effect - faster on mobile
     gsap.to(drag, {
       x: newX,
@@ -263,6 +268,20 @@ export default function CanvasView({ products }) {
     }
   };
 
+  const openDetail = (product) => {
+    navigate(`/products/${product}`);
+  };
+
+  const handleItemClick = (e, product) => {
+    const { x, y } = getClientPos(e);
+    const dx = Math.abs(x - pointerStart.x);
+    const dy = Math.abs(y - pointerStart.y);
+
+    if (dx < 5 && dy < 5) {
+      openDetail(product.slug);
+    }
+  };
+
   return (
     <>
       <div
@@ -287,9 +306,9 @@ export default function CanvasView({ products }) {
         >
           <div className="surface-inner" style={{ width: "100%", height: "100%" }}>
             {products.map((product, i) => {
-              const imgSize = 120; // Match the grid layout imgSize
+              const imgSize = 250; // Match the grid layout imgSize
               const isMobile = window.innerWidth < 768;
-              const gap = isMobile ? 80 : 100; // Match the grid layout gap
+              const gap = isMobile ? 65 : 70; // Match the grid layout gap
               const row = Math.floor(i / 5);
               const indexInRow = i % 5;
               const colIndex = row % 2 === 0 ? indexInRow * 2 : indexInRow * 2 + 1;
@@ -313,7 +332,7 @@ export default function CanvasView({ products }) {
                   onTouchStart={() => setHoveredProduct(product)}
                   onTouchEnd={() => setHoveredProduct(null)}
                 >
-                  <img src={product.image} alt={`product-${i}`} />
+                  <img onClick={(e) => handleItemClick(e, product)} src={product.image} alt={`product-${i}`} />
                 </div>
               );
             })}
