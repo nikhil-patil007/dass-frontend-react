@@ -10,13 +10,19 @@
 }
 
 .wl-hero h1 {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    letter-spacing: 0.02em;
+    /* Use Lausanne and make the title feel premium */
+    font-family: 'Lausanne', Arial, sans-serif;
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
 }
 
 .wl-hero p {
-    /* color: rgba(255,255,255,0.65); */
-    margin-top: 0.25rem;
+    /* subtle, readable helper text under the headline */
+    color: rgba(0, 0, 0, 0.65);
+    margin-top: 0.35rem;
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
 }
 
 .wl-hero.empty {
