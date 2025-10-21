@@ -172,6 +172,23 @@
         position: sticky;
         bottom: 0;
     }
+
+    .cart-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .cart-price,
+    .sum-row {
+        font-size: 1.4rem;
+    }
+
+    .cart-qty span,
+    .cart-line-total,
+    .cart-continue {
+        font-size: 1.35rem;
+    }
+
+
 }
 
 @media (max-width: 600px) {

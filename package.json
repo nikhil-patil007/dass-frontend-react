@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fancyapps/ui": "^6.0.34",
     "@react-three/fiber": "^9.3.0",
     "aos": "^2.3.4",
     "embla-carousel-react": "^8.6.0",

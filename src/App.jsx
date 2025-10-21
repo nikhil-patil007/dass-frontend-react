@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import CanvasView from "@/components/CanvasView";
 import GridView from "@/components/GridView";
@@ -18,13 +18,23 @@ import MenuBtn from "./components/MenuBtn";
 import ScrollToTop from "./components/ScrollToTop";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CartProvider } from "./context/CartContext";
+import Footer from "@/components/Footer";
 
 function App() {
+  const [winWidth, setWinWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
     });
+  }, []);
+  const location = useLocation();
+
+  // Track viewport width to control footer visibility on product pages
+  useEffect(() => {
+    const onResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   // const products = useMemo(
@@ -64,6 +74,14 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
           <MenuBtn />
+          {(() => {
+            const isCanvas = location.pathname === "/";
+            const isProductDetail = location.pathname.startsWith("/products/");
+            const isDesktop = winWidth > 991; // >991 hides footer on product detail
+            const isAuth = location.pathname === "/login" || location.pathname === "/signup";
+            const showFooter = !isCanvas && !isAuth && !(isProductDetail && isDesktop);
+            return showFooter ? <Footer /> : null;
+          })()}
         </div>
       </CartProvider>
     </WishlistProvider>

@@ -50,7 +50,21 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo cp"><Link to={'/'}>Dass</Link></div>
+        <div >
+          <Link
+            to="/"
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textDecoration: "none",
+            }}
+          >
+            <span className="logo cp" style={{ lineHeight: 1 }}>HOUSE OF</span>
+            <span className="logo cp" style={{ lineHeight: 1, marginTop: 2 }}>DASS</span>
+          </Link>
+        </div>
+
         <div className="nav-cart-link">
           <Link to="/cart" className="nav-cart-inner">
             <span className="nav-cart-text">Cart</span>

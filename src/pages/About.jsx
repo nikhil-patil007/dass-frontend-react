@@ -3,6 +3,43 @@ import "@/assets/styles/about.css";
 import { gsap } from "gsap";
 import TextReveal from "@/components/TextReveal";
 import { Link } from "react-router-dom";
+import AboutValuesTabs from "@/components/AboutValuesTabs";
+
+// Mobile fallback data for core values
+const DEFAULT_TABS = [
+  {
+    key: "quality",
+    label: "Quality",
+    title: "Quality",
+    content:
+      "Crafted with precision and attention to detail—materials and finishes you can feel.",
+    image: "/assets/images/about_banner_6.webp",
+  },
+  {
+    key: "love",
+    label: "Love",
+    title: "Love",
+    content:
+      "Designed to be cherished and gifted—timeless pieces that carry your stories.",
+    image: "/assets/images/about_banner_5.webp",
+  },
+  {
+    key: "creative",
+    label: "Creative & Bold",
+    title: "Creative & Bold",
+    content:
+      "A modern edge with fearless shapes and textures—statement silhouettes for every day.",
+    image: "/assets/images/about_banner_3.jpeg",
+  },
+  {
+    key: "original",
+    label: "Original",
+    title: "Original",
+    content:
+      "Distinct by design—original pieces that stand apart with clarity and confidence.",
+    image: "/assets/images/about_banner_4.jpeg",
+  },
+];
 
 const About = ({ products }) => {
   const bannerRef = useRef(null);
@@ -39,7 +76,7 @@ const About = ({ products }) => {
   }, []);
 
   return (
-    <div className="about_wrapper nav-padding">
+    <div className="about_wrapper nav-padding" id="section-1">
       <section className="section-padding section-padding-t">
         <div className="italic section-title text-center">
           <h2>Let's Celebrate</h2>
@@ -56,7 +93,7 @@ const About = ({ products }) => {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section className="section-padding" id="section-2">
         <div className="row-flex jc-s-b inner-flex-big">
           <div className="w20">
             <div className="sec_2_image">
@@ -75,7 +112,7 @@ const About = ({ products }) => {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section className="section-padding" id="section-3">
         <div className="bg-green section-padding sec-3">
           <div className="row-flex inner-flex-medium jc-s-b">
             <div className="w50 inner-flex inner-flex-medium mr-auto">
@@ -111,11 +148,15 @@ const About = ({ products }) => {
         </div>
       </section>
 
-      <section className="section-padding sec-4 relative">
+      <section className="section-padding sec-4 relative" id="section-4">
         <div className="overlay"></div>
         <div
           className="row-flex jc-s-b inner-flex-big relative"
-          style={{ top: "90%", zIndex: 2 }}
+          style={
+            window.innerWidth <= 991
+              ? { top: "45%", zIndex: 2 }
+              : { top: "90%", zIndex: 2 }
+          }
         >
           <div className="w30 mr-auto">
             <div className="sec-4-title">
@@ -133,11 +174,51 @@ const About = ({ products }) => {
         </div>
       </section>
 
-      <section className="section-padding sec-5 relative">
-        Pending Swiper
+      <section className="section-padding sec-5 relative" id="section-5">
+        {/* Desktop tabs */}
+        <div className="values-tabs-desktop">
+          <AboutValuesTabs />
+        </div>
+
+        {/* Mobile one-column grid */}
+        <div className="values-tabs-mobile">
+          <div className="section-title">
+            <h2>Our core values</h2>
+          </div>
+          <div className="values-mobile-grid">
+            {DEFAULT_TABS.map((item) => (
+              <article key={item.key} className="mobile-card">
+                <div className="img-stack tab-img">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="stack-img is-active"
+                  />
+                </div>
+                <div className="mobile-card-title">
+                  <TextReveal
+                    text={item.title}
+                    id={`values-mobile-title-${item.key}`}
+                    className="mobile-card-title-h"
+                  />
+                </div>
+                <div className="mobile-card-content">
+                  <TextReveal
+                    text={item.content}
+                    id={`values-mobile-content-${item.key}`}
+                    className="mobile-card-content-p"
+                  />
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section className="section-padding text-center sec-6 relative inner-flex alc jc-c">
+      <section
+        className="section-padding text-center sec-6 relative inner-flex alc jc-c"
+        id="section-6"
+      >
         <div className="section-title">
           <h2>
             Discover The <br /> DASS Collection
@@ -154,7 +235,20 @@ const About = ({ products }) => {
             <h2>
               Explore collections
               <span className="btn-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 10" fill="none" class="icon-8px"><path d="M1.00195 4.99999H15.002M11 8.99999L15 4.99999L11 1.00055" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  className="icon-8px"
+                >
+                  <path
+                    d="M1.00195 4.99999H15.002M11 8.99999L15 4.99999L11 1.00055"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </svg>
               </span>
             </h2>
           </Link>

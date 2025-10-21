@@ -16,20 +16,39 @@ export default function CanvasView({ products }) {
   const [gridSize, setGridSize] = useState({ width: 0, height: 0 });
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [dragEnabled, setDragEnabled] = useState(false);
+  const [positions, setPositions] = useState([]);
 
-  const canvasPadding = 250;
+  const canvasPadding = 100; // leave 100px from all four sides of the draggable view
 
-  // Build grid layout
+  // Build grid layout sized exactly to the items footprint
   useEffect(() => {
-    const imgSize = 200; // Further reduced for smaller boxes
     const isMobile = window.innerWidth < 768;
-    const gap = isMobile ? 40 : 50; // Increased gap for more spacing
-    const cols = 10;
-    const rows = Math.ceil(products.length / 5);
+    const imgSize = isMobile ? 180 : 250; // match render sizing
+    const gap = isMobile ? 40 : 70; // match render gap
+    const cols = 8; // simple grid with 8 columns
+    const rows = Math.ceil((products?.length || 0) / cols) || 1;
+    const step = imgSize + gap;
 
-    const width = cols * (imgSize + gap) + gap;
-    const height = rows * (imgSize + gap) + gap;
+    // Build positions column by column with half-cell skip:
+    // odd columns start half-step lower (top half-gap)
+    // even columns end visually with a bottom half-gap due to overall height
+    const totalCells = cols * rows;
+    const pos = [];
+    for (let c = 0; c < cols; c++) {
+      const yStart = c % 2 === 1 ? step / 2 : 0; // odd columns offset down by half
+      for (let r = 0; r < rows; r++) {
+        const x = canvasPadding + c * step;
+        const y = canvasPadding + yStart + r * step;
+        pos.push({ x, y });
+      }
+    }
 
+    // Truncate positions to totalCells (already the case) and keep for render
+    const width = 2 * canvasPadding + (cols - 1) * step + imgSize;
+    // Height includes bottom half-gap to balance top offset on odd columns + padding
+    const height = 2 * canvasPadding + (rows - 1) * step + imgSize + step / 2;
+
+    setPositions(pos);
     setGridSize({ width, height });
     setDrag((d) => ({
       ...d,
@@ -68,14 +87,24 @@ export default function CanvasView({ products }) {
 
           if (entry.isIntersecting) {
             if (!animatedItems.has(itemId)) {
-              gsap.to(el, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.5)" });
+              gsap.fromTo(
+                el,
+                { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" },
+                {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.5,
+                  ease: "back.out(1.8)",
+                  delay: Math.random() * 0.08,
+                }
+              );
               animatedItems.add(itemId);
             } else {
               gsap.set(el, { opacity: 1, scale: 1 });
             }
           } else {
             if (!animatedItems.has(itemId)) {
-              gsap.to(el, { opacity: 0, scale: 0, duration: 0.3, ease: "power1.in" });
+              gsap.set(el, { opacity: 0, scale: 0.6 });
             }
           }
         });
@@ -99,10 +128,10 @@ export default function CanvasView({ products }) {
       const wrapperWidth = wrapperRef.current.offsetWidth;
       const wrapperHeight = wrapperRef.current.offsetHeight;
 
-      const minX = wrapperWidth - gridSize.width - canvasPadding;
-      const minY = wrapperHeight - gridSize.height - canvasPadding;
-      const maxX = canvasPadding;
-      const maxY = canvasPadding;
+      const minX = wrapperWidth - gridSize.width;
+      const minY = wrapperHeight - gridSize.height;
+      const maxX = 0;
+      const maxY = 0;
 
       setDrag((prev) => {
         let newX = prev.x - e.deltaX;
@@ -159,7 +188,7 @@ export default function CanvasView({ products }) {
         animationRef.current.kill();
       }
     };
-  }, [dragEnabled, gridSize, canvasPadding]);
+  }, [dragEnabled, gridSize]);
 
   const getClientPos = (e) => {
     if (e.touches && e.touches.length > 0) {
@@ -203,10 +232,10 @@ export default function CanvasView({ products }) {
     const wrapperWidth = wrapperRef.current.offsetWidth;
     const wrapperHeight = wrapperRef.current.offsetHeight;
 
-    const minX = wrapperWidth - gridSize.width - canvasPadding;
-    const minY = wrapperHeight - gridSize.height - canvasPadding;
-    const maxX = canvasPadding;
-    const maxY = canvasPadding;
+    const minX = wrapperWidth - gridSize.width;
+    const minY = wrapperHeight - gridSize.height;
+    const maxX = 0;
+    const maxY = 0;
 
     let newX = x - drag.offsetX;
     let newY = y - drag.offsetY;
@@ -305,37 +334,37 @@ export default function CanvasView({ products }) {
           }}
         >
           <div className="surface-inner" style={{ width: "100%", height: "100%" }}>
-            {products.map((product, i) => {
-              const imgSize = 250; // Match the grid layout imgSize
-              const isMobile = window.innerWidth < 768;
-              const gap = isMobile ? 65 : 70; // Match the grid layout gap
-              const row = Math.floor(i / 5);
-              const indexInRow = i % 5;
-              const colIndex = row % 2 === 0 ? indexInRow * 2 : indexInRow * 2 + 1;
-              const x = colIndex * (imgSize + gap);
-              const y = row * (imgSize + gap);
-
-              return (
-                <div
-                  key={i}
-                  ref={(el) => (itemRefs.current[i] = el)}
-                  data-item-id={i}
-                  className="canvas-item"
-                  style={{
-                    left: x,
-                    top: y,
-                    transform: "rotate(45deg) scale(0)",
-                    opacity: 0,
-                  }}
-                  onMouseEnter={() => setHoveredProduct(product)}
-                  onMouseLeave={() => setHoveredProduct(null)}
-                  onTouchStart={() => setHoveredProduct(product)}
-                  onTouchEnd={() => setHoveredProduct(null)}
-                >
-                  <img onClick={(e) => handleItemClick(e, product)} src={product.image} alt={`product-${i}`} />
-                </div>
+            {(() => {
+              const cols = 8;
+              const rows = Math.ceil((products?.length || 0) / cols) || 1;
+              const totalCells = cols * rows;
+              const renderProducts = Array.from({ length: totalCells }, (_, i) =>
+                products[i % products.length]
               );
-            })}
+              return renderProducts.map((product, i) => {
+                const coords = positions[i] || { x: 0, y: 0 };
+                return (
+                  <div
+                    key={i}
+                    ref={(el) => (itemRefs.current[i] = el)}
+                    data-item-id={i}
+                    className="canvas-item"
+                    style={{
+                      left: coords.x,
+                      top: coords.y,
+                      transform: "rotate(45deg) scale(0)",
+                      opacity: 0,
+                    }}
+                    onMouseEnter={() => setHoveredProduct(product)}
+                    onMouseLeave={() => setHoveredProduct(null)}
+                    onTouchStart={() => setHoveredProduct(product)}
+                    onTouchEnd={() => setHoveredProduct(null)}
+                  >
+                    <img onClick={(e) => handleItemClick(e, product)} src={product.image} alt={`product-${i}`} />
+                  </div>
+                );
+              });
+            })()}
           </div>
         </div>
       </div>

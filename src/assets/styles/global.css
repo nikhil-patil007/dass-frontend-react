@@ -426,6 +426,14 @@ img {
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Hidden state when footer intersects ≥20% */
+.menu-bar.menu-bar--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(10px);
 }
 
 .menu-btn {
