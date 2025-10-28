@@ -1,4 +1,5 @@
-const products = [
+// Base products list
+const baseProducts = [
     {
         "id": 1,
         "name": "Garnet Pendant",
@@ -440,5 +441,62 @@ const products = [
         "rating": 4.9
     }
 ];
+
+// Build a category -> image URL pool from the product list
+const categoryImagePool = baseProducts.reduce((acc, p) => {
+    const key = p.category;
+    if (!acc[key]) acc[key] = new Set();
+    if (p.image) acc[key].add(p.image);
+    return acc;
+}, {});
+
+// Convert sets to arrays for processing
+const categoryImageArr = Object.fromEntries(
+    Object.entries(categoryImagePool).map(([k, v]) => [k, Array.from(v)])
+);
+
+// Simple shuffle util
+function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// Ensure each product has an images[] with multiple items from the same category
+const DESIRED_IMAGES_COUNT = 4;
+
+const products = baseProducts.map((p) => {
+    const pool = (categoryImageArr[p.category] || [p.image]).slice();
+
+    // If pool is smaller than desired, repeat it to reach minimum length
+    let expandedPool = pool.slice();
+    while (expandedPool.length < DESIRED_IMAGES_COUNT) {
+        expandedPool = expandedPool.concat(pool);
+        if (expandedPool.length > 20) break; // guard just in case
+    }
+
+    const shuffled = shuffle(expandedPool);
+
+    // Keep primary image first
+    const images = [p.image];
+    // Add unique images from pool excluding primary
+    const uniqueRest = Array.from(new Set(shuffled.filter((u) => u !== p.image)));
+    for (const url of uniqueRest) {
+        if (images.length >= DESIRED_IMAGES_COUNT) break;
+        images.push(url);
+    }
+    // If still short, allow duplicates from shuffled (fallback)
+    let i = 0;
+    const fallback = shuffled.length ? shuffled : [p.image];
+    while (images.length < DESIRED_IMAGES_COUNT) {
+        images.push(fallback[i % fallback.length]);
+        i++;
+    }
+
+    return { ...p, images: images.slice(0, DESIRED_IMAGES_COUNT) };
+});
 
 export default products;

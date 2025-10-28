@@ -26,8 +26,8 @@
 
 .canvas-item {
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   transform-origin: center;
   -webkit-user-drag: none;
   user-select: none;
@@ -57,4 +57,11 @@ a {
 
 .canvas-item img:hover {
   transform: scale(1.1);
+}
+
+@media only screen and (max-width: 767px) {
+  .canvas-item {
+    width: 180px;
+    height: 180px;
+  }
 }

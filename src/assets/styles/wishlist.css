@@ -10,19 +10,13 @@
 }
 
 .wl-hero h1 {
-    /* Use Lausanne and make the title feel premium */
-    font-family: 'Lausanne', Arial, sans-serif;
-    font-size: clamp(2.25rem, 6vw, 3.75rem);
-    line-height: 0.95;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.25rem;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    letter-spacing: 0.02em;
 }
 
 .wl-hero p {
-    /* subtle, readable helper text under the headline */
-    color: rgba(0, 0, 0, 0.65);
-    margin-top: 0.35rem;
-    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    /* color: rgba(255,255,255,0.65); */
+    margin-top: 0.25rem;
 }
 
 .wl-hero.empty {
@@ -89,7 +83,7 @@
     border-radius: 8px;
     margin-bottom: 10px;
     width: 100%;
-    height: clamp(220px, 40vh, 360px);
+    height: 320px;
     background: #fff;
     overflow: hidden;
 }
@@ -109,6 +103,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    min-height: 100px;
 }
 
 .wl-info h3 {
@@ -123,6 +118,12 @@
     justify-content: space-between;
     gap: 0.8rem;
     color: rgba(0, 0, 0, 0.7);
+}
+
+.wl-meta>* {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .wl-price {
@@ -178,6 +179,12 @@
     min-height: 2.6em;
 }
 
+
+.wl-actions .wl-remove,
+.wl-actions .wl-view {
+    font-size: 1rem;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .wl-card {
@@ -188,11 +195,21 @@
 /* Responsive tweaks */
 @media (max-width: 991px) {
     .wl-thumb {
-        height: clamp(200px, 34vh, 300px);
+        height: 260px;
     }
 
     .wl-info h3 {
-        font-size: 1rem;
+        font-size: 1.8rem;
+    }
+
+    .wl-price,
+    .wl-stock {
+        font-size: 1.4rem;
+    }
+
+    .wl-actions .wl-remove,
+    .wl-actions .wl-view {
+        font-size: 1.3rem;
     }
 }
 
@@ -202,7 +219,7 @@
     }
 
     .wl-thumb {
-        height: clamp(180px, 32vh, 260px);
+        height: 220px;
     }
 
     .wl-actions {
@@ -221,7 +238,7 @@
         padding-right: 0.5rem;
     }
 
-    .wl-info h3 {
-        font-size: 0.95rem;
-    }
+    /* .wl-info h3 {
+        font-size: 1.5rem;
+    } */
 }
