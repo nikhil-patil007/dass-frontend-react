@@ -1,0 +1,41 @@
+/* These overrides load AFTER Fancybox CSS to ensure higher priority */
+
+/* Hide all toolbar buttons except close */
+.fancybox__toolbar .fancybox__button:not(.fancybox__button--close) {
+    display: none !important;
+}
+
+/* Some builds use generic f-button class; hide all except close (fallback) */
+.fancybox__toolbar .f-button:not(.fancybox__button--close):not(.is-close) {
+    display: none !important;
+}
+
+/* Make sure the counter/infobar is visible */
+.fancybox__counter,
+.fancybox__infobar {
+    display: block !important;
+}
+
+/* Keep nav arrows visible */
+.fancybox__nav .fancybox__button {
+    display: flex !important;
+}
+
+.f-carousel__toolbar__column>.f-button:not(:last-child) {
+    display: none !important;
+}
+
+.f-counter *,
+.f-counter,
+.fancybox__counter *,
+.fancybox__counter {
+    color: #fff !important;
+}
+
+.f-button {
+    background: transparent;
+}
+
+.carousel__button {
+    color: #fff !important;
+}

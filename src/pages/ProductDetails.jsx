@@ -4,7 +4,9 @@ import "@/assets/styles/detailPage.css";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 import { Fancybox } from "@fancyapps/ui";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import "@fancyapps/ui/dist/fancybox.css";
+// Load our overrides AFTER Fancybox CSS so they win
+import "@/assets/styles/fancybox-overrides.css";
 
 export default function ProductDetails({ products }) {
   const { slug } = useParams();
@@ -112,10 +114,16 @@ export default function ProductDetails({ products }) {
     Fancybox.show(
       imgs.map((src) => ({ src, type: "image" })),
       {
-        Thumbs: { autoStart: true },
+        // Fancybox v4 config: keep only counter + close; enable arrows
+        Thumbs: false,
         Toolbar: {
-          display: ["close"],
+          display: ["counter", "close"],
         },
+        Carousel: {
+          Navigation: true,
+          Dots: false,
+        },
+        animated: true,
       }
     );
   }, [product]);
@@ -132,8 +140,8 @@ export default function ProductDetails({ products }) {
           >
             <div
               className={`relative section-padding-l h100 w100 ${window.innerWidth <= 991
-                  ? "inner-flex inner-flex-small"
-                  : "row-flex inner-flex-zero"
+                ? "inner-flex inner-flex-small"
+                : "row-flex inner-flex-zero"
                 }`}
             >
               {/* Text section */}

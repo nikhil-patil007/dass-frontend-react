@@ -266,17 +266,20 @@
     object-fit: cover;
     transform: translateY(20%);
     opacity: 0;
+    z-index: 0;
     transition: transform .6s cubic-bezier(.2, .7, .2, 1), opacity .6s ease;
 }
 
 #section-5 .img-stack .stack-img.is-prev {
     transform: translateY(-10%);
     opacity: .5;
+    z-index: 1;
 }
 
 #section-5 .img-stack .stack-img.is-active {
     transform: translateY(0%);
     opacity: 1;
+    z-index: 2;
 }
 
 #section-5 .fade-in {
