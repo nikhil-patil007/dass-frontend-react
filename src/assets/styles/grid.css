@@ -5,8 +5,15 @@
   padding: 4rem;
 }
 
+/* Hide UI while grid images are loading */
+.grid-view.is-loading .page-title,
+.grid-view.is-loading .grid-wrapper {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .page-title {
-  padding: 4rem;
+  padding: 6rem 4rem;
   padding-bottom: 0;
 }
 
@@ -19,8 +26,8 @@
   /* background: white; */
   /* border-radius: 8px; */
   overflow: hidden;
-  cursor: pointer;
   transition: transform 0.2s;
+  position: relative;
 }
 
 .grid-item:hover {
@@ -34,11 +41,82 @@
   /* height: 100%; */
   width: 100%;
   min-height: 50vh;
+  position: relative;
+  /* cursor: zoom-in;  */
 }
 
 .grid-item img {
   width: 100%;
   height: auto;
+  will-change: transform;
+}
+
+/* Make image link fill container on small screens */
+.img-link {
+  display: block;
+}
+
+/* Explore button (top-right) */
+.explore-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  background: transparent;
+  color: #fff;
+  text-decoration: none;
+  padding: 0;
+  /* border-radius: 6px; */
+  overflow: hidden;
+  /* clip inner boxes to shared radius */
+  font-size: 12px;
+  line-height: 1;
+  max-width: 40%;
+  /* smaller than half the box */
+  transform: translate(0%, -40%);
+  cursor: pointer;
+  opacity: 0;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.explore-box {
+  display: inline-flex;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.explore-box.text-box {
+  padding: 12px 14px;
+}
+
+.explore-box.icon-box {
+  padding: 12px 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.explore-text {
+  color: #fff !important;
+}
+
+.grid-item:hover .explore-btn {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+
+.explore-arrow {
+  display: inline-block;
+  color: #fff !important;
+}
+
+/* At <= 991px, hide explore button and rely on image click */
+@media (max-width: 991px) {
+  .explore-btn {
+    display: none !important;
+  }
 }
 
 .info {

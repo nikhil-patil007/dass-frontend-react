@@ -63,14 +63,14 @@ export default function CanvasView({ products }) {
     const inner = surfaceRef.current.querySelector(".surface-inner");
     if (!inner) return;
 
-    gsap.set(inner, { scale: 0.6, opacity: 0, transformOrigin: "50% 50%" });
+    gsap.set(inner, { scale: 0.9, opacity: 0, transformOrigin: "50% 50%" });
 
     const tl = gsap.timeline({
       defaults: { ease: "power2.inOut" },
       onComplete: () => setDragEnabled(true),
     });
 
-    tl.to(inner, { opacity: 1, duration: 0.8 }).to(inner, { scale: 1, duration: 1.2 });
+    tl.to(inner, { opacity: 1, duration: 0.8 }).to(inner, { scale: 1, duration: 1.5 });
   }, []);
 
   // Animate items when they enter the view (only first time)
@@ -93,9 +93,9 @@ export default function CanvasView({ products }) {
                 {
                   opacity: 1,
                   scale: 1,
-                  duration: 0.5,
+                  duration: 0.8,
                   ease: "back.out(1.8)",
-                  delay: Math.random() * 0.08,
+                  delay: Math.random() * 0.8,
                 }
               );
               animatedItems.add(itemId);

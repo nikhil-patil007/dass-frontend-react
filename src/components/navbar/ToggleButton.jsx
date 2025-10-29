@@ -14,7 +14,7 @@ const ToggleButton = ({ isExperienceView }) => {
     const button = buttonRef.current;
     const allDots = dotsRef.current;
     const container = allDots[0]?.parentNode;
-    
+
     if (!container) return;
 
     // Clear existing extra dots
@@ -52,17 +52,17 @@ const ToggleButton = ({ isExperienceView }) => {
       { left: 8, top: 9 },      // center
     ];
 
-    // 3x3 grid positions
+    // 3x3 grid positions (centered in 24x24 box, dot size 4 => center offset +2)
     const gridPositions = [
-      { x: 0, y: 0 },   // 0 top-left
-      { x: 8, y: 0 },   // 1 top-center
-      { x: 16, y: 0 },  // 2 top-right
-      { x: 0, y: 8 },   // 3 middle-left (extra)
-      { x: 8, y: 8 },   // 4 center
-      { x: 16, y: 8 },  // 5 middle-right (extra)
-      { x: 0, y: 16 },  // 6 bottom-left
-      { x: 8, y: 16 },  // 7 bottom-center
-      { x: 16, y: 16 }, // 8 bottom-right
+      { x: 2, y: 2 },    // 0 top-left
+      { x: 10, y: 2 },   // 1 top-center
+      { x: 18, y: 2 },   // 2 top-right
+      { x: 2, y: 10 },   // 3 middle-left (extra)
+      { x: 10, y: 10 },  // 4 center
+      { x: 18, y: 10 },  // 5 middle-right (extra)
+      { x: 2, y: 18 },   // 6 bottom-left
+      { x: 10, y: 18 },  // 7 bottom-center
+      { x: 18, y: 18 },  // 8 bottom-right
     ];
 
     const allGridDots = [...allDots, ...extraDotsRef.current];

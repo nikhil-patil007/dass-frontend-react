@@ -317,3 +317,24 @@
         flex-direction: column;
     }
 }
+
+/* Fancybox UI overrides: keep only arrows, counter and close */
+.fancybox__toolbar .fancybox__button--zoom,
+.fancybox__toolbar .fancybox__button--slideshow,
+.fancybox__toolbar .fancybox__button--fullscreen,
+.fancybox__toolbar .fancybox__button--thumbs,
+.fancybox__toolbar .fancybox__button--download,
+.fancybox__toolbar .fancybox__button--share,
+.fancybox__toolbar .fancybox__button--settings {
+    display: none !important;
+}
+
+/* Ensure counter stays visible */
+.fancybox__counter {
+    display: block !important;
+}
+
+/* Keep nav arrows visible */
+.fancybox__nav .fancybox__button {
+    display: flex !important;
+}
