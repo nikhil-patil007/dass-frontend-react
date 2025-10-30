@@ -50,29 +50,33 @@ const About = ({ products }) => {
     const banner = bannerRef.current;
     const img = imgRef.current;
     if (!banner || !img) return;
-
     const rect = banner.getBoundingClientRect();
     const scrollProgress = rect.top / window.innerHeight;
     const parallaxY = scrollProgress * -5;
-
     img.style.transform = `translateY(${parallaxY}%)`;
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const banner = bannerRef.current;
-      const img = imgRef.current;
-      if (!banner || !img) return;
-
-      const rect = banner.getBoundingClientRect();
-      const scrollProgress = rect.top / window.innerHeight;
-      const parallaxY = scrollProgress * -5;
-
-      img.style.transform = `translateY(${parallaxY}%)`;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const banner = bannerRef.current;
+        const img = imgRef.current;
+        if (banner && img) {
+          const rect = banner.getBoundingClientRect();
+          const scrollProgress = rect.top / window.innerHeight;
+          const parallaxY = scrollProgress * -5;
+          img.style.transform = `translateY(${parallaxY}%)`;
+        }
+        ticking = false;
+      });
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    // initial position
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -89,6 +93,8 @@ const About = ({ products }) => {
             ref={imgRef}
             src="./assets/images/about_banner_5.webp"
             alt="About Banner"
+            decoding="async"
+            fetchpriority="high"
           />
         </div>
       </section>
@@ -100,6 +106,8 @@ const About = ({ products }) => {
               <img
                 src="./assets/images/about_banner_6.webp"
                 alt="About Image"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
@@ -141,7 +149,7 @@ const About = ({ products }) => {
                 />
               </div>
               <div className="mission-img">
-                <img src="./assets/images/about_banner_3.jpeg" alt="" />
+                <img src="./assets/images/about_banner_3.jpeg" alt="" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>

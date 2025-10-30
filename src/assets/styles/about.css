@@ -53,7 +53,8 @@
     object-position: bottom;
     will-change: transform;
     /* transform: translateY(0); */
-    transition: transform 0.1s linear;
+    /* Remove transition to avoid constant layout work during scroll; rAF throttles updates */
+    transition: none;
 }
 
 .sec_2_image {
@@ -428,5 +429,13 @@
 
     .sec-6 .section-title h2 {
         font-size: 3.5rem;
+    }
+}
+
+/* Performance: disable fixed background on mobile/tablet to avoid repaint jank */
+@media (max-width: 991px) {
+    .sec-4 {
+        background-attachment: scroll;
+        background-position: center;
     }
 }

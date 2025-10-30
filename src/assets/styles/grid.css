@@ -42,12 +42,16 @@
   width: 100%;
   min-height: 50vh;
   position: relative;
+  overflow: hidden;
+  /* clip scaled image so it doesn't overlap text below */
   /* cursor: zoom-in;  */
 }
 
 .grid-item img {
   width: 100%;
   height: auto;
+  display: block;
+  /* remove baseline gap to avoid unexpected overflow */
   will-change: transform;
 }
 
@@ -73,7 +77,8 @@
   /* clip inner boxes to shared radius */
   font-size: 12px;
   line-height: 1;
-  max-width: 40%;
+  /* Let content define size */
+  max-width: none;
   /* smaller than half the box */
   transform: translate(0%, -40%);
   cursor: pointer;
@@ -91,6 +96,11 @@
 
 .explore-box.text-box {
   padding: 12px 14px;
+  position: relative;
+  overflow: hidden;
+  /* hide sliding letters */
+  white-space: nowrap;
+  /* keep word on one line */
 }
 
 .explore-box.icon-box {
@@ -99,6 +109,60 @@
 }
 
 .explore-text {
+  color: #fff !important;
+}
+
+/* Split-hover letters for Explore text */
+.split-hover {
+  display: inline-grid;
+  /* allows stacking while preserving intrinsic width */
+  grid-auto-flow: row;
+  position: relative;
+  line-height: 1;
+  color: inherit;
+  overflow: hidden;
+  /* clip during transitions */
+}
+
+.split-hover .split-line {
+  grid-area: 1 / 1;
+  /* stack both lines */
+  display: inline-flex;
+}
+
+.split-hover .char {
+  display: inline-block;
+  will-change: transform;
+  color: inherit;
+}
+
+/* Top line slides up per letter */
+.split-hover .split-line--top .char {
+  transform: translateY(0%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+/* Bottom line starts below and slides in per letter */
+.split-hover .split-line--bottom .char {
+  transform: translateY(110%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+/* Trigger on button hover (scoped) */
+.explore-btn:hover .split-hover .split-line--top .char {
+  transform: translateY(-110%);
+}
+
+.explore-btn:hover .split-hover .split-line--bottom .char {
+  transform: translateY(0%);
+}
+
+/* Ensure white text color with higher specificity */
+.explore-box.text-box,
+.explore-box.text-box .split-hover,
+.explore-box.text-box .char {
   color: #fff !important;
 }
 

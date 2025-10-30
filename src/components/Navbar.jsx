@@ -13,14 +13,58 @@ export default function Navbar() {
 
   let showViewBtn = location.pathname === "/" || location.pathname === "/experience";
 
-  const toggleView = () => {
-    if (isExperienceView) {
-      navigate("/collections");
-      setIsExperienceView(false)
-    } else {
-      navigate("/");
-      setIsExperienceView(true)
+  const isTransitioningRef = useRef(false);
+
+  const animateCanvasExit = () => {
+    // Scale out each visible canvas item individually (not the whole surface)
+    const items = document.querySelectorAll(".canvas-item");
+    if (!items || items.length === 0) return Promise.resolve();
+    return new Promise((resolve) => {
+      // ensure transformOrigin center for a clean shrink
+      gsap.set(items, { transformOrigin: "50% 50%" });
+      gsap.to(items, {
+        scale: 0,
+        duration: 0.5,
+        ease: "power3.inOut",
+        onComplete: resolve,
+      });
+    });
+  };
+
+  const animateGridExit = () => {
+    const imgs = document.querySelectorAll(".grid-item img");
+    const texts = document.querySelectorAll(".grid-item .info");
+    if ((!imgs || imgs.length === 0) && (!texts || texts.length === 0)) {
+      return Promise.resolve();
     }
+    return new Promise((resolve) => {
+      const tl = gsap.timeline({ onComplete: resolve });
+      tl.to(texts, { opacity: 0, y: 20, duration: 0.35, ease: "power2.inOut" }, 0)
+        .to(imgs, { scale: 0, duration: 0.5, ease: "power3.inOut" }, 0);
+    });
+  };
+
+  const toggleView = async () => {
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
+
+    // Run exit animation for current view BEFORE route change
+    if (isExperienceView) {
+      await animateCanvasExit();
+      // Mark that grid should play an intro animation on entry
+      try { sessionStorage.setItem("gridIntro", "1"); } catch { }
+      navigate("/collections");
+      setIsExperienceView(false);
+    } else {
+      await animateGridExit();
+      navigate("/");
+      setIsExperienceView(true);
+    }
+
+    // Small safety delay to avoid accidental double clicks
+    setTimeout(() => {
+      isTransitioningRef.current = false;
+    }, 100);
   };
 
   const textContainerRef = useRef(null);

@@ -3,6 +3,7 @@ import "@/assets/styles/grid.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
+import SplitHoverText from "@/components/SplitHoverText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,9 +91,16 @@ export default function GridView({ products }) {
             ref={(el) => (itemsRef.current[i] = el)}
           >
             <div className="item-img">
-              <img src={p.image} alt={p.name} />
+              {/* On mobile/tablet, image itself is the link (overlay button is hidden via CSS) */}
+              {window.innerWidth <= 991 ? (<Link className="img-link" to={`/products/${p.slug}`} aria-label={`Open ${p.name}`}>
+                <img src={p.image} alt={p.name} />
+              </Link>) : (
+                <img src={p.image} alt={p.name} />
+              )}
               <Link className="explore-btn" to={`/products/${p.slug}`} aria-label={`Explore ${p.name}`}>
-                <span className="explore-box text-box">explore</span>
+                <span className="explore-box text-box">
+                  <SplitHoverText text="explore" />
+                </span>
                 <span className="explore-box icon-box" aria-hidden="true">
                   <svg className="explore-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 10" width="16" height="10" fill="none">
                     <path d="M1 5h14M11 9l4-4-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

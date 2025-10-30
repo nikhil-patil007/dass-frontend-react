@@ -3,14 +3,25 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <!-- Site favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DASS | Elegant & Modern Jewellery Collections</title>
+  <title>House Of DASS - Exquisite Gold & Diamond Jewellery</title>
+  <link href="/assets/images/logo.png" rel="shortcut icon">
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => console.log('[SW] registered', reg.scope))
+          .catch((err) => console.warn('[SW] registration failed', err));
+      });
+    }
+  </script>
   <script src="https://unpkg.com/split-type"></script>
 </body>
 

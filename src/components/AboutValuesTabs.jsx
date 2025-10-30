@@ -43,14 +43,14 @@ const DEFAULT_TABS = [
 ];
 
 const AUTOPLAY_DELAY = 4500; // ms
-const PROGRESS_TICK = 80; // ms for spinner progress update
 
 const AboutValuesTabs = ({ tabs = DEFAULT_TABS, delay = AUTOPLAY_DELAY }) => {
     const [index, setIndex] = useState(0);
     const [prevIndex, setPrevIndex] = useState(0);
-    const [progress, setProgress] = useState(0); // 0..1 for spinner
     const timerRef = useRef(null);
     const startedAtRef = useRef(null);
+    const rafRef = useRef(null);
+    const spinnerRef = useRef(null);
 
     const count = tabs.length;
 
@@ -65,30 +65,57 @@ const AboutValuesTabs = ({ tabs = DEFAULT_TABS, delay = AUTOPLAY_DELAY }) => {
 
     const next = () => goTo((index + 1) % count);
 
-    const resetAutoplay = () => {
+    const stopLoops = () => {
         if (timerRef.current) clearInterval(timerRef.current);
-        startedAtRef.current = Date.now();
-        setProgress(0);
-        timerRef.current = setInterval(() => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        timerRef.current = null;
+        rafRef.current = null;
+    };
+
+    const startProgressRAF = () => {
+        const tick = () => {
             const elapsed = Date.now() - startedAtRef.current;
+            const prog = Math.min(1, elapsed / delay);
+            if (spinnerRef.current) {
+                spinnerRef.current.style.setProperty("--prog", prog);
+            }
             if (elapsed >= delay) {
                 startedAtRef.current = Date.now();
-                setProgress(0);
                 // advance and capture prev index atomically
                 setIndex((prev) => {
                     const next = (prev + 1) % count;
                     setPrevIndex(prev);
                     return next;
                 });
-            } else {
-                setProgress(Math.min(1, elapsed / delay));
             }
-        }, PROGRESS_TICK);
+            rafRef.current = requestAnimationFrame(tick);
+        };
+        rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const resetAutoplay = () => {
+        stopLoops();
+        startedAtRef.current = Date.now();
+        if (spinnerRef.current) spinnerRef.current.style.setProperty("--prog", 0);
+        // Keep a coarse interval to ensure slide changes even if the tab is throttled,
+        // but drive the progress with rAF for smoothness without React re-renders
+        timerRef.current = setInterval(() => {
+            const elapsed = Date.now() - startedAtRef.current;
+            if (elapsed >= delay) {
+                startedAtRef.current = Date.now();
+                setIndex((prev) => {
+                    const next = (prev + 1) % count;
+                    setPrevIndex(prev);
+                    return next;
+                });
+            }
+        }, Math.min(1000, delay));
+        startProgressRAF();
     };
 
     useEffect(() => {
         resetAutoplay();
-        return () => timerRef.current && clearInterval(timerRef.current);
+        return () => stopLoops();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [delay, count]);
 
@@ -135,9 +162,7 @@ const AboutValuesTabs = ({ tabs = DEFAULT_TABS, delay = AUTOPLAY_DELAY }) => {
                         <div
                             className="delay-spinner"
                             title="Autoplay progress"
-                            style={{
-                                "--prog": progress,
-                            }}
+                            ref={spinnerRef}
                         />
                     </div>
                 </div>
