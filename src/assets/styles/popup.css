@@ -1,22 +1,24 @@
 .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    /* top: 0;
+    left: 0; */
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    background: #f8f8f1;
     display: flex;
     justify-content: flex-start;
+    overflow: visible;
     z-index: 9999;
+    border-right: 1px solid #000000;
+    cursor: pointer;
 }
 
 .popup-container {
-    width: 60%;
+    width: 100%;
     height: 100%;
-    background: #fff;
+    background: transparent;
     padding: 1rem;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
+    padding-top: 5rem;
     transform: translateX(-100%);
     animation: slideIn 0.4s forwards;
     display: flex;
@@ -37,10 +39,10 @@
     width: 4rem;
     position: absolute;
     top: 50%;
-    right: 0;
+    right: -3%;
     transform: translateY(-50%);
     border: solid 1px black;
-    border-right: none;
+    background: #f8f8f1;
     z-index: 11;
 }
 
@@ -62,10 +64,15 @@
 }
 
 .swiper {
-    width: 100%;
-    height: 100%;
+    width: 45%;
+    height: 70vh;
     margin: 0 auto;
     cursor: grab;
+}
+
+.swiper-slide {
+    display: flex !important;
+    align-items: center;
 }
 
 .swiper:active {
@@ -73,7 +80,8 @@
 }
 
 .product-name {
-    position: absolute;
+    position: relative;
+    font-size: 4.5rem;
 }
 
 .popup-container .swiper_image {
@@ -87,6 +95,7 @@
 
 .popup-container img {
     width: 100%;
+    height: 100%;
     border-radius: 8px;
     user-select: none;
     -moz-user-select: none;
@@ -99,6 +108,51 @@
     top: 50%;
     transform: translateY(-50%);
     width: auto;
+}
+
+/* Thumbnail swiper - positioned in left bottom corner */
+.swiper-thumbs {
+    position: absolute !important;
+    bottom: 15px;
+    left: 15px;
+    width: 80px !important;
+    height: fit-content !important;
+    max-height: 50vh !important;
+    overflow-y: hidden !important;
+}
+
+.swiper-thumbs .swiper-slide {
+    width: 80px !important;
+    height: 80px !important;
+    min-height: 80px !important;
+    padding: 4px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    border: 1px solid #00000070;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.swiper-thumbs .swiper-slide-thumb-active {
+    opacity: 1;
+    border-color: #000;
+}
+
+.swiper-thumbs .swiper_image {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.swiper-thumbs .swiper_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 
@@ -115,5 +169,167 @@
 @keyframes slideIn {
     to {
         transform: translateX(0);
+    }
+}
+
+/* Explore button (top-right) */
+.popup-overlay .explore-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    top: unset;
+    display: inline-flex;
+    align-items: stretch;
+    gap: 0;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    padding: 0;
+    /* border-radius: 6px; */
+    overflow: hidden;
+    /* clip inner boxes to shared radius */
+    font-size: 12px;
+    line-height: 1;
+    /* Let content define size */
+    max-width: none;
+    /* smaller than half the box */
+    transform: translate(0%, -40%);
+    cursor: pointer;
+    opacity: 1;
+    transition: transform .25s ease, opacity .25s ease;
+}
+
+.popup-overlay .explore-box {
+    display: inline-flex;
+    align-items: center;
+    background: #000;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.popup-overlay .explore-box.text-box {
+    padding: 12px 14px;
+    position: relative;
+    overflow: hidden;
+    /* hide sliding letters */
+    white-space: nowrap;
+    /* keep word on one line */
+}
+
+.popup-overlay .explore-box.icon-box {
+    padding: 12px 14px;
+    border-left: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.popup-overlay .explore-text {
+    color: #fff !important;
+}
+
+/* Split-hover letters for Explore text */
+.popup-overlay .split-hover {
+    display: inline-grid;
+    /* allows stacking while preserving intrinsic width */
+    grid-auto-flow: row;
+    position: relative;
+    line-height: 1;
+    color: inherit;
+    overflow: hidden;
+    /* clip during transitions */
+}
+
+.popup-overlay .split-hover .split-line {
+    grid-area: 1 / 1;
+    /* stack both lines */
+    display: inline-flex;
+}
+
+.popup-overlay .split-hover .char {
+    display: inline-block;
+    will-change: transform;
+    color: inherit;
+}
+
+/* Top line slides up per letter */
+.popup-overlay .split-hover .split-line--top .char {
+    transform: translateY(0%);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i) * 40ms);
+}
+
+/* Bottom line starts below and slides in per letter */
+.popup-overlay .split-hover .split-line--bottom .char {
+    transform: translateY(110%);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i) * 40ms);
+}
+
+/* Trigger on button hover (scoped) */
+.popup-overlay .explore-btn:hover .split-hover .split-line--top .char {
+    transform: translateY(-110%);
+}
+
+.popup-overlay .explore-btn:hover .split-hover .split-line--bottom .char {
+    transform: translateY(0%);
+}
+
+/* Ensure white text color with higher specificity */
+.popup-overlay .explore-box.text-box,
+.popup-overlay .explore-box.text-box .split-hover,
+.popup-overlay .explore-box.text-box .char {
+    color: #fff !important;
+}
+
+.popup-overlay .grid-item:hover .explore-btn {
+    transform: translate(0, 0);
+    opacity: 1;
+}
+
+.popup-overlay .explore-arrow {
+    display: inline-block;
+    color: #fff !important;
+}
+
+/* At <= 991px, hide explore button and rely on image click */
+@media (max-width: 991px) {
+    .popup-overlay .explore-btn {
+        display: inline-flex !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .popup-overlay {
+        width: 100vw;
+    }
+
+    .popup-container {
+        width: 100%;
+    }
+
+
+    .popup-close {
+        right: 0;
+    }
+
+    .swiper {
+        width: 80%;
+    }
+
+    .swiper-slide {
+        align-items: start;
+    }
+
+    .swiper-thumbs {
+        max-height: 35vh !important;
+        width: 60px !important;
+    }
+
+    .swiper-thumbs .swiper-slide {
+        width: 60px !important;
+        height: 60px !important;
+        min-height: 60px !important;
+    }
+
+    .swiper-thumbs .swiper-wrapper {
+        justify-content: start;
     }
 }

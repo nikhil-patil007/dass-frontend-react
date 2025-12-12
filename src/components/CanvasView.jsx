@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "../assets/styles/canvas.css";
 import { useNavigate } from "react-router-dom";
+import ProductPopup from "./ProductPopup";
 
 export default function CanvasView({ products }) {
   const wrapperRef = useRef(null);
@@ -12,7 +13,13 @@ export default function CanvasView({ products }) {
   const navigate = useNavigate();
   const [pointerStart, setPointerStart] = useState({ x: 0, y: 0 });
 
-  const [drag, setDrag] = useState({ active: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  const [drag, setDrag] = useState({
+    active: false,
+    x: 0,
+    y: 0,
+    offsetX: 0,
+    offsetY: 0,
+  });
   const [gridSize, setGridSize] = useState({ width: 0, height: 0 });
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [dragEnabled, setDragEnabled] = useState(false);
@@ -24,7 +31,7 @@ export default function CanvasView({ products }) {
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
     const imgSize = isMobile ? 180 : 250; // match render sizing
-    const gap = isMobile ? 40 : 70; // match render gap
+    const gap = isMobile ? 40 : 100; // match render gap
     const cols = 8; // simple grid with 8 columns
     const rows = Math.ceil((products?.length || 0) / cols) || 1;
     const step = imgSize + gap;
@@ -56,65 +63,50 @@ export default function CanvasView({ products }) {
       y: (window.innerHeight - height) / 2,
     }));
   }, [products]);
-  // Zoom animation from center
+  // Sequence: item pop first, then surface zoom
   useEffect(() => {
     if (!surfaceRef.current) return;
-
     const inner = surfaceRef.current.querySelector(".surface-inner");
     if (!inner) return;
 
-    gsap.set(inner, { scale: 0.9, opacity: 0, transformOrigin: "50% 50%" });
+    gsap.set(inner, { scale: 0.9, opacity: 1, transformOrigin: "50% 50%" });
+    // Wait for items to pop before zooming surface
+    let itemsPopped = 0;
+    const totalItems = itemRefs.current.filter(Boolean).length;
+    if (totalItems === 0) return;
 
-    const tl = gsap.timeline({
-      defaults: { ease: "power2.inOut" },
-      onComplete: () => setDragEnabled(true),
-    });
+    // Helper to run surface zoom after all items pop
+    const runSurfaceZoom = () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.inOut" },
+        onComplete: () => setDragEnabled(true),
+      });
+      tl.to(inner, { scale: 1, duration: 1.5 });
+    };
 
-    tl.to(inner, { opacity: 1, duration: 0.8 }).to(inner, { scale: 1, duration: 1.5 });
-  }, []);
-
-  // Animate items when they enter the view (only first time)
-  useEffect(() => {
-    if (!wrapperRef.current || !surfaceRef.current) return;
-
-    const animatedItems = new Set();
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const el = entry.target;
-          const itemId = el.dataset.itemId;
-
-          if (entry.isIntersecting) {
-            if (!animatedItems.has(itemId)) {
-              gsap.fromTo(
-                el,
-                { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" },
-                {
-                  opacity: 1,
-                  scale: 1,
-                  duration: 0.8,
-                  ease: "back.out(1.8)",
-                  delay: Math.random() * 0.8,
-                }
-              );
-              animatedItems.add(itemId);
-            } else {
-              gsap.set(el, { opacity: 1, scale: 1 });
-            }
-          } else {
-            if (!animatedItems.has(itemId)) {
-              gsap.set(el, { opacity: 0, scale: 0.6 });
-            }
+    // Animate all items in parallel, then zoom surface
+    itemRefs.current.forEach((el, i) => {
+      if (el) {
+        gsap.fromTo(
+          el,
+          { scale: 0, opacity: 1, transformOrigin: "50% 50%" },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.7,
+            ease: "back.out(1.8)",
+            delay: i * 0.05,
+            onComplete: () => {
+              itemsPopped++;
+              if (itemsPopped === totalItems) runSurfaceZoom();
+            },
           }
-        });
-      },
-      { root: wrapperRef.current, threshold: 0.2 }
-    );
-
-    itemRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+        );
+      }
+    });
   }, [products]);
+
+  // Remove IntersectionObserver pop logic (handled above)
 
   // Scroll wheel support
   useEffect(() => {
@@ -169,7 +161,11 @@ export default function CanvasView({ products }) {
               duration: 0.5,
               ease: "power2.out",
               onUpdate: () => {
-                setDrag((current) => ({ ...current, x: dragObj.x, y: dragObj.y }));
+                setDrag((current) => ({
+                  ...current,
+                  x: dragObj.x,
+                  y: dragObj.y,
+                }));
               },
             });
           }
@@ -256,7 +252,7 @@ export default function CanvasView({ products }) {
       overwrite: true,
       onUpdate: () => {
         setDrag((prev) => ({ ...prev, x: drag.x, y: drag.y }));
-      }
+      },
     });
   };
 
@@ -301,74 +297,138 @@ export default function CanvasView({ products }) {
     navigate(`/products/${product}`);
   };
 
+  const [popup, setPopup] = useState(false);
+  const [popupData, setPopupData] = useState(null);
+  const popupContainerRef = useRef(null);
+  const popupRef = useRef(null);
+
   const handleItemClick = (e, product) => {
     const { x, y } = getClientPos(e);
     const dx = Math.abs(x - pointerStart.x);
     const dy = Math.abs(y - pointerStart.y);
 
     if (dx < 5 && dy < 5) {
-      openDetail(product.slug);
+      setPopup(true);
+      setPopupData(product);
+      // Mark body as popup open to control global UI visibility
+      try {
+        document.body.classList.add("popup-open");
+      } catch {}
+      // Animate popup container width from 0% to 60%
+      setTimeout(() => {
+        if (popupContainerRef.current) {
+          gsap.to(popupContainerRef.current, {
+            width: "60%",
+            duration: 0.8,
+            ease: "power3.out",
+          });
+        }
+      }, 0);
+    }
+  };
+
+  const onClose = () => {
+    // Animate popup container width from 60% to 0%
+    if (popupContainerRef.current) {
+      gsap.to(popupContainerRef.current, {
+        width: "0%",
+        duration: 0.8,
+        ease: "power3.out",
+        onComplete: () => {
+          setPopup(false);
+          setPopupData(null);
+          // Remove body marker class when popup fully closed
+          try {
+            document.body.classList.remove("popup-open");
+          } catch {}
+        },
+      });
     }
   };
 
   return (
     <>
       <div
-        ref={wrapperRef}
-        className="canvas-wrapper"
-        onMouseDown={startDrag}
-        onMouseMove={moveDrag}
-        onMouseUp={endDrag}
-        onMouseLeave={endDrag}
-        onTouchStart={startDrag}
-        onTouchMove={moveDrag}
-        onTouchEnd={endDrag}
+        className="row-flex inner-flex-zero"
+        onClick={() => {
+          if (popup && popupData && popupRef.current?.closeWithAnimation) {
+            popupRef.current.closeWithAnimation();
+          }
+        }}
       >
         <div
-          ref={surfaceRef}
-          className="canvas-surface"
-          style={{
-            width: gridSize.width,
-            height: gridSize.height,
-            transform: `translate(${drag.x}px, ${drag.y}px)`,
-          }}
+          ref={popupContainerRef}
+          style={{ width: "0%", transition: "none" }}
         >
-          <div className="surface-inner" style={{ width: "100%", height: "100%" }}>
-            {(() => {
-              const cols = 8;
-              const rows = Math.ceil((products?.length || 0) / cols) || 1;
-              const totalCells = cols * rows;
-              const renderProducts = Array.from({ length: totalCells }, (_, i) =>
-                products[i % products.length]
-              );
-              return renderProducts.map((product, i) => {
-                const coords = positions[i] || { x: 0, y: 0 };
-                return (
-                  <div
-                    key={i}
-                    ref={(el) => (itemRefs.current[i] = el)}
-                    data-item-id={i}
-                    className="canvas-item"
-                    style={{
-                      left: coords.x,
-                      top: coords.y,
-                      transform: "rotate(45deg) scale(0)",
-                      opacity: 0,
-                    }}
-                    onMouseEnter={() => setHoveredProduct(product)}
-                    onMouseLeave={() => setHoveredProduct(null)}
-                    onTouchStart={() => setHoveredProduct(product)}
-                    onTouchEnd={() => setHoveredProduct(null)}
-                  >
-                    <img onClick={(e) => handleItemClick(e, product)} src={product.image} alt={`product-${i}`} />
-                  </div>
+          <ProductPopup product={popupData} onClose={onClose} ref={popupRef} />
+        </div>
+
+        <div
+          ref={wrapperRef}
+          className="canvas-wrapper"
+          onMouseDown={startDrag}
+          onMouseMove={moveDrag}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          onTouchStart={startDrag}
+          onTouchMove={moveDrag}
+          onTouchEnd={endDrag}
+          style={
+            popup && popupData ? { width: "40%", pointerEvents: "none" } : {}
+          }
+        >
+          <div
+            ref={surfaceRef}
+            className="canvas-surface"
+            style={{
+              width: gridSize.width,
+              height: gridSize.height,
+              transform: `translate(${drag.x}px, ${drag.y}px)`,
+            }}
+          >
+            <div
+              className="surface-inner"
+              style={{ width: "100%", height: "100%" }}
+            >
+              {(() => {
+                const cols = 8;
+                const rows = Math.ceil((products?.length || 0) / cols) || 1;
+                const totalCells = cols * rows;
+                const renderProducts = Array.from(
+                  { length: totalCells },
+                  (_, i) => products[i % products.length]
                 );
-              });
-            })()}
+                return renderProducts.map((product, i) => {
+                  const coords = positions[i] || { x: 0, y: 0 };
+                  return (
+                    <div
+                      key={i}
+                      ref={(el) => (itemRefs.current[i] = el)}
+                      data-item-id={i}
+                      className="canvas-item"
+                      style={{
+                        left: coords.x,
+                        top: coords.y,
+                        transform: "rotate(45deg) scale(0)",
+                      }}
+                      onMouseEnter={() => setHoveredProduct(product)}
+                      onMouseLeave={() => setHoveredProduct(null)}
+                      onTouchStart={() => setHoveredProduct(product)}
+                      onTouchEnd={() => setHoveredProduct(null)}
+                    >
+                      <img
+                        onClick={(e) => handleItemClick(e, product)}
+                        src={product.image}
+                        alt={`product-${i}`}
+                      />
+                    </div>
+                  );
+                });
+              })()}
+            </div>
           </div>
         </div>
       </div>
-
       {hoveredProduct && window.innerWidth >= 768 && (
         <div
           ref={floatNameRef}

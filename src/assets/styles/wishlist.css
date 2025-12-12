@@ -17,6 +17,7 @@
 .wl-hero p {
     /* color: rgba(255,255,255,0.65); */
     margin-top: 0.25rem;
+    font-size: 1.4rem;
 }
 
 .wl-hero.empty {
@@ -30,6 +31,7 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.6rem 1rem;
+    font-size: 2.3rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 999px;
     text-decoration: none;
@@ -107,7 +109,7 @@
 }
 
 .wl-info h3 {
-    font-size: 1.05rem;
+    font-size: 1.4rem;
     font-weight: 600;
     letter-spacing: 0.02em;
 }
@@ -128,6 +130,7 @@
 
 .wl-price {
     font-weight: 600;
+    font-size: 1.2rem;
 }
 
 .wl-stock.in {

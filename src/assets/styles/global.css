@@ -12,6 +12,21 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'kenao';
+  src: url('../fonts/kenao/kenao.woff2') format('woff2'),
+    url('../fonts/kenao/kenao.woff') format('woff');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'open-sauce';
+  src: url('../fonts/open-sauce/OpenSauceOne-Regular.woff2') format('woff2'),
+    url('../fonts/open-sauce/OpenSauceOne-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 .main-container {
   width: 95%;
@@ -23,12 +38,12 @@
   margin: 0 auto;
 }
 
-html,
-body {
-  /* font-family: 'Lausanne'; */
-  font-family: 'Inter', sans-serif;
+/* html,
+body { */
+/* font-family: 'Lausanne'; */
+/* font-family: 'Inter', sans-serif; */
 
-}
+/* } */
 
 a {
   text-decoration: none;
@@ -170,9 +185,15 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: TWK Lausanne, Arial, sans-serif;
+  font-family: 'kenao', TWK Lausanne, Arial, sans-serif;
   font-weight: 400;
   color: var(--primary-color);
+}
+
+h1,
+h2,
+span.explore-box span {
+  font-family: 'open-sauce', Arial, sans-serif;
 }
 
 * {
@@ -333,6 +354,10 @@ img {
   text-align: left;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -425,8 +450,13 @@ img {
   bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: 9997;
   transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Smoothly animate compact/expanded spacing in the menu bar */
+.menu-bar__group {
+  transition: gap 0.6s ease;
 }
 
 /* Hidden state when footer intersects ≥20% */
@@ -442,6 +472,11 @@ img {
   border-radius: 5px;
   background-color: #000000;
   transition: all 0.6s ease;
+}
+
+.filter-btn.menu-btn {
+  background-color: #ffffff;
+  border: solid 1px #00000098;
 }
 
 .menu-btn.open {
@@ -462,8 +497,66 @@ img {
   transition: all 0.3s ease-in-out;
 }
 
+.filter-btn.menu-btn_burger span {
+  background-color: #00000098;
+}
+
+/* Increase spacing for filter icon lines (dots visibility) */
+.filter-btn.menu-btn_burger span:nth-child(1) {
+  top: 8px;
+}
+
+.filter-btn.menu-btn_burger span:nth-child(2) {
+  top: 50%;
+}
+
+.filter-btn.menu-btn_burger span:nth-child(3) {
+  bottom: 8px;
+}
+
+/* Filter icon: sliders (line + dot) */
+.filter-btn.menu-btn_burger span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background-color: #00000098;
+  transition: transform 0.25s ease, opacity 0.3s ease-in-out;
+}
+
+/* Dot positions per line */
+.filter-btn.menu-btn_burger span:nth-child(1)::after {
+  left: 2px;
+}
+
+.filter-btn.menu-btn_burger span:nth-child(2)::after {
+  left: 10px;
+}
+
+.filter-btn.menu-btn_burger span:nth-child(3)::after {
+  left: 2px;
+}
+
+/* Hover: top/bottom dots slide right, middle dot slides left */
+.filter-btn.menu-btn:hover .filter-btn.menu-btn_burger span:nth-child(1)::after,
+.filter-btn.menu-btn:hover .filter-btn.menu-btn_burger span:nth-child(3)::after {
+  transform: translateY(-50%) translateX(8px);
+}
+
+.filter-btn.menu-btn:hover .filter-btn.menu-btn_burger span:nth-child(2)::after {
+  transform: translateY(-50%) translateX(-8px);
+}
+
+/* When filter is open (X state), hide slider dots */
+.filter-btn.menu-btn_burger.open span::after {
+  opacity: 0;
+}
+
 .menu-btn_burger span:nth-child(1) {
-  top: 12px;
+  top: 11.5px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -475,7 +568,7 @@ img {
 }
 
 .menu-btn_burger span:nth-child(3) {
-  bottom: 12px;
+  bottom: 11.5px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -542,6 +635,13 @@ img {
   /* transition-delay: 1s; */
 }
 
+.filter.menu ul li {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #00000098;
+  /* transition-delay: 1s; */
+}
+
 .menu.open ul li:hover {
   transform: translateY(-10%) !important;
 }
@@ -589,6 +689,10 @@ img {
   vertical-align: middle;
 }
 
+.filter.menu ul li a.active_page::before {
+  color: #000000;
+}
+
 .menu-close ul li {
   padding: 0 10px;
   background-color: #000000;
@@ -599,6 +703,12 @@ img {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.filter-close.menu-close ul li {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #00000098;
 }
 
 @media only screen and (max-width: 1680px) {
@@ -710,4 +820,15 @@ img {
 
 *::-webkit-scrollbar {
   display: none;
+}
+
+.st0,
+.st1 {
+  fill: #cd5909;
+}
+
+.st1 {
+  stroke: #cd5909;
+  stroke-miterlimit: 10;
+  stroke-width: 3px;
 }

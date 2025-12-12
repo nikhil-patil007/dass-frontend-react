@@ -466,7 +466,7 @@ function shuffle(arr) {
 }
 
 // Ensure each product has an images[] with multiple items from the same category
-const DESIRED_IMAGES_COUNT = 4;
+const DESIRED_IMAGES_COUNT = 6;
 
 const products = baseProducts.map((p) => {
     const pool = (categoryImageArr[p.category] || [p.image]).slice();

@@ -191,6 +191,21 @@
     font-size: 14px;
 }
 
+.ft-bottom2 {
+    margin-top: 5px;
+    font-size: 11px;
+}
+
+.ft-bottom2 *,
+.ft-bottom span {
+    font-family: 'open-sauce' !important;
+}
+
+.ft-links a,
+.ft-contact * {
+    font-size: 1.2rem;
+}
+
 .ft-bottom> :first-child {
     justify-self: start;
 }

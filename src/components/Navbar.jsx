@@ -9,9 +9,12 @@ export default function Navbar() {
   const { count } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
-  const [isExperienceView, setIsExperienceView] = useState(location.pathname === "/" || location.pathname === "/experience")
+  const [isExperienceView, setIsExperienceView] = useState(
+    location.pathname === "/" || location.pathname === "/experience"
+  );
 
-  let showViewBtn = location.pathname === "/" || location.pathname === "/experience";
+  let showViewBtn =
+    location.pathname === "/" || location.pathname === "/experience";
 
   const isTransitioningRef = useRef(false);
 
@@ -39,8 +42,11 @@ export default function Navbar() {
     }
     return new Promise((resolve) => {
       const tl = gsap.timeline({ onComplete: resolve });
-      tl.to(texts, { opacity: 0, y: 20, duration: 0.35, ease: "power2.inOut" }, 0)
-        .to(imgs, { scale: 0, duration: 0.5, ease: "power3.inOut" }, 0);
+      tl.to(
+        texts,
+        { opacity: 0, y: 20, duration: 0.35, ease: "power2.inOut" },
+        0
+      ).to(imgs, { scale: 0, duration: 0.5, ease: "power3.inOut" }, 0);
     });
   };
 
@@ -52,7 +58,9 @@ export default function Navbar() {
     if (isExperienceView) {
       await animateCanvasExit();
       // Mark that grid should play an intro animation on entry
-      try { sessionStorage.setItem("gridIntro", "1"); } catch { }
+      try {
+        sessionStorage.setItem("gridIntro", "1");
+      } catch {}
       navigate("/collections");
       setIsExperienceView(false);
     } else {
@@ -85,8 +93,10 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setIsExperienceView(location.pathname === "/" || location.pathname === "/experience")
-  }, [location])
+    setIsExperienceView(
+      location.pathname === "/" || location.pathname === "/experience"
+    );
+  }, [location]);
 
   const handleMouseEnter = () => tl.current?.play();
   const handleMouseLeave = () => tl.current?.reverse();
@@ -94,7 +104,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div >
+        <div className="logo-wrapper">
           <Link
             to="/"
             style={{
@@ -104,15 +114,25 @@ export default function Navbar() {
               textDecoration: "none",
             }}
           >
-            <span className="logo cp" style={{ lineHeight: 1 }}>HOUSE OF</span>
-            <span className="logo cp" style={{ lineHeight: 1, marginTop: 2 }}>DASS</span>
+            <span className="logo cp" style={{ lineHeight: 1 }}>
+              HOUSE OF
+            </span>
+            <span className="logo cp" style={{ lineHeight: 1, marginTop: 2 }}>
+              DASS
+            </span>
           </Link>
         </div>
 
         <div className="nav-cart-link">
           <Link to="/cart" className="nav-cart-inner">
             <span className="nav-cart-text">Cart</span>
-            <svg className="nav-cart-icon" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="nav-cart-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path d="M6 6h14l-1.5 9h-11z" fill="currentColor" />
               <circle cx="9" cy="19" r="1.5" fill="currentColor" />
               <circle cx="17" cy="19" r="1.5" fill="currentColor" />
@@ -120,13 +140,17 @@ export default function Navbar() {
             {count > 0 && <span className="nav-cart-badge">{count}</span>}
           </Link>
         </div>
-
       </nav>
-      {(location.pathname === "/" || location.pathname === "/collections") &&
-        <div className="toggle-center-wrapper" onClick={() => { toggleView() }} >
+      {(location.pathname === "/" || location.pathname === "/collections") && (
+        <div
+          className="toggle-center-wrapper"
+          onClick={() => {
+            toggleView();
+          }}
+        >
           <ToggleButton isExperienceView={isExperienceView}></ToggleButton>
         </div>
-      }
+      )}
     </>
   );
 }

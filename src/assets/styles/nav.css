@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   background: transparent;
-  z-index: 100;
+  z-index: 99999;
   box-sizing: border-box;
   mix-blend-mode: difference;
   /* pointer-events: none; */
@@ -19,12 +19,21 @@
   box-sizing: border-box;
 }
 
+.logo-wrapper {
+  position: relative;
+  z-index: 999;
+  /* lifts above blended parent */
+  mix-blend-mode: normal !important;
+  isolation: isolate;
+}
+
 .logo {
   font-size: 1.4rem;
   font-weight: 500;
   text-transform: uppercase;
-  color: white;
-  mix-blend-mode: difference;
+  color: #ffffff;
+  background: #000000;
+  isolation: isolate;
   white-space: nowrap;
   user-select: none;
   pointer-events: auto;
@@ -80,6 +89,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-family: 'open-sauce' !important;
+}
+
+.toggle-text-container-box span {
+  font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {
@@ -94,7 +108,12 @@
   top: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 101;
+  z-index: 99999;
+}
+
+/* Hide toggle when product popup is open */
+.popup-open .toggle-center-wrapper {
+  z-index: 101 !important;
 }
 
 /* Responsive styles for tablets and below */
@@ -141,6 +160,21 @@
 
   .logo {
     font-size: 1.3rem;
+  }
+
+  .filter-close.menu-close ul li a,
+  .menu-close ul li a {
+    font-size: 1.6rem;
+  }
+
+  .filter.menu ul li a,
+  .menu ul li a {
+    font-size: 1.4rem;
+  }
+
+  .menu-bar {
+    flex-wrap: wrap-reverse;
+    width: 100vw;
   }
 }
 

@@ -149,7 +149,12 @@ const About = ({ products }) => {
                 />
               </div>
               <div className="mission-img">
-                <img src="./assets/images/about_banner_3.jpeg" alt="" loading="lazy" decoding="async" />
+                <img
+                  src="./assets/images/about_banner_3.jpeg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
           </div>
