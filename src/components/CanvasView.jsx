@@ -302,6 +302,27 @@ export default function CanvasView({ products }) {
   const popupContainerRef = useRef(null);
   const popupRef = useRef(null);
 
+  const animatePopupLayout = ({ open }) => {
+    const popupEl = popupContainerRef.current;
+    const canvasEl = wrapperRef.current;
+
+    if (!popupEl || !canvasEl) return;
+
+    gsap.killTweensOf([popupEl, canvasEl]);
+
+    const duration = 0.8;
+    const ease = "power3.out";
+
+    if (open) {
+      gsap.to(popupEl, { width: "60%", duration, ease });
+      gsap.to(canvasEl, { width: "40%", duration, ease });
+    } else {
+      // Expand canvas immediately while popup collapses to avoid white gap.
+      gsap.to(canvasEl, { width: "100%", duration, ease });
+      gsap.to(popupEl, { width: "0%", duration, ease });
+    }
+  };
+
   const handleItemClick = (e, product) => {
     const { x, y } = getClientPos(e);
     const dx = Math.abs(x - pointerStart.x);
@@ -314,42 +335,44 @@ export default function CanvasView({ products }) {
       try {
         document.body.classList.add("popup-open");
       } catch {}
-      // Animate popup container width from 0% to 60%
-      setTimeout(() => {
-        if (popupContainerRef.current) {
-          gsap.to(popupContainerRef.current, {
-            width: "60%",
-            duration: 0.8,
-            ease: "power3.out",
-          });
-        }
-      }, 0);
+
+      // Animate popup + canvas together (next frame ensures refs/styles are ready)
+      requestAnimationFrame(() => {
+        animatePopupLayout({ open: true });
+      });
     }
   };
 
   const onClose = () => {
-    // Animate popup container width from 60% to 0%
-    if (popupContainerRef.current) {
-      gsap.to(popupContainerRef.current, {
-        width: "0%",
-        duration: 0.8,
-        ease: "power3.out",
-        onComplete: () => {
-          setPopup(false);
-          setPopupData(null);
-          // Remove body marker class when popup fully closed
-          try {
-            document.body.classList.remove("popup-open");
-          } catch {}
-        },
-      });
+    const popupEl = popupContainerRef.current;
+    const canvasEl = wrapperRef.current;
+
+    if (!popupEl || !canvasEl) {
+      setPopup(false);
+      setPopupData(null);
+      try {
+        document.body.classList.remove("popup-open");
+      } catch {}
+      return;
     }
+
+    // Expand canvas while popup collapses to prevent blank right side.
+    animatePopupLayout({ open: false });
+
+    // Only clear state after the collapse animation finishes.
+    gsap.delayedCall(0.8, () => {
+      setPopup(false);
+      setPopupData(null);
+      try {
+        document.body.classList.remove("popup-open");
+      } catch {}
+    });
   };
 
   return (
     <>
       <div
-        className="row-flex inner-flex-zero"
+        className="canvas-view-shell row-flex inner-flex-zero"
         onClick={() => {
           if (popup && popupData && popupRef.current?.closeWithAnimation) {
             popupRef.current.closeWithAnimation();
@@ -358,6 +381,7 @@ export default function CanvasView({ products }) {
       >
         <div
           ref={popupContainerRef}
+          className="canvas-popup-slot"
           style={{ width: "0%", transition: "none" }}
         >
           <ProductPopup product={popupData} onClose={onClose} ref={popupRef} />
@@ -373,9 +397,7 @@ export default function CanvasView({ products }) {
           onTouchStart={startDrag}
           onTouchMove={moveDrag}
           onTouchEnd={endDrag}
-          style={
-            popup && popupData ? { width: "40%", pointerEvents: "none" } : {}
-          }
+          style={popup && popupData ? { pointerEvents: "none" } : {}}
         >
           <div
             ref={surfaceRef}
