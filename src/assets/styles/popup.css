@@ -4,13 +4,12 @@
     left: 0; */
     width: 100%;
     height: 100vh;
-    background: #f8f8f1;
+    background-color: var(--ivery-color);
     display: flex;
     justify-content: flex-start;
     overflow: visible;
     z-index: 9999;
-    border-right: 1px solid #000000;
-    cursor: pointer;
+    border-right: 1px solid var(--orange-color);
 }
 
 .popup-container {
@@ -18,7 +17,7 @@
     height: 100%;
     background: transparent;
     padding: 1rem;
-    padding-top: 5rem;
+    padding-top: 7.5rem;
     transform: translateX(-100%);
     animation: slideIn 0.4s forwards;
     display: flex;
@@ -41,15 +40,15 @@
     top: 50%;
     right: -3%;
     transform: translateY(-50%);
-    border: solid 1px black;
-    background: #f8f8f1;
+    border: solid 1px var(--orange-color);
+    background: var(--ivery-color);
     z-index: 11;
 }
 
 .popup-close span {
     width: 25px;
     height: 2px;
-    background-color: black;
+    background-color: var(--orange-color);
     position: absolute;
     top: 50%;
     transition: all 0.6s ease;
@@ -64,8 +63,8 @@
 }
 
 .swiper {
-    width: 45%;
-    height: 70vh;
+    width: 40%;
+    height: 60vh;
     margin: 0 auto;
     cursor: grab;
 }
@@ -129,7 +128,7 @@
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.3s ease;
-    border: 1px solid #00000070;
+    border: 1px solid var(--orange-color-light);
     border-radius: 8px;
     box-sizing: border-box;
     overflow: hidden;
@@ -138,7 +137,7 @@
 
 .swiper-thumbs .swiper-slide-thumb-active {
     opacity: 1;
-    border-color: #000;
+    border-color: var(--orange-color);
 }
 
 .swiper-thumbs .swiper_image {
@@ -181,7 +180,7 @@
     display: inline-flex;
     align-items: stretch;
     gap: 0;
-    background: #000;
+    background: transparent;
     color: #fff;
     text-decoration: none;
     padding: 0;
@@ -202,9 +201,9 @@
 .popup-overlay .explore-box {
     display: inline-flex;
     align-items: center;
-    background: #000;
+    background: var(--orange-color);
     color: #fff;
-    border-radius: 3px;
+    border-radius: 25px;
 }
 
 .popup-overlay .explore-box.text-box {
@@ -214,11 +213,15 @@
     /* hide sliding letters */
     white-space: nowrap;
     /* keep word on one line */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .popup-overlay .explore-box.icon-box {
     padding: 12px 14px;
     border-left: 1px solid rgba(255, 255, 255, 0.25);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .popup-overlay .explore-text {

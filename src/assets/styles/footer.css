@@ -1,6 +1,6 @@
 /* Base */
 .site-footer {
-    background: #f7f8f2;
+    background: var(--ivery-color);
     /* soft off-white like the reference */
     color: #0a0a0a;
     padding: 56px 24px 28px;
@@ -52,10 +52,13 @@
     text-align: left;
 }
 
+.ft-newsletter * {
+    color: #ffffff;
+}
+
 .ft-newsletter {
     margin-top: 28px;
-    background: #1f1f1e;
-    color: #ffffff;
+    background: var(--orange-color);
     border-radius: 10px;
     padding: 22px 20px 18px;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08) inset;
@@ -79,7 +82,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    border-bottom: 1px solid var(--white-color);
     padding-bottom: 12px;
 }
 
@@ -169,14 +172,15 @@
     height: 46px;
     display: inline-grid;
     place-items: center;
-    border: 1px solid #0a0a0a;
+    border: 1px solid var(--orange-color);
     border-radius: 8px;
-    color: #0a0a0a;
+    color: var(--orange-color) !important;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .ft-social-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 /* Bottom bar */
@@ -187,7 +191,7 @@
     gap: 16px;
     margin-top: 36px;
     padding-top: 16px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--orange-color-light);
     font-size: 14px;
 }
 

@@ -4,8 +4,8 @@ import "@/assets/styles/nav.css";
 
 const ToggleButton = ({ isExperienceView }) => {
   const buttonRef = useRef(null);
-  const dotsRef = useRef([]);       // 7 original hexagon dots
-  const extraDotsRef = useRef([]);  // 2 extra dots for grid
+  const dotsRef = useRef([]); // 7 original hexagon dots
+  const extraDotsRef = useRef([]); // 2 extra dots for grid
   const textRef = useRef(null);
   const altTextRef = useRef(null);
   const tl = useRef(null);
@@ -18,7 +18,7 @@ const ToggleButton = ({ isExperienceView }) => {
     if (!container) return;
 
     // Clear existing extra dots
-    extraDotsRef.current.forEach(el => el?.remove());
+    extraDotsRef.current.forEach((el) => el?.remove());
     extraDotsRef.current = [];
 
     // Create 2 extra dots for grid (middle-left & middle-right)
@@ -28,7 +28,7 @@ const ToggleButton = ({ isExperienceView }) => {
         position: "absolute",
         width: "4px",
         height: "4px",
-        background: "#222",
+        background: "var(--white-color)",
         borderRadius: "50%",
         opacity: "0",
         transform: "scale(0)",
@@ -43,26 +43,26 @@ const ToggleButton = ({ isExperienceView }) => {
 
     // Hexagon positions (7 dots)
     const hexPositions = [
-      { left: 8, top: 0 },      // top
-      { left: 14.93, top: 4 },  // top-right
+      { left: 8, top: 0 }, // top
+      { left: 14.93, top: 4 }, // top-right
       { left: 14.93, top: 14 }, // bottom-right
-      { left: 8, top: 18 },     // bottom
-      { left: 1.07, top: 14 },  // bottom-left
-      { left: 1.07, top: 4 },   // top-left
-      { left: 8, top: 9 },      // center
+      { left: 8, top: 18 }, // bottom
+      { left: 1.07, top: 14 }, // bottom-left
+      { left: 1.07, top: 4 }, // top-left
+      { left: 8, top: 9 }, // center
     ];
 
     // 3x3 grid positions (centered in 24x24 box, dot size 4 => center offset +2)
     const gridPositions = [
-      { x: 2, y: 2 },    // 0 top-left
-      { x: 10, y: 2 },   // 1 top-center
-      { x: 18, y: 2 },   // 2 top-right
-      { x: 2, y: 10 },   // 3 middle-left (extra)
-      { x: 10, y: 10 },  // 4 center
-      { x: 18, y: 10 },  // 5 middle-right (extra)
-      { x: 2, y: 18 },   // 6 bottom-left
-      { x: 10, y: 18 },  // 7 bottom-center
-      { x: 18, y: 18 },  // 8 bottom-right
+      { x: 2, y: 2 }, // 0 top-left
+      { x: 10, y: 2 }, // 1 top-center
+      { x: 18, y: 2 }, // 2 top-right
+      { x: 2, y: 10 }, // 3 middle-left (extra)
+      { x: 10, y: 10 }, // 4 center
+      { x: 18, y: 10 }, // 5 middle-right (extra)
+      { x: 2, y: 18 }, // 6 bottom-left
+      { x: 10, y: 18 }, // 7 bottom-center
+      { x: 18, y: 18 }, // 8 bottom-right
     ];
 
     const allGridDots = [...allDots, ...extraDotsRef.current];
@@ -80,7 +80,9 @@ const ToggleButton = ({ isExperienceView }) => {
         });
       });
       // hide extra dots
-      extraDotsRef.current.forEach(el => gsap.set(el, { scale: 0, opacity: 0 }));
+      extraDotsRef.current.forEach((el) =>
+        gsap.set(el, { scale: 0, opacity: 0 })
+      );
     } else {
       // Show grid (9 dots)
       allGridDots.forEach((dot, i) => {
@@ -106,45 +108,76 @@ const ToggleButton = ({ isExperienceView }) => {
       // Animate hexagon → grid (7 dots → 9 dots)
       allGridDots.forEach((dot, i) => {
         if (!dot) return;
-        tl.current.to(dot, {
-          left: `${gridPositions[i].x}px`,
-          top: `${gridPositions[i].y}px`,
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: "power2.out",
-        }, 0);
+        tl.current.to(
+          dot,
+          {
+            left: `${gridPositions[i].x}px`,
+            top: `${gridPositions[i].y}px`,
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          0
+        );
       });
     } else {
       // Animate grid → hexagon (9 dots → 7 dots)
       allDots.forEach((dot, i) => {
         if (!dot) return;
-        tl.current.to(dot, {
-          left: `${hexPositions[i].left}px`,
-          top: `${hexPositions[i].top}px`,
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: "power2.out",
-        }, 0);
+        tl.current.to(
+          dot,
+          {
+            left: `${hexPositions[i].left}px`,
+            top: `${hexPositions[i].top}px`,
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          0
+        );
       });
       // Hide extra dots
-      extraDotsRef.current.forEach(el => {
-        tl.current.to(el, {
-          opacity: 0,
-          scale: 0,
-          duration: 0.4,
-          ease: "power2.out",
-        }, 0);
+      extraDotsRef.current.forEach((el) => {
+        tl.current.to(
+          el,
+          {
+            opacity: 0,
+            scale: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          0
+        );
       });
     }
 
     // Text animation
-    gsap.set(textRef.current, { xPercent: -50, yPercent: -50, y: 0, opacity: 1 });
-    gsap.set(altTextRef.current, { xPercent: -50, yPercent: -50, y: 30, opacity: 0 });
+    gsap.set(textRef.current, {
+      xPercent: -50,
+      yPercent: -50,
+      y: 0,
+      opacity: 1,
+    });
+    gsap.set(altTextRef.current, {
+      xPercent: -50,
+      yPercent: -50,
+      y: 30,
+      opacity: 0,
+    });
 
-    tl.current.to(textRef.current, { y: -30, opacity: 0, duration: 0.4, ease: "power2.out" }, '<')
-      .to(altTextRef.current, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, '<');
+    tl.current
+      .to(
+        textRef.current,
+        { y: -30, opacity: 0, duration: 0.4, ease: "power2.out" },
+        "<"
+      )
+      .to(
+        altTextRef.current,
+        { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+        "<"
+      );
 
     // Hover handlers
     const play = () => tl.current?.play();
@@ -182,7 +215,7 @@ const ToggleButton = ({ isExperienceView }) => {
         border: "none",
         padding: "0",
         cursor: "pointer",
-        color: "#222",
+        color: "var(--white-color)",
         fontSize: "14px",
         fontWeight: "500",
       }}
@@ -194,8 +227,8 @@ const ToggleButton = ({ isExperienceView }) => {
           position: "relative",
           width: "40px",
           height: "40px",
-          background: "#f5f5f0",
-          border: "1px solid rgba(0,0,0,0.1)",
+          background: "var(--orange-color)",
+          border: "1px solid var(--ivery-color)",
           borderRadius: "4px",
           display: "flex",
           alignItems: "center",
@@ -219,7 +252,7 @@ const ToggleButton = ({ isExperienceView }) => {
                 top: `${pos.top}px`,
                 width: "4px",
                 height: "4px",
-                background: "#222",
+                background: "var(--white-color)",
                 borderRadius: "50%",
               }}
             />
@@ -240,8 +273,8 @@ const ToggleButton = ({ isExperienceView }) => {
           justifyContent: "center",
           paddingLeft: "16px",
           paddingRight: "16px",
-          background: "#f5f5f0",
-          border: "1px solid rgba(0,0,0,0.1)",
+          background: "var(--orange-color)",
+          border: "1px solid var(--ivery-color)",
           borderRadius: "4px",
         }}
       >
@@ -262,6 +295,7 @@ const ToggleButton = ({ isExperienceView }) => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
+              color: "var(--white-color)",
             }}
           >
             {!isExperienceView ? "grid view" : "experience view"}
@@ -274,6 +308,7 @@ const ToggleButton = ({ isExperienceView }) => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
+              color: "var(--white-color)",
             }}
           >
             {!isExperienceView ? "experience view" : "grid view"}

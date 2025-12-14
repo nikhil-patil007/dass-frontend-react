@@ -14,8 +14,8 @@
 
 @font-face {
   font-family: 'kenao';
-  src: url('../fonts/kenao/kenao.woff2') format('woff2'),
-    url('../fonts/kenao/kenao.woff') format('woff');
+  src: url('../fonts/kenao/Kenao.woff2') format('woff2'),
+    url('../fonts/kenao/Kenao.woff') format('woff');
   font-weight: 700;
 }
 
@@ -75,8 +75,12 @@ body {
   --background-gray: #eeeeee;
   /* light gray background */
   --secondary-highlight-color: #777777;
+
+  --orange-color: #cd5909;
+  --orange-color-light: #cd5909cc;
+  --ivery-color: #fffdf1;
   /* font-sizes */
-  --banner-title-font-size: 9.5rem;
+  --banner-title-font-size: 9.5rem; 
   --banner-title2-font-size: 5rem;
   --common-banner-title-font-size: 5.625rem;
   --common-banner2-title-font-size: 4rem;
@@ -211,6 +215,7 @@ html {
   /* height: 100%;
   min-height: 100svh; */
   scroll-behavior: smooth;
+  background-color: var(--ivery-color);
 }
 
 body.no-scroll-body {
@@ -470,13 +475,13 @@ img {
   width: 30px;
   height: 30px;
   border-radius: 5px;
-  background-color: #000000;
+  background-color: var(--orange-color);
   transition: all 0.6s ease;
 }
 
 .filter-btn.menu-btn {
   background-color: #ffffff;
-  border: solid 1px #00000098;
+  border: solid 1px var(--orange-color);
 }
 
 .menu-btn.open {
@@ -493,12 +498,12 @@ img {
   position: absolute;
   width: 15px;
   height: 1px;
-  background-color: #ffffff98;
+  background-color: var(--white-color);
   transition: all 0.3s ease-in-out;
 }
 
 .filter-btn.menu-btn_burger span {
-  background-color: #00000098;
+  background-color: var(--orange-color);
 }
 
 /* Increase spacing for filter icon lines (dots visibility) */
@@ -523,7 +528,7 @@ img {
   width: 5px;
   height: 5px;
   border-radius: 999px;
-  background-color: #00000098;
+  background-color: var(--orange-color);
   transition: transform 0.25s ease, opacity 0.3s ease-in-out;
 }
 
@@ -621,10 +626,10 @@ img {
 
 .menu ul li {
   padding: 0 10px;
-  background-color: #000000;
+  background-color: var(--orange-color);
   position: relative;
   /* for badge positioning */
-  color: #ffffff;
+  color: var(--white-color);
   border-radius: 5px;
   height: 30px;
   display: flex;
@@ -636,9 +641,9 @@ img {
 }
 
 .filter.menu ul li {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #00000098;
+  background-color: var(--white-color);
+  color: var(--orange-color);
+  border: 1px solid var(--orange-color);
   /* transition-delay: 1s; */
 }
 
@@ -661,14 +666,14 @@ img {
   height: 18px;
   padding: 0 6px;
   border-radius: 999px;
-  background: #ff4d6d;
-  color: #fff;
+  background: var(--orange-color);
+  color: var(--white-color);
   font-size: 9px;
   line-height: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* border: 1px solid rgba(255, 255, 255, 0.3); */
 }
 
 /* Anchor badge to the top-right corner of the li */
@@ -690,13 +695,13 @@ img {
 }
 
 .filter.menu ul li a.active_page::before {
-  color: #000000;
+  color: var(--white-color);
 }
 
 .menu-close ul li {
   padding: 0 10px;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--orange-color);
+  color: var(--white-color);
   border-radius: 5px;
   height: 30px;
   display: flex;
@@ -706,9 +711,9 @@ img {
 }
 
 .filter-close.menu-close ul li {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #00000098;
+  background-color: var(--white-color);
+  color: var(--orange-color);
+  border: 1px solid var(--orange-color);
 }
 
 @media only screen and (max-width: 1680px) {
@@ -822,13 +827,48 @@ img {
   display: none;
 }
 
-.st0,
-.st1 {
+.cls-1 {
+  letter-spacing: -.04em;
+}
+
+.cls-2,
+.cls-3,
+.cls-4,
+.cls-5,
+.cls-6 {
   fill: #cd5909;
 }
 
-.st1 {
+.cls-3 {
   stroke: #cd5909;
   stroke-miterlimit: 10;
   stroke-width: 3px;
+}
+
+.cls-4 {
+  font-family: OpenSauceOne-Medium, 'Open Sauce One';
+  font-size: 22.18px;
+  font-weight: 500;
+}
+
+.cls-7 {
+  letter-spacing: 0em;
+}
+
+.cls-5 {
+  font-family: OpenSauceOne-Regular, 'Open Sauce One';
+  font-size: 14.11px;
+}
+
+.cls-6 {
+  font-family: KENAO, KENAO;
+  font-size: 71.26px;
+}
+
+.cls-8 {
+  letter-spacing: -.04em;
+}
+
+.fancybox__container {
+  z-index: 999999;
 }

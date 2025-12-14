@@ -3,7 +3,8 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: 6rem 0 3rem; /* room for fixed navbar */
+  padding: 6rem 0 3rem;
+  /* room for fixed navbar */
 }
 
 .auth-container {
@@ -46,7 +47,7 @@
   display: inline-block;
   width: clamp(80px, 10vw, 140px);
   height: 1px;
-  background: #000;
+  background: var(--orange-color);
   margin-top: 0.2rem;
 }
 
@@ -72,7 +73,7 @@
   border-radius: 8px;
   padding: 2rem;
   background: #ffffff;
-  border: 1px solid #000;
+  border: 1px solid var(--orange-color);
 }
 
 .auth-form h2 {
@@ -104,7 +105,8 @@
   width: 100%;
   border: 1px solid #000;
   background: #ffffff;
-  padding: 0.9rem 1rem 0.9rem 2.4rem; /* leave room for icon */
+  padding: 0.9rem 1rem 0.9rem 2.4rem;
+  /* leave room for icon */
   font-size: 1rem;
   border-radius: 10px;
   outline: none;
@@ -153,9 +155,9 @@
   height: 48px;
   padding: 0 1.25rem;
   border-radius: 10px;
-  background: #000;
+  background: var(--orange-color);
   color: #fff;
-  border: 1px solid #000;
+  border: 1px solid var(--orange-color);
   cursor: pointer;
   transition: var(--common-transition);
   position: relative;
@@ -188,7 +190,7 @@
   bottom: -2px;
   width: 0;
   height: 1px;
-  background: currentColor;
+  background: var(--orange-color);
   transition: width 0.3s ease;
 }
 
@@ -211,10 +213,11 @@
 }
 
 .auth-helper input[type="checkbox"] {
-  appearance: auto; /* restore native checkbox UI */
+  appearance: auto;
+  /* restore native checkbox UI */
   width: 18px;
   height: 18px;
-  accent-color: #000;
+  accent-color: var(--orange-color);
   border-radius: 4px;
   padding: 0;
   box-shadow: none;
@@ -226,17 +229,44 @@
 }
 
 @media (max-width: 1024px) {
-  .auth-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .auth-left { text-align: center; align-items: center; }
-  .auth-subtext { max-width: 70ch; }
-  .auth-section .main-container { padding-left: 2rem; padding-right: 2rem; }
+  .auth-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .auth-left {
+    text-align: center;
+    align-items: center;
+  }
+
+  .auth-subtext {
+    max-width: 70ch;
+  }
+
+  .auth-section .main-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 @media (max-width: 640px) {
-  .auth-section { padding: 5rem 0 2rem; }
-  .auth-form { padding: 1.25rem; }
-  .auth-footer { flex-direction: column; align-items: flex-start; }
-  .auth-section .main-container { padding-left: 1rem; padding-right: 1rem; }
+  .auth-section {
+    padding: 5rem 0 2rem;
+  }
+
+  .auth-form {
+    padding: 1.25rem;
+  }
+
+  .auth-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .auth-section .main-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* Typography: Lausanne for left text, different font for form */

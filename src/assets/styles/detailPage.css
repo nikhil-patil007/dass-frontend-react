@@ -21,7 +21,7 @@
 
 
 .horizontal-section {
-    padding: 3.5rem 0;
+    padding: 6.5rem 0;
     height: 100dvh;
     width: auto;
     overflow: hidden;
@@ -246,7 +246,7 @@
 }
 
 .pd-heart.active {
-    color: #ff4d6d;
+    color: var(--orange-color);
 }
 
 /* Cart icon next to wishlist */
@@ -272,7 +272,7 @@
 }
 
 .pd-cart.active {
-    color: #2ecc71;
+    color: var(--orange-color);
 }
 
 /* Tooltips (desktop-only hover) */

@@ -24,6 +24,8 @@ export default function CanvasView({ products }) {
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [dragEnabled, setDragEnabled] = useState(false);
   const [positions, setPositions] = useState([]);
+  const [visibleItems, setVisibleItems] = useState(new Set());
+  const observerRef = useRef(null);
 
   const canvasPadding = 100; // leave 100px from all four sides of the draggable view
 
@@ -63,6 +65,41 @@ export default function CanvasView({ products }) {
       y: (window.innerHeight - height) / 2,
     }));
   }, [products]);
+  // Lazy load items when they enter viewport
+  useEffect(() => {
+    if (!wrapperRef.current || itemRefs.current.length === 0) return;
+
+    // Create IntersectionObserver to detect items in viewport
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const itemId = entry.target.dataset.itemId;
+            if (itemId) {
+              setVisibleItems((prev) => new Set(prev).add(parseInt(itemId)));
+            }
+          }
+        });
+      },
+      {
+        root: wrapperRef.current,
+        rootMargin: "200px", // Load 200px before entering viewport
+        threshold: 0,
+      }
+    );
+
+    // Observe all items
+    itemRefs.current.forEach((el) => {
+      if (el) observerRef.current.observe(el);
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [positions]);
+
   // Sequence: item pop first, then surface zoom
   useEffect(() => {
     if (!surfaceRef.current) return;
@@ -422,6 +459,8 @@ export default function CanvasView({ products }) {
                 );
                 return renderProducts.map((product, i) => {
                   const coords = positions[i] || { x: 0, y: 0 };
+                  const isVisible = visibleItems.has(i);
+
                   return (
                     <div
                       key={i}
@@ -438,11 +477,14 @@ export default function CanvasView({ products }) {
                       onTouchStart={() => setHoveredProduct(product)}
                       onTouchEnd={() => setHoveredProduct(null)}
                     >
-                      <img
-                        onClick={(e) => handleItemClick(e, product)}
-                        src={product.image}
-                        alt={`product-${i}`}
-                      />
+                      {isVisible && (
+                        <img
+                          onClick={(e) => handleItemClick(e, product)}
+                          src={product.image}
+                          alt={`product-${i}`}
+                          loading="lazy"
+                        />
+                      )}
                     </div>
                   );
                 });
