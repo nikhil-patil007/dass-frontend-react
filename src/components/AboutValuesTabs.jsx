@@ -163,7 +163,7 @@ const AboutValuesTabs = ({ tabs = DEFAULT_TABS, delay = AUTOPLAY_DELAY }) => {
                 );
               })}
             </div>
-            <div className="text">
+            <div className="text f-1">
               <h3>Our core values</h3>
             </div>
             {/* <div

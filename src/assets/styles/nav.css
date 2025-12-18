@@ -1,6 +1,6 @@
 /* Transparent navbar stays same */
 .navbar {
-  position: fixed;
+  position: static;
   top: 0;
   left: 0;
   width: 100%;
@@ -13,6 +13,10 @@
   box-sizing: border-box;
   /* mix-blend-mode: difference; */
   /* pointer-events: none; */
+}
+
+.navbar.navbar-fix {
+  position: fixed;
 }
 
 * {

@@ -103,7 +103,9 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav
+        className={`navbar ${location.pathname === "/" ? "navbar-fix" : ""}`}
+      >
         <div className="logo-wrapper">
           <Link
             to="/"
@@ -673,24 +675,6 @@ export default function Navbar() {
               </g>
             </svg> */}
             <img src="/assets/logo.svg" alt="The DASS" />
-          </Link>
-        </div>
-
-        <div className="nav-cart-link">
-          <Link to="/cart" className="nav-cart-inner">
-            <span className="nav-cart-text">Cart</span>
-            <svg
-              className="nav-cart-icon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 6h14l-1.5 9h-11z" fill="currentColor" />
-              <circle cx="9" cy="19" r="1.5" fill="currentColor" />
-              <circle cx="17" cy="19" r="1.5" fill="currentColor" />
-            </svg>
-            {count > 0 && <span className="nav-cart-badge">{count}</span>}
           </Link>
         </div>
       </nav>

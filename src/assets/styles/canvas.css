@@ -65,3 +65,7 @@ a {
     height: 180px;
   }
 }
+
+.floating-name {
+  font-family: 'open-sauce', sans-serif;
+}

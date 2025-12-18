@@ -197,6 +197,7 @@
 
 .ft-bottom2 {
     margin-top: 5px;
+    flex-wrap: wrap;
     font-size: 11px;
 }
 

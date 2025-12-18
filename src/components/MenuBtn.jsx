@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AOS from "aos";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartContext";
 import { useLocation } from "react-router-dom";
 
 const MenuBtn = () => {
@@ -104,6 +105,7 @@ const MenuBtn = () => {
     openFilter();
   };
   const { count } = useWishlist();
+  const { count: cartCount } = useCart();
   const location = useLocation();
 
   useEffect(() => {
@@ -113,7 +115,8 @@ const MenuBtn = () => {
   useEffect(() => {
     return () => {
       if (menuCloseTimerRef.current) clearTimeout(menuCloseTimerRef.current);
-      if (filterCloseTimerRef.current) clearTimeout(filterCloseTimerRef.current);
+      if (filterCloseTimerRef.current)
+        clearTimeout(filterCloseTimerRef.current);
     };
   }, []);
 
@@ -159,7 +162,9 @@ const MenuBtn = () => {
     >
       <div
         onClick={toggleMenu}
-        className={`row-flex alc jc-c menu-bar__group ${(menuBtn || menuMounted) ? "" : "inner-flex-smallest"}`}
+        className={`row-flex alc jc-c menu-bar__group ${
+          menuBtn || menuMounted ? "" : "inner-flex-smallest"
+        }`}
       >
         <div className={`menu-btn cp ${menuBtn ? "open" : ""}`}>
           <div className={`menu-btn_burger ${menuBtn ? "open" : ""}`}>
@@ -228,6 +233,25 @@ const MenuBtn = () => {
                   data-aos-duration="400"
                   data-aos-delay="300"
                 >
+                  {cartCount > 0 && (
+                    <span className="menu-badge">{cartCount}</span>
+                  )}
+                  <NavLink
+                    to="/cart"
+                    className={({ isActive }) =>
+                      isActive ? "active_page" : ""
+                    }
+                    end
+                  >
+                    cart
+                  </NavLink>
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-anchor-placement="bottom-bottom"
+                  data-aos-duration="400"
+                  data-aos-delay="350"
+                >
                   <NavLink
                     to="/login"
                     className={({ isActive }) =>
@@ -256,8 +280,10 @@ const MenuBtn = () => {
 
       <div
         className={`row-flex alc jc-c ${
-          (filterBtn || filterMounted) ? "" : "inner-flex-smallest"
-        } menu-bar__group ${location.pathname != "/" ? "menu-bar menu-bar--hidden" : ""}`}
+          filterBtn || filterMounted ? "" : "inner-flex-smallest"
+        } menu-bar__group ${
+          location.pathname != "/" ? "menu-bar menu-bar--hidden" : ""
+        }`}
         onClick={toggleFilter}
       >
         <div className={`filter-btn menu-btn cp ${filterBtn ? "open" : ""}`}>
@@ -308,9 +334,7 @@ const MenuBtn = () => {
                   data-aos-duration="400"
                   data-aos-delay="100"
                 >
-                  <NavLink>
-                    earrings
-                  </NavLink>
+                  <NavLink>earrings</NavLink>
                 </li>
               </>
             )}

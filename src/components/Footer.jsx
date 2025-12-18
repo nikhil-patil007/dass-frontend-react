@@ -142,8 +142,36 @@ export default function Footer() {
           </div>
           <div>website by The DASS</div>
         </div>
-        <div className="ft-bottom2 text-right w100">
-          <div>Developed By: Prashant , Nikhil and Darshan</div>
+        <div className="ft-bottom2 w100 row-flex jc-s-b alc">
+          <div>
+            Developed By:{" "}
+            <a href="tel:+911234567890" aria-label="Call Prashant">
+              Prashant
+            </a>
+            , Nikhil and {" "}
+            <a
+            href="#"
+            aria-label="Open Darshan portfolio"
+            onClick={(e) => {
+              e.preventDefault();
+              const url = "https://darshangohel-portfolio.netlify.app/"; // replace with real URL
+              const w = window.open("", "darshan_portfolio", "width=1000,height=700");
+              if (!w) return;
+              w.document.write(`
+                <html>
+                  <head><title>Darshan Portfolio</title></head>
+                  <body style="margin:0">
+                    <iframe src="${url}" style="border:0;width:100%;height:100vh"></iframe>
+                  </body>
+                </html>
+              `);
+              w.document.close();
+            }}
+          >
+            Darshan
+          </a>
+          </div>
+          <div>Designed By: Aman Shah</div>
         </div>
       </div>
     </footer>

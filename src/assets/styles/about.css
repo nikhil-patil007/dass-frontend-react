@@ -8,10 +8,6 @@
     background-color: #506157;
 }
 
-.section-title h2 {
-    font-family: Arial, sans-serif !important;
-}
-
 .section-padding-t {
     padding-top: 15rem !important;
 }
@@ -138,7 +134,7 @@
 }
 
 .about_wrapper .line_wrapper:nth-last-of-type(-n+6) span {
-    background-color: #506157;
+    background-color: var(--orange-color);
     color: white;
     padding: 0 8px;
     border-radius: 8px;
@@ -215,11 +211,13 @@
 }
 
 .sec-6 .section-subtitle h2 {
-    font-size: 1.3rem;
+    font-family: 'kenao';
+    font-size: 1.6rem;
 }
 
 .sec-6 .section-subtitle-btn h2 {
-    font-size: 1rem;
+    font-family: 'kenao';
+    font-size: 1.3rem;
 }
 
 .section-subtitle-btn h2 {
@@ -462,4 +460,14 @@
         background-attachment: scroll;
         background-position: center;
     }
+}
+
+.content h2,
+.text.f-1 {
+    font-family: 'kenao';
+    font-size: 1.2rem;
+}
+
+#section-6 .section-title h2 {
+    font-family: 'open-sauce', sans-serif;
 }

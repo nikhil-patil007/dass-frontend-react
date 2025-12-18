@@ -121,7 +121,7 @@ const About = ({ products }) => {
       </section>
 
       <section className="section-padding" id="section-3">
-        <div className="bg-green section-padding sec-3">
+        <div className="bg-orange section-padding sec-3">
           <div className="row-flex inner-flex-medium jc-s-b">
             <div className="w50 inner-flex inner-flex-medium mr-auto">
               <div className="sec-3-title">

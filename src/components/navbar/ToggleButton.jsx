@@ -283,6 +283,7 @@ const ToggleButton = ({ isExperienceView }) => {
             position: "absolute",
             top: "50%",
             left: "50%",
+            padding:"30px",
             transform: "translate(-50%, -50%)",
             whiteSpace: "nowrap",
           }}
