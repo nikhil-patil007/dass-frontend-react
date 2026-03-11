@@ -10,7 +10,7 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isExperienceView, setIsExperienceView] = useState(
-    location.pathname === "/" || location.pathname === "/experience"
+    location.pathname === "/" || location.pathname === "/experience",
   );
 
   let showViewBtn =
@@ -45,7 +45,7 @@ export default function Navbar() {
       tl.to(
         texts,
         { opacity: 0, y: 20, duration: 0.35, ease: "power2.inOut" },
-        0
+        0,
       ).to(imgs, { scale: 0, duration: 0.5, ease: "power3.inOut" }, 0);
     });
   };
@@ -94,7 +94,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setIsExperienceView(
-      location.pathname === "/" || location.pathname === "/experience"
+      location.pathname === "/" || location.pathname === "/experience",
     );
   }, [location]);
 
@@ -104,7 +104,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`navbar ${location.pathname === "/" ? "navbar-fix" : ""}`}
+        className={`navbar ${location.pathname === "/" || (window.innerWidth > 991 && location.pathname.includes("/products")) ? "navbar-fix" : ""}`}
       >
         <div className="logo-wrapper">
           <Link
