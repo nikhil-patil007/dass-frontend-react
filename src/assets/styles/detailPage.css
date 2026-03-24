@@ -1,7 +1,8 @@
 .detail-wrapper {
     display: flex;
     flex-direction: row;
-    overflow-y: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -25,6 +26,16 @@
     height: 100dvh;
     width: auto;
     overflow: hidden;
+}
+
+/* Make the text column (with specs) scrollable vertically inside the horizontal layout */
+.horizontal-section > .relative {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.horizontal-section > .relative::-webkit-scrollbar {
+    display: none;
 }
 
 .spec-item {

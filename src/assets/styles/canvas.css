@@ -26,8 +26,8 @@
 
 .canvas-item {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 160px;
+  height: 160px;
   transform-origin: center;
   -webkit-user-drag: none;
   user-select: none;
@@ -61,8 +61,8 @@ a {
 
 @media only screen and (max-width: 767px) {
   .canvas-item {
-    width: 180px;
-    height: 180px;
+    width: 90px;
+    height: 90px;
   }
 }
 

@@ -79,6 +79,22 @@ export default function ProductDetails({ products }) {
     if (!wrapper || window.innerWidth <= 991) return;
 
     const handleWheel = (e) => {
+      // If the user is scrolling inside a vertically-scrollable child
+      // (e.g. the spec/text column), let the vertical scroll pass through
+      let el = e.target;
+      while (el && el !== wrapper) {
+        if (el.scrollHeight > el.clientHeight + 1) {
+          const atTop = el.scrollTop <= 0 && e.deltaY < 0;
+          const atBottom =
+            el.scrollTop + el.clientHeight >= el.scrollHeight - 1 &&
+            e.deltaY > 0;
+          if (!atTop && !atBottom) {
+            // natural vertical scroll inside this element
+            return;
+          }
+        }
+        el = el.parentElement;
+      }
       e.preventDefault();
       wrapper.scrollLeft += e.deltaY;
     };

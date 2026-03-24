@@ -32,9 +32,9 @@ export default function CanvasView({ products }) {
   // Build grid layout sized exactly to the items footprint
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    const imgSize = isMobile ? 180 : 250; // match render sizing
-    const gap = isMobile ? 40 : 100; // match render gap
-    const cols = 8; // simple grid with 8 columns
+    const imgSize = isMobile ? 90 : 160; // match render sizing
+    const gap = isMobile ? 30 : 80; // match render gap
+    const cols = isMobile ? 4 : 8; // fewer columns on mobile
     const rows = Math.ceil((products?.length || 0) / cols) || 1;
     const step = imgSize + gap;
 
@@ -450,7 +450,8 @@ export default function CanvasView({ products }) {
               style={{ width: "100%", height: "100%" }}
             >
               {(() => {
-                const cols = 8;
+                const isMobileRender = window.innerWidth < 768;
+                const cols = isMobileRender ? 4 : 8;
                 const rows = Math.ceil((products?.length || 0) / cols) || 1;
                 const totalCells = cols * rows;
                 const renderProducts = Array.from(
