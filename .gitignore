@@ -44,3 +44,5 @@ coverage/
 
 # Optional: typescript build output
 *.tsbuildinfo
+
+next-have-to-do.txt

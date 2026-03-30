@@ -579,7 +579,7 @@ const baseProducts = [
         "category": "Necklaces",
         "price": 489.99,
         "image": "/assets/need_to_repair/_DSC9401-78.png",
-        "description": "Elegant minimalist gold necklace featuring a single aquamarine gemstone pendant for a clean and timeless look",
+        "description": "Minimal gold aquamarine pendant",
         "inStock": true,
         "rating": 4.7
     },

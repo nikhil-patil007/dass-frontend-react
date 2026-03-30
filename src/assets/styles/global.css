@@ -16,7 +16,7 @@
   font-family: 'kenao';
   src: url('../fonts/kenao/Kenao.woff2') format('woff2'),
     url('../fonts/kenao/Kenao.woff') format('woff');
-  font-weight: 700;
+  font-weight: bold;
 }
 
 @font-face {
@@ -368,13 +368,13 @@ img {
 }
 
 .section-title h2 {
-  font-size: 6rem;
+  font-size: 3.5rem;
   font-family: 'Lausanne';
   /* font-weight: bold; */
 }
 
 .section-subtitle h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .inner-flex {
@@ -876,4 +876,9 @@ img {
 
 .bg-orange {
   background-color: var(--orange-color);
+}
+
+.text-white,
+.text-white * {
+  color: white !important;
 }

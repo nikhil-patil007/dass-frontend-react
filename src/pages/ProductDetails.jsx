@@ -48,7 +48,7 @@ export default function ProductDetails({ products }) {
     if (slug) {
       const selected = products.find((p) => p.slug === slug);
       const similar = products.filter(
-        (p) => p.category === selected.category && p.slug !== slug
+        (p) => p.category === selected.category && p.slug !== slug,
       );
       setProduct(selected);
       setCatProduct(similar);
@@ -72,6 +72,18 @@ export default function ProductDetails({ products }) {
       };
     }
   }, [product]);
+
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [isChartOpen, setIsChartOpen] = useState(false);
+
+  const sizes = [9, 12, 14, 16, 18];
+  const sizesNeck = [16, 18, 20, 22];
+
+  useEffect((e) => {
+    window.addEventListener("keydown", (e) => {
+      e.key === "Escape" && setIsChartOpen(false);
+    });
+  }, []);
 
   // --- Horizontal scroll for desktop ---
   useEffect(() => {
@@ -100,7 +112,9 @@ export default function ProductDetails({ products }) {
     };
 
     wrapper.addEventListener("wheel", handleWheel, { passive: false });
-    return () => wrapper.removeEventListener("wheel", handleWheel);
+    return () => {
+      wrapper.removeEventListener("wheel", handleWheel);
+    };
   }, []);
 
   // --- Preload suggestion images ---
@@ -139,9 +153,51 @@ export default function ProductDetails({ products }) {
           Dots: false,
         },
         animated: true,
-      }
+      },
     );
   }, [product]);
+
+  // useEffect(() => {
+  //   const wrapper = document.querySelector(".detail-wrapper");
+  //   if (isChartOpen) {
+  //     wrapper.removeEventListener("wheel", handleWheel)
+  //   } else {
+  //     wrapper.removeEventListener("wheel", handleWheel)
+  //   }
+  // }, [isChartOpen]);
+
+  const [zip, setZip] = useState("");
+  const [zipValid, setZipValid] = useState(false);
+
+  const handleZipSubmit = (e) => {
+    if (zip.length !== 6) {
+      alert("Enter a valid 6-digit ZIP code");
+    } else {
+      setZipValid(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Allow only digits
+    if (/^\d*$/.test(value)) {
+      setZip(value);
+    }
+  };
+
+  const getDeliveryDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "short",
+    };
+
+    return date.toLocaleDateString("en-IN", options);
+  };
 
   return (
     <div className="detail-wrapper">
@@ -150,7 +206,7 @@ export default function ProductDetails({ products }) {
           {/* --- Product Section --- */}
           <section
             className={`horizontal-section ${
-              window.innerWidth <= 991 ? "w100" : "w80"
+              window.innerWidth <= 991 ? "w100" : "w90"
             }`}
             id="detail-section1"
           >
@@ -162,7 +218,7 @@ export default function ProductDetails({ products }) {
               }`}
             >
               {/* Text section */}
-              <div className="inner-flex inner-flex-big h100">
+              <div className="inner-flex inner-flex-medium h100">
                 <div className="inner-flex">
                   <div className="section-title pd-title-with-heart">
                     <h2>{product.name}</h2>
@@ -254,26 +310,169 @@ export default function ProductDetails({ products }) {
                   >
                     <div className="spec-item">
                       <div className="text">
-                        <p>Products</p>
+                        <p>Product Code</p>
                       </div>
                       <div className="value">
-                        <p>7</p>
+                        <p>{product.id}</p>
                       </div>
                     </div>
                     <div className="spec-item">
                       <div className="text">
-                        <p>Material</p>
+                        <p>Category</p>
                       </div>
                       <div className="value">
-                        <p>Stoneware</p>
+                        <p>{product.category}</p>
                       </div>
                     </div>
                     <div className="spec-item">
                       <div className="text">
-                        <p>Color Palette</p>
+                        <p>Metal Color</p>
                       </div>
                       <div className="value">
-                        <p>Bluew</p>
+                        <p>
+                          {product.metalColor
+                            ? product.metalColor
+                            : "Not specified"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="spec-item">
+                      <div className="text">
+                        <p>Price</p>
+                      </div>
+                      <div className="value">
+                        <p>${product.price}</p>
+                      </div>
+                    </div>
+                    <div className="spec-item">
+                      <div className="text">
+                        <p>Description</p>
+                      </div>
+                      <div className="value">
+                        <p>{product.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  className={`${window.innerWidth <= 991 ? "inner-flex" : "row-flex"} inner-flex-medium`}
+                >
+                  <div
+                    className="inner-flex inner-flex-smallest"
+                    style={{ flexShrink: 0 }}
+                  >
+                    <div className="section-subtitle">
+                      <h2>Sizes</h2>
+                    </div>
+                    <div
+                      className={`spec-div inner-flex inner-flex-zero ${
+                        window.innerWidth <= 991 ? "w100" : "w100"
+                      }`}
+                    >
+                      <div className="spec-item spec-item-size flex gap-2">
+                        {product.category.includes("Necklaces")
+                          ? sizesNeck.map((size) => (
+                              <button
+                                key={size}
+                                onClick={() =>
+                                  setSelectedSize((prev) =>
+                                    prev === size ? null : size,
+                                  )
+                                }
+                                className={`value px-4 py-2 border rounded 
+              ${selectedSize === size ? "bg-orange text-white" : "bg-white text-black"}`}
+                              >
+                                <p>{size}</p>
+                              </button>
+                            ))
+                          : sizes.map((size) => (
+                              <button
+                                key={size}
+                                onClick={() =>
+                                  setSelectedSize((prev) =>
+                                    prev === size ? null : size,
+                                  )
+                                }
+                                className={`value px-4 py-2 border rounded 
+              ${selectedSize === size ? "bg-orange text-white" : "bg-white text-black"}`}
+                              >
+                                <p>{size}</p>
+                              </button>
+                            ))}
+                        <div
+                          className="text"
+                          onClick={() => setIsChartOpen(true)}
+                        >
+                          <p>~Size Chart</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="inner-flex inner-flex-smallest">
+                    <div className="section-subtitle">
+                      <h2>Delivery Options</h2>
+                    </div>
+                    <div
+                      className={`spec-div inner-flex inner-flex-zero ${
+                        window.innerWidth <= 991 ? "w100" : "w100"
+                      }`}
+                    >
+                      <div className="spec-item spec-item-size flex gap-2">
+                        {zipValid ? (
+                          <>
+                            <div className="text deliver">
+                              <p>
+                                Delivers By{" "}
+                                <span style={{ fontFamily: "open-sauce" }}>
+                                  {getDeliveryDate()}
+                                </span>
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => {
+                                setZipValid(false);
+                                setZip("");
+                              }}
+                              className="deliver"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M21 12a9 9 0 1 1-3-6.7" />
+                                <polyline points="21 3 21 9 15 9" />
+                              </svg>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                handleZipSubmit();
+                              }}
+                              className="flex gap-2"
+                            >
+                              <input
+                                type="text"
+                                placeholder="Enter your zip code"
+                                value={zip}
+                                onChange={handleChange}
+                              />
+                              <button type="submit">
+                                <p>Check</p>
+                              </button>
+                            </form>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -282,8 +481,8 @@ export default function ProductDetails({ products }) {
 
               {/* Main Product Image */}
               <div
-                className={`h100 relative ${
-                  window.innerWidth <= 991 ? "w100" : "w50"
+                className={`h80 relative ${
+                  window.innerWidth <= 991 ? "w100" : "w30"
                 }`}
               >
                 <div
@@ -300,7 +499,7 @@ export default function ProductDetails({ products }) {
                   }}
                 >
                   <img
-                    className={`h100 product-fade-img ${
+                    className={`product-fade-img ${
                       mainLoaded ? "fade-in" : "fade-out"
                     }`}
                     src={mainSrc || placeholder}
@@ -397,7 +596,7 @@ export default function ProductDetails({ products }) {
               </div>
 
               {catProduct &&
-                catProduct.map((p, i) => (
+                catProduct.slice(0, 6).map((p, i) => (
                   <div key={i} className="suggestion-item inner-flex">
                     <Link to={`/products/${p.slug}`}>
                       <div className="item-img">
@@ -417,6 +616,120 @@ export default function ProductDetails({ products }) {
                 ))}
             </div>
           </section>
+
+          {/* --- Size Chart Modal --- */}
+          {isChartOpen && (
+            <div className="size-chart-modal">
+              <div className="size-chart-content">
+                <div
+                  className="close-btn"
+                  onClick={() => setIsChartOpen(false)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                  >
+                    <path
+                      d="M18 6L6 18M6 6l12 12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+
+                <h1 className="brand">HOUSE OF DAAS</h1>
+                <h2 className="subtitle">Ring Size Guide</h2>
+
+                <div className="instructions">
+                  <p>* Choose any existing ring that fits you well</p>
+                  <p>
+                    * Measure the internal diameter of the ring using a ruler
+                  </p>
+                  <p>
+                    * Use the following size guide to find your perfect size
+                  </p>
+                </div>
+
+                <table className="size-table">
+                  <thead>
+                    <tr>
+                      <th>US Size</th>
+                      <th>Indian Size</th>
+                      <th>Millimetres</th>
+                      <th>Centimetres</th>
+                    </tr>
+                  </thead>
+                  {/* <tbody>
+                    <tr>
+                      <td>5</td>
+                      <td>9</td>
+                      <td>15 MM</td>
+                      <td>1.5 CM</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>12</td>
+                      <td>16 MM</td>
+                      <td>1.6 CM</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>14</td>
+                      <td>17 MM</td>
+                      <td>1.7 CM</td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>16</td>
+                      <td>18 MM</td>
+                      <td>1.8 CM</td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>18</td>
+                      <td>19 MM</td>
+                      <td>1.9 CM</td>
+                    </tr>
+                  </tbody> */}
+                  <tbody>
+                    {product.category.includes("Necklaces")
+                      ? sizesNeck.map((indianSize, index) => {
+                          const usSize = index + 5; // 5 → 9 mapping
+                          const mm = usSize + 10; // 5→15, 6→16, etc
+                          const cm = (mm / 10).toFixed(1);
+
+                          return (
+                            <tr key={indianSize}>
+                              <td>{usSize}</td>
+                              <td>{indianSize}</td>
+                              <td>{mm} MM</td>
+                              <td>{cm} CM</td>
+                            </tr>
+                          );
+                        })
+                      : sizes.map((indianSize, index) => {
+                          const usSize = index + 5; // 5 → 9 mapping
+                          const mm = usSize + 10; // 5→15, 6→16, etc
+                          const cm = (mm / 10).toFixed(1);
+
+                          return (
+                            <tr key={indianSize}>
+                              <td>{usSize}</td>
+                              <td>{indianSize}</td>
+                              <td>{mm} MM</td>
+                              <td>{cm} CM</td>
+                            </tr>
+                          );
+                        })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
