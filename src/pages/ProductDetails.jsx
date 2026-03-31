@@ -583,7 +583,7 @@ export default function ProductDetails({ products }) {
               window.innerWidth <= 991 ? "w100" : "w-fc"
             } row-flex alc`}
             id="detail-section2"
-            style={{ padding: 0 }}
+            style={{ padding: window.innerWidth > 991 && 0 }}
           >
             <div className="grid-suggestion">
               <div
@@ -614,6 +614,188 @@ export default function ProductDetails({ products }) {
                     </Link>
                   </div>
                 ))}
+            </div>
+          </section>
+
+          {/* --- Return Policy Section --- */}
+          <section
+            className={`horizontal-section`}
+            style={{
+              width: "fit-content",
+              maxWidth: "100%",
+              paddingRight: window.innerWidth <= 991 ? "0" : "5rem",
+            }}
+            id="detail-section1"
+          >
+            <div
+              className={`relative section-padding-l h100 w100 ${
+                window.innerWidth <= 991
+                  ? "inner-flex inner-flex-small"
+                  : "row-flex inner-flex-zero"
+              }`}
+            >
+              {/* Text section */}
+              <div className="inner-flex inner-flex-medium h100">
+                <div className="inner-flex">
+                  <div className="section-title">
+                    <h2 style={{ fontSize: "1.8rem" }}>
+                      return and replacement policy
+                    </h2>
+                  </div>
+                  <div
+                    className="spec-item spec-item-return"
+                    style={{
+                      border: "none",
+                      display: "block",
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    <ol
+                      style={{ listStyleType: "decimal", paddingLeft: "20px" }}
+                    >
+                      <li>
+                        <p>
+                          Enjoy hassle-free returns within 2 days of delivery.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Products must be unused and packed with original tags.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Get your refund within 7-10 working days after pickup
+                          and verification.
+                        </p>
+                      </li>
+                      <li>
+                        <p>
+                          Return of Products purchased under Buy 1 Get 1 or
+                          other related offers would be eligible for refund.
+                        </p>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div className="inner-flex inner-flex-smallest">
+                  <div
+                    className="row-flex inner-flex-small alc jc-s-b"
+                    style={{
+                      padding: "2rem",
+                      // backgroundColor: "var(--orange-color-light)",
+                      backgroundColor: "#cd590980",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <div className="ret-sec block inner-flex inner-flex-smallest alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "60px", height: "60px" }
+                              : { width: "100px", height: "100px" }
+                          }
+                          src="/assets/images/truck.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>Free Shiping</p>
+                      </div>
+                    </div>
+                    <div className="ret-sec block inner-flex inner-flex-smallest alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "60px", height: "60px" }
+                              : { width: "100px", height: "100px" }
+                          }
+                          src="/assets/images/face.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>Skin Safe Jewellery</p>
+                      </div>
+                    </div>
+                    <div className="ret-sec block inner-flex inner-flex-smallest alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "60px", height: "60px" }
+                              : { width: "100px", height: "100px" }
+                          }
+                          src="/assets/images/gold.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>18K Gold Tone Plated</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="row-flex inner-flex-small alc jc-s-b"
+                    style={{
+                      padding: "2rem",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <div className="ret-sec block2 inner-flex inner-flex-zero alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "38px" }
+                              : { width: "55px" }
+                          }
+                          src="/assets/images/package.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>2 Days Return</p>
+                      </div>
+                    </div>
+                    <div className="ret-sec block2 inner-flex inner-flex-smallest alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "38px" }
+                              : { width: "55px" }
+                          }
+                          src="/assets/images/repeat-circle.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>10 Days Exchange</p>
+                      </div>
+                    </div>
+                    <div className="ret-sec block2 inner-flex inner-flex-smallest alc jc-c">
+                      <div className="img">
+                        <img
+                          style={
+                            window.innerWidth <= 991
+                              ? { width: "38px" }
+                              : { width: "55px" }
+                          }
+                          src="/assets/images/rupee-circle.svg"
+                          alt=""
+                        />
+                      </div>
+                      <div className="text">
+                        <p>Cash On Delivery</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
