@@ -189,8 +189,9 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: 'kenao', TWK Lausanne, Arial, sans-serif;
-  font-weight: 400;
+  font-family: 'Cormorant Garamond', TWK Lausanne, Arial, sans-serif;
+  font-weight: 600;
+  /* font-family: 'kenao', TWK Lausanne, Arial, sans-serif; */
   color: var(--primary-color);
 }
 
@@ -368,8 +369,9 @@ img {
 }
 
 .section-title h2 {
-  font-size: 3.5rem;
-  font-family: 'Lausanne';
+  font-size: 4.5rem;
+  /* font-family: 'Lausanne'; */
+  font-family: 'Bodoni', sans-serif;
   /* font-weight: bold; */
 }
 
@@ -668,7 +670,7 @@ img {
   border-radius: 999px;
   background: var(--orange-color);
   color: var(--white-color);
-  font-size: 9px;
+  font-size: 16.5px;
   line-height: 18px;
   display: inline-flex;
   align-items: center;
@@ -788,7 +790,7 @@ img {
   .section-title h2 {
     font-size: 4rem;
     word-wrap: break-word;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     hyphens: auto;
     white-space: normal;
   }

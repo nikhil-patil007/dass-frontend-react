@@ -53,18 +53,20 @@ export default function Footer() {
                   aria-label="Email address"
                   required
                 />
-                <span className="ft-sign-txt">Sign up</span>
-                <button className="ft-arrow" aria-label="Submit">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M5 12h14M13 5l7 7-7 7"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
+                <div className="ft-form-inner">
+                  <span className="ft-sign-txt">Sign up</span>
+                  <button className="ft-arrow" aria-label="Submit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 12h14M13 5l7 7-7 7"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -148,16 +150,20 @@ export default function Footer() {
             <a href="tel:+911234567890" aria-label="Call Prashant">
               Prashant
             </a>
-            , Nikhil and {" "}
+            , Nikhil and{" "}
             <a
-            href="#"
-            aria-label="Open Darshan portfolio"
-            onClick={(e) => {
-              e.preventDefault();
-              const url = "https://darshangohel-portfolio.netlify.app/"; // replace with real URL
-              const w = window.open("", "darshan_portfolio", "width=1000,height=700");
-              if (!w) return;
-              w.document.write(`
+              href="#"
+              aria-label="Open Darshan portfolio"
+              onClick={(e) => {
+                e.preventDefault();
+                const url = "https://darshangohel-portfolio.netlify.app/"; // replace with real URL
+                const w = window.open(
+                  "",
+                  "darshan_portfolio",
+                  "width=1000,height=700",
+                );
+                if (!w) return;
+                w.document.write(`
                 <html>
                   <head><title>Darshan Portfolio</title></head>
                   <body style="margin:0">
@@ -165,11 +171,11 @@ export default function Footer() {
                   </body>
                 </html>
               `);
-              w.document.close();
-            }}
-          >
-            Darshan
-          </a>
+                w.document.close();
+              }}
+            >
+              Darshan
+            </a>
           </div>
           <div>Designed By: Aman Shah</div>
         </div>

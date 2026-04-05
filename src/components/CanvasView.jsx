@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import "../assets/styles/canvas.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductPopup from "./ProductPopup";
 
 export default function CanvasView({ products }) {
@@ -85,7 +85,7 @@ export default function CanvasView({ products }) {
         root: wrapperRef.current,
         rootMargin: "200px", // Load 200px before entering viewport
         threshold: 0,
-      }
+      },
     );
 
     // Observe all items
@@ -137,7 +137,7 @@ export default function CanvasView({ products }) {
               itemsPopped++;
               if (itemsPopped === totalItems) runSurfaceZoom();
             },
-          }
+          },
         );
       }
     });
@@ -456,7 +456,7 @@ export default function CanvasView({ products }) {
                 const totalCells = cols * rows;
                 const renderProducts = Array.from(
                   { length: totalCells },
-                  (_, i) => products[i % products.length]
+                  (_, i) => products[i % products.length],
                 );
                 return renderProducts.map((product, i) => {
                   const coords = positions[i] || { x: 0, y: 0 };
@@ -479,12 +479,14 @@ export default function CanvasView({ products }) {
                       onTouchEnd={() => setHoveredProduct(null)}
                     >
                       {isVisible && (
-                        <img
-                          onClick={(e) => handleItemClick(e, product)}
-                          src={product.image}
-                          alt={`product-${i}`}
-                          loading="lazy"
-                        />
+                        <Link to={`/products/${product.slug}`}>
+                          <img
+                            // onClick={(e) => handleItemClick(e, product)}
+                            src={product.image}
+                            alt={`product-${i}`}
+                            loading="lazy"
+                          />
+                        </Link>
                       )}
                     </div>
                   );

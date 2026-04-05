@@ -21,7 +21,9 @@ import { CartProvider } from "./context/CartContext";
 import Footer from "@/components/Footer";
 
 function App() {
-  const [winWidth, setWinWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const [winWidth, setWinWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200,
+  );
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -33,8 +35,8 @@ function App() {
   // Track viewport width to control footer visibility on product pages
   useEffect(() => {
     const onResize = () => setWinWidth(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   // const products = useMemo(
@@ -64,13 +66,22 @@ function App() {
           <Routes>
             <Route path="/" element={<CanvasView products={products} />} />
             <Route path="/experience" element={<Navigate to="/" replace />} />
-            <Route path="/collections" element={<GridView products={products} />} />
+            <Route
+              path="/collections"
+              element={<GridView products={products} />}
+            />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/products/:slug" element={<ProductDetails products={products} />} />
+            <Route
+              path="/products/:slug"
+              element={<ProductDetails products={products} />}
+            />
             <Route path="/about" element={<About />} />
-            <Route path="/wishlist" element={<Wishlist products={products} />} />
+            <Route
+              path="/wishlist"
+              element={<Wishlist products={products} />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <MenuBtn />
@@ -78,8 +89,12 @@ function App() {
             const isCanvas = location.pathname === "/";
             const isProductDetail = location.pathname.startsWith("/products/");
             const isDesktop = winWidth > 991; // >991 hides footer on product detail
-            const isAuth = location.pathname === "/login" || location.pathname === "/signup";
-            const showFooter = !isCanvas && !isAuth && !(isProductDetail && isDesktop);
+            const isAuth =
+              location.pathname === "/login" || location.pathname === "/signup";
+            {
+              /* const showFooter = !isCanvas && !isAuth && !(isProductDetail && isDesktop); */
+            }
+            const showFooter = !isCanvas && !isAuth;
             return showFooter ? <Footer /> : null;
           })()}
         </div>

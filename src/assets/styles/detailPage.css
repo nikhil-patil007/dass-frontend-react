@@ -1,8 +1,17 @@
-.detail-wrapper {
+/* .detail-wrapper {
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
     overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+} */
+
+.detail-wrapper {
+    display: block;
+    flex-direction: row;
+    overflow-x: hidden;
+    overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -11,9 +20,9 @@
     display: none;
 }
 
-.detail-wrapper section {
+/* .detail-wrapper section {
     flex-shrink: 0;
-}
+} */
 
 
 .section-padding-l {
@@ -22,19 +31,33 @@
 
 
 .horizontal-section {
+    padding: 6.5rem;
+    padding-top: 0;
+    height: fit-content;
+    width: 100dvw;
+    overflow: hidden;
+}
+
+/* .horizontal-section {
     padding: 6.5rem 0;
     padding-bottom: 0;
     height: 100dvh;
     width: auto;
     overflow: hidden;
-}
+} */
 
 /* Make the text column (with specs) scrollable vertically inside the horizontal layout */
 .horizontal-section>.relative {
-    overflow-y: auto;
+    overflow-y: unset;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
+/* .horizontal-section>.relative {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+} */
 
 .horizontal-section>.relative::-webkit-scrollbar {
     display: none;
@@ -46,7 +69,9 @@
 }
 
 .spec-item input {
-    font-family: 'kenao';
+    /* font-family: 'kenao'; */
+    font-family: 'Cormorant Garamond';
+    font-weight: 600;
     padding: 0.4rem;
     background: transparent;
     border: none !important;
@@ -262,10 +287,11 @@
 
 .brand {
     text-align: center;
-    font-size: 28px;
+    font-size: 34px;
     letter-spacing: 3px;
     margin-bottom: 4px;
-    font-family: 'Lausanne';
+    /* font-family: 'Lausanne'; */
+    font-family: 'Bodoni', sans-serif;
 }
 
 .subtitle {
@@ -330,9 +356,21 @@
     grid-auto-columns: minmax(20px, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 1rem;
+    padding: 0;
+    scale: 1;
+}
+
+/* .grid-suggestion {
+    display: grid;
+    width: 100%;
+    max-height: 100dvh;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(20px, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
     padding: 0 2rem;
     scale: 0.94;
-}
+} */
 
 .suggestion-item {
     cursor: pointer;
@@ -384,6 +422,7 @@
         grid-auto-flow: unset;
         grid-auto-columns: unset;
         width: 100%;
+        max-height: fit-content;
         padding: 2rem;
     }
 
@@ -557,4 +596,8 @@
 /* Keep nav arrows visible */
 .fancybox__nav .fancybox__button {
     display: flex !important;
+}
+
+.reverse-flex {
+    flex-direction: column-reverse !important;
 }

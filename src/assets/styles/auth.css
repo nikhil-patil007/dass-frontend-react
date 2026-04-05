@@ -1,9 +1,9 @@
 /* Auth pages styling to match existing palette and spacing */
 .auth-section {
-  min-height: 100svh;
+  min-height: 80svh;
   display: flex;
   align-items: center;
-  padding: 6rem 0 3rem;
+  padding: 0rem 0 3rem;
   /* room for fixed navbar */
 }
 
@@ -26,7 +26,8 @@
 }
 
 .auth-eyebrow {
-  font-family: 'Lausanne', Arial, sans-serif;
+  /* font-family: 'Lausanne', Arial, sans-serif; */
+  font-family: Arial, sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.95rem;
@@ -53,7 +54,7 @@
 
 .auth-subtext {
   margin-top: 0.75rem;
-  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
   color: var(--secondary-color);
   max-width: 60ch;
   text-transform: none;
@@ -272,7 +273,8 @@
 /* Typography: Lausanne for left text, different font for form */
 .auth-headline,
 .auth-subtext {
-  font-family: 'Lausanne', Arial, sans-serif !important;
+  /* font-family: 'Lausanne', Arial, sans-serif !important; */
+  font-family: 'Bodoni', sans-serif !important;
 }
 
 .auth-form,

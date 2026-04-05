@@ -104,7 +104,8 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`navbar ${location.pathname === "/" || (window.innerWidth > 991 && location.pathname.includes("/products")) ? "navbar-fix" : ""}`}
+        // className={`navbar ${location.pathname === "/" || (window.innerWidth > 991 && location.pathname.includes("/products")) ? "navbar-fix" : ""}`}
+        className={`navbar ${location.pathname === "/" || !location.pathname.includes("/products") ? "navbar-fix" : ""}`}
       >
         <div className="logo-wrapper">
           <Link

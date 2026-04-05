@@ -90,31 +90,31 @@ export default function ProductDetails({ products }) {
     const wrapper = document.querySelector(".detail-wrapper");
     if (!wrapper || window.innerWidth <= 991) return;
 
-    const handleWheel = (e) => {
-      // If the user is scrolling inside a vertically-scrollable child
-      // (e.g. the spec/text column), let the vertical scroll pass through
-      let el = e.target;
-      while (el && el !== wrapper) {
-        if (el.scrollHeight > el.clientHeight + 1) {
-          const atTop = el.scrollTop <= 0 && e.deltaY < 0;
-          const atBottom =
-            el.scrollTop + el.clientHeight >= el.scrollHeight - 1 &&
-            e.deltaY > 0;
-          if (!atTop && !atBottom) {
-            // natural vertical scroll inside this element
-            return;
-          }
-        }
-        el = el.parentElement;
-      }
-      e.preventDefault();
-      wrapper.scrollLeft += e.deltaY;
-    };
+    // const handleWheel = (e) => {
+    //   // If the user is scrolling inside a vertically-scrollable child
+    //   // (e.g. the spec/text column), let the vertical scroll pass through
+    //   let el = e.target;
+    //   while (el && el !== wrapper) {
+    //     if (el.scrollHeight > el.clientHeight + 1) {
+    //       const atTop = el.scrollTop <= 0 && e.deltaY < 0;
+    //       const atBottom =
+    //         el.scrollTop + el.clientHeight >= el.scrollHeight - 1 &&
+    //         e.deltaY > 0;
+    //       if (!atTop && !atBottom) {
+    //         // natural vertical scroll inside this element
+    //         return;
+    //       }
+    //     }
+    //     el = el.parentElement;
+    //   }
+    //   e.preventDefault();
+    //   wrapper.scrollLeft += e.deltaY;
+    // };
 
-    wrapper.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      wrapper.removeEventListener("wheel", handleWheel);
-    };
+    // wrapper.addEventListener("wheel", handleWheel, { passive: false });
+    // return () => {
+    //   wrapper.removeEventListener("wheel", handleWheel);
+    // };
   }, []);
 
   // --- Preload suggestion images ---
@@ -205,20 +205,29 @@ export default function ProductDetails({ products }) {
         <>
           {/* --- Product Section --- */}
           <section
-            className={`horizontal-section ${
-              window.innerWidth <= 991 ? "w100" : "w90"
-            }`}
+            // className={`horizontal-section ${
+            //   window.innerWidth <= 991 ? "w100" : "w90"
+            // }`}
+            className={`horizontal-section ${true ? "w100" : "w90"}`}
             id="detail-section1"
           >
             <div
-              className={`relative section-padding-l h100 w100 ${
+              // className={`relative section-padding-l h100 w100 ${
+              //   window.innerWidth <= 991
+              //     ? "inner-flex inner-flex-small"
+              //     : "row-flex inner-flex-zero"
+              // }`}
+              className={`relative w100 ${
                 window.innerWidth <= 991
-                  ? "inner-flex inner-flex-small"
-                  : "row-flex inner-flex-zero"
+                  ? "inner-flex inner-flex-small reverse-flex"
+                  : "row-flex inner-flex-zero jc-s-b"
               }`}
             >
               {/* Text section */}
-              <div className="inner-flex inner-flex-medium h100">
+              <div
+                className="inner-flex inner-flex-medium h100"
+                style={window.innerWidth <= 991 ? { padding: "0 2rem" } : {}}
+              >
                 <div className="inner-flex">
                   <div className="section-title pd-title-with-heart">
                     <h2>{product.name}</h2>
@@ -579,24 +588,27 @@ export default function ProductDetails({ products }) {
 
           {/* --- Suggestion Section --- */}
           <section
-            className={`${
-              window.innerWidth <= 991 ? "w100" : "w-fc"
-            } row-flex alc`}
+            // className={`${
+            //   window.innerWidth <= 991 ? "w100" : "w-fc"
+            // } row-flex alc`}
+            className={`${true ? "w100" : "w-fc"} horizontal-section row-flex alc`}
             id="detail-section2"
-            style={{ padding: window.innerWidth > 991 && 0 }}
+            // style={{ padding: window.innerWidth > 991 && 0 }}
           >
             <div className="grid-suggestion">
               <div
                 className="section-subtitle"
+                // style={window.innerWidth <= 991 ? {} : { paddingTop: "3rem" }}
                 style={window.innerWidth <= 991 ? {} : { paddingTop: "3rem" }}
               >
                 <h2>
-                  More Like <br className="hide-mobile-only" /> This
+                  {/* More Like <br className="hide-mobile-only" /> This */}
+                  More Like This
                 </h2>
               </div>
 
               {catProduct &&
-                catProduct.slice(0, 6).map((p, i) => (
+                catProduct.slice(0, 7).map((p, i) => (
                   <div key={i} className="suggestion-item inner-flex">
                     <Link to={`/products/${p.slug}`}>
                       <div className="item-img">
@@ -620,26 +632,40 @@ export default function ProductDetails({ products }) {
           {/* --- Return Policy Section --- */}
           <section
             className={`horizontal-section`}
+            // style={{
+            //   width: "fit-content",
+            //   height: window.innerWidth <= 991 ? "fit-content" : "auto",
+            //   maxWidth: "100%",
+            //   paddingRight: window.innerWidth <= 991 ? "0" : "5rem",
+            // }}
             style={{
-              width: "fit-content",
+              width: "100%",
+              height: true ? "fit-content" : "auto",
               maxWidth: "100%",
-              paddingRight: window.innerWidth <= 991 ? "0" : "5rem",
             }}
             id="detail-section1"
           >
             <div
-              className={`relative section-padding-l h100 w100 ${
-                window.innerWidth <= 991
+              // className={`relative section-padding-l h100 w100 ${
+              //   window.innerWidth <= 991
+              //     ? "inner-flex inner-flex-small"
+              //     : "row-flex inner-flex-zero"
+              // }`}
+              className={`relative h100 w100 ${
+                true
                   ? "inner-flex inner-flex-small"
                   : "row-flex inner-flex-zero"
               }`}
             >
               {/* Text section */}
-              <div className="inner-flex inner-flex-medium h100">
+              <div
+                className="inner-flex inner-flex-medium h100"
+                style={window.innerWidth <= 991 ? { padding: "0 2rem" } : {}}
+              >
                 <div className="inner-flex">
                   <div className="section-title">
-                    <h2 style={{ fontSize: "1.8rem" }}>
-                      return and replacement policy
+                    <h2 style={{ fontSize: "2.4rem" }}>
+                      Return And Replacement Policy
                     </h2>
                   </div>
                   <div
@@ -647,7 +673,7 @@ export default function ProductDetails({ products }) {
                     style={{
                       border: "none",
                       display: "block",
-                      fontSize: "1.5rem",
+                      fontSize: "1.8rem",
                     }}
                   >
                     <ol
