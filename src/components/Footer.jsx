@@ -77,7 +77,7 @@ export default function Footer() {
           <nav className="ft-links">
             <ul>
               <li>
-                <Link to="/collections">Collections</Link>
+                <Link to="/collections">Categories</Link>
               </li>
               <li>
                 <Link to="/about">About us</Link>

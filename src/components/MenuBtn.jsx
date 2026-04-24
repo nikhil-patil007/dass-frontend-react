@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AOS from "aos";
-import { useWishlist } from "@/context/WishlistContext";
-import { useCart } from "@/context/CartContext";
+import useWishlistStore from "@/store/useWishlistStore";
+import useCartStore from "@/store/useCartStore";
+import useAuthStore from "@/store/useAuthStore";
 import { useLocation } from "react-router-dom";
 
 const MenuBtn = () => {
@@ -104,8 +105,13 @@ const MenuBtn = () => {
 
     openFilter();
   };
-  const { count } = useWishlist();
-  const { count: cartCount } = useCart();
+  const count = useWishlistStore((s) => s.wishlistItems.length || s.guestIds.length);
+  const cartCount = useCartStore((s) => {
+    if (s.cart?.items) return s.cart.items.reduce((sum, i) => sum + (i.quantity || 0), 0);
+    return s.guestItems.reduce((sum, i) => sum + (i.qty || 0), 0);
+  });
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const logout = useAuthStore((s) => s.logout);
   const location = useLocation();
 
   useEffect(() => {
@@ -191,7 +197,7 @@ const MenuBtn = () => {
                     }
                     end
                   >
-                    collections
+                    categories
                   </NavLink>
                 </li>
                 <li
@@ -252,15 +258,27 @@ const MenuBtn = () => {
                   data-aos-duration="400"
                   data-aos-delay="350"
                 >
-                  <NavLink
-                    to="/login"
-                    className={({ isActive }) =>
-                      isActive ? "active_page" : ""
-                    }
-                    end
-                  >
-                    login
-                  </NavLink>
+                  {isAuthenticated ? (
+                    <NavLink
+                      to="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        logout();
+                      }}
+                    >
+                      logout
+                    </NavLink>
+                  ) : (
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) =>
+                        isActive ? "active_page" : ""
+                      }
+                      end
+                    >
+                      login
+                    </NavLink>
+                  )}
                 </li>
               </>
             )}

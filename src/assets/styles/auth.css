@@ -195,7 +195,7 @@
   transition: width 0.3s ease;
 }
 
-.auth-secondary-link:hover::after {
+.auth-secondary-link:not(.auth-secondary-link-none):hover::after {
   width: 100%;
 }
 

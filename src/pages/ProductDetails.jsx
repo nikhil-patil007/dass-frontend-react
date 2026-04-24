@@ -1,26 +1,40 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import "@/assets/styles/detailPage.css";
-import { useWishlist } from "@/context/WishlistContext";
-import { useCart } from "@/context/CartContext";
+import useWishlistStore from "@/store/useWishlistStore";
+import useCartStore from "@/store/useCartStore";
+import useAuthStore from "@/store/useAuthStore";
+import toast from "react-hot-toast";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox.css";
 // Load our overrides AFTER Fancybox CSS so they win
 import "@/assets/styles/fancybox-overrides.css";
+import Loader from "@/components/Loader";
 
-export default function ProductDetails({ products }) {
+import useProductStore from "@/store/useProductStore";
+
+export default function ProductDetails() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [catProduct, setCatProduct] = useState(null);
-  const { has, toggle } = useWishlist();
-  const {
-    add: addToCart,
-    remove: removeFromCart,
-    items: cartItems,
-  } = useCart();
-  const inCart = product
-    ? cartItems.some((it) => String(it.id) === String(product.id))
+  const wishlistItems = useWishlistStore((s) => s.wishlistItems);
+  const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
+  const hasProduct = useWishlistStore((s) => s.hasProduct);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  const addToCartApi = useCartStore((s) => s.addToCart);
+  const removeCartItem = useCartStore((s) => s.removeCartItem);
+  const cart = useCartStore((s) => s.cart);
+
+  // Check if product is in server cart
+  const inCart = product && cart?.items
+    ? cart.items.some((it) => String(it.product?.id) === String(product.id))
     : false;
+
+  // Find the cart item id for removal
+  const cartItem = product && cart?.items
+    ? cart.items.find((it) => String(it.product?.id) === String(product.id))
+    : null;
 
   // --- Main product image states ---
   const [mainSrc, setMainSrc] = useState(""); // actual image src after load
@@ -40,34 +54,63 @@ export default function ProductDetails({ products }) {
       if (window.innerWidth > 991) {
         wrapper.scrollLeft = 0;
       }
-      //  else {
-      //   window.scrollTo(0, 0);
-      // }
     }
 
-    if (slug) {
-      const selected = products.find((p) => p.slug === slug);
-      const similar = products.filter(
-        (p) => p.category === selected.category && p.slug !== slug,
-      );
-      setProduct(selected);
-      setCatProduct(similar);
+    // reset image states on slug change
+    setMainSrc("");
+    setMainLoaded(false);
+    setSuggestionSrc({});
+    setSuggestionLoaded({});
+  }, [slug]);
 
-      // reset image states on slug change
-      setMainSrc("");
-      setMainLoaded(false);
-      setSuggestionSrc({});
-      setSuggestionLoaded({});
-    }
-  }, [products, slug]);
+  // Fetch product detail from backend API
+  const fetchProductDetail = useProductStore((s) => s.fetchProductDetail);
+  const fetchProductsByCategory = useProductStore((s) => s.fetchProductsByCategory);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+
+    (async () => {
+      const detail = await fetchProductDetail(slug);
+      if (cancelled || !detail) return;
+
+      // Normalize API response to match what the template expects
+      const normalized = {
+        ...detail,
+        // Map nested objects to flat strings for display
+        categoryName: detail.category?.name || "",
+        materialName: detail.material?.name || "",
+        materialType: detail.material?.material_type || "",
+        price: parseFloat(detail.selling_price || detail.base_price || 0),
+        image: detail.thumbnail || "",
+        // Convert image objects array to URL strings array
+        imageUrls: (detail.images || []).map((img) => img.image).filter(Boolean),
+      };
+      setProduct(normalized);
+
+      // Fetch similar products by category slug
+      if (detail.category?.slug) {
+        const similar = await fetchProductsByCategory(detail.category.slug);
+        if (!cancelled) {
+          setCatProduct(
+            (similar || []).filter((p) => p.slug !== slug),
+          );
+        }
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [slug, fetchProductDetail, fetchProductsByCategory]);
 
   // --- Properly load main image ---
   useEffect(() => {
-    if (product?.image) {
+    const src = product?.image || product?.thumbnail;
+    if (src) {
       const img = new Image();
-      img.src = product.image;
+      img.src = src;
       img.onload = () => {
-        setMainSrc(product.image);
+        setMainSrc(src);
         setMainLoaded(true);
       };
     }
@@ -122,10 +165,12 @@ export default function ProductDetails({ products }) {
     if (!catProduct) return;
 
     catProduct.forEach((p, i) => {
+      const src = p.thumbnail || p.image || "";
+      if (!src) return;
       const img = new Image();
-      img.src = p.image;
+      img.src = src;
       img.onload = () => {
-        setSuggestionSrc((prev) => ({ ...prev, [i]: p.image }));
+        setSuggestionSrc((prev) => ({ ...prev, [i]: src }));
         setSuggestionLoaded((prev) => ({ ...prev, [i]: true }));
       };
     });
@@ -135,7 +180,9 @@ export default function ProductDetails({ products }) {
   const openGallery = useCallback(() => {
     if (!product) return;
     const imgs = (
-      product.images && product.images.length ? product.images : [product.image]
+      product.imageUrls && product.imageUrls.length
+        ? product.imageUrls
+        : [product.image || product.thumbnail]
     ).filter(Boolean);
 
     if (!imgs.length) return;
@@ -199,6 +246,31 @@ export default function ProductDetails({ products }) {
     return date.toLocaleDateString("en-IN", options);
   };
 
+  const isDetailLoading = useProductStore((s) => s.isDetailLoading);
+  const productError = useProductStore((s) => s.error);
+
+  // Loading state
+  if (isDetailLoading && !product) {
+    return (
+      <div className="detail-wrapper">
+        <Loader variant="page" text="Loading product…" />
+      </div>
+    );
+  }
+
+  // Error / not found state
+  if (!isDetailLoading && !product) {
+    return (
+      <div className="detail-wrapper">
+        <div className="page-error">
+          <h2>Product not found</h2>
+          <p>{productError || "We couldn't find this product. It may have been removed or the link is incorrect."}</p>
+          <button className="retry-btn" onClick={() => fetchProductDetail(slug)}>Try again</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="detail-wrapper">
       {product && (
@@ -231,71 +303,55 @@ export default function ProductDetails({ products }) {
                 <div className="inner-flex">
                   <div className="section-title pd-title-with-heart">
                     <h2>{product.name}</h2>
+                    <div className="pd-price-row">
+                      <span className="pd-price">₹{product.price}</span>
+                    </div>
                     <div className="row-flex inner-flex-small">
                       <button
                         className={`pd-heart pd-heart-outline ${
-                          has(product?.id) ? "active" : ""
+                          hasProduct(product?.id) ? "active" : ""
                         }`}
-                        onClick={() => product && toggle(product.id)}
+                        onClick={async () => {
+                          if (!product) return;
+                          if (!isAuthenticated) { toast.error("Please login to use wishlist"); return; }
+                          await toggleWishlist(product.id);
+                        }}
                         aria-label="Toggle wishlist"
                       >
                         <svg
-                          width="24"
-                          height="24"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M12.001 20.727c-.375 0-.75-.12-1.062-.36C8.07 18.37 6.03 16.59 4.69 15.06 3.11 13.25 2.25 11.78 2.25 10.06 2.25 7.59 4.24 5.6 6.71 5.6c1.26 0 2.45.5 3.29 1.35h0c.84-.85 2.03-1.35 3.29-1.35 2.47 0 4.46 1.99 4.46 4.46 0 1.72-.86 3.19-2.44 5.0-1.34 1.53-3.38 3.32-6.216 5.303-.311.218-.686.338-1.061.338z"
                             fill={
-                              has(product?.id) ? "var(--orange-color)" : "none"
+                              hasProduct(product?.id) ? "var(--orange-color)" : "none"
                             }
                             stroke="#000"
                             strokeWidth="1.5"
                           />
                         </svg>
                         <span className="pd-tooltip">
-                          {has(product?.id) ? "Saved" : "Add to wishlist"}
+                          {hasProduct(product?.id) ? "Saved" : "Add to wishlist"}
                         </span>
                       </button>
                       <button
-                        className={`pd-cart ${inCart ? "active" : ""}`}
-                        onClick={() => {
+                        className={`pd-add-to-cart ${inCart ? "active" : ""}`}
+                        onClick={async () => {
                           if (!product) return;
-                          inCart
-                            ? removeFromCart(product.id)
-                            : addToCart(product.id, 1);
+                          if (!isAuthenticated) { toast.error("Please login to add to cart"); return; }
+                          if (inCart && cartItem) {
+                            const res = await removeCartItem(cartItem.id);
+                            if (res.success) toast.success("Removed from cart");
+                          } else {
+                            const res = await addToCartApi(product.id, 1);
+                            if (res.success) toast.success(res.message);
+                            else toast.error(res.error);
+                          }
                         }}
                         aria-label={inCart ? "Remove from cart" : "Add to cart"}
                       >
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M6 6h14l-1.5 9h-11z"
-                            fill={inCart ? "var(--orange-color)" : "none"}
-                            stroke="#000"
-                            strokeWidth="1.5"
-                          />
-                          <circle
-                            cx="9"
-                            cy="19"
-                            r="1.5"
-                            fill={inCart ? "#2ecc71" : "#000"}
-                          />
-                          <circle
-                            cx="17"
-                            cy="19"
-                            r="1.5"
-                            fill={inCart ? "#2ecc71" : "#000"}
-                          />
-                        </svg>
-                        <span className="pd-tooltip">
-                          {inCart ? "Remove from cart" : "Add to cart"}
-                        </span>
+                        {inCart ? "Remove from cart" : "Add to cart"}
                       </button>
                     </div>
                   </div>
@@ -322,7 +378,7 @@ export default function ProductDetails({ products }) {
                         <p>Product Code</p>
                       </div>
                       <div className="value">
-                        <p>{product.id}</p>
+                        <p>{product.sku || product.id}</p>
                       </div>
                     </div>
                     <div className="spec-item">
@@ -330,7 +386,7 @@ export default function ProductDetails({ products }) {
                         <p>Category</p>
                       </div>
                       <div className="value">
-                        <p>{product.category}</p>
+                        <p>{product.categoryName}</p>
                       </div>
                     </div>
                     <div className="spec-item">
@@ -339,8 +395,8 @@ export default function ProductDetails({ products }) {
                       </div>
                       <div className="value">
                         <p>
-                          {product.metalColor
-                            ? product.metalColor
+                          {product.materialName
+                            ? product.materialName
                             : "Not specified"}
                         </p>
                       </div>
@@ -350,7 +406,7 @@ export default function ProductDetails({ products }) {
                         <p>Price</p>
                       </div>
                       <div className="value">
-                        <p>${product.price}</p>
+                        <p>₹{product.price}</p>
                       </div>
                     </div>
                     <div className="spec-item">
@@ -380,7 +436,7 @@ export default function ProductDetails({ products }) {
                       }`}
                     >
                       <div className="spec-item spec-item-size flex gap-2">
-                        {product.category.includes("Necklaces")
+                        {(product.categoryName || "").includes("Necklace")
                           ? sizesNeck.map((size) => (
                               <button
                                 key={size}
@@ -760,7 +816,7 @@ export default function ProductDetails({ products }) {
                         />
                       </div>
                       <div className="text">
-                        <p>18K Gold Tone Plated</p>
+                        <p>Gold Tone Plated</p>
                       </div>
                     </div>
                   </div>
@@ -904,7 +960,7 @@ export default function ProductDetails({ products }) {
                     </tr>
                   </tbody> */}
                   <tbody>
-                    {product.category.includes("Necklaces")
+                    {(product.categoryName || "").includes("Necklace")
                       ? sizesNeck.map((indianSize, index) => {
                           const usSize = index + 5; // 5 → 9 mapping
                           const mm = usSize + 10; // 5→15, 6→16, etc

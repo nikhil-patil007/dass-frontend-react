@@ -1,30 +1,73 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import { useCart } from "@/context/CartContext";
-import products from "@/assets/data/products";
+import useCartStore from "@/store/useCartStore";
+import toast from "react-hot-toast";
+import Loader from "@/components/Loader";
 import "@/assets/styles/cart.css";
 
 export default function Cart() {
-  const { items, increment, decrement, remove, clear } = useCart();
+  const {
+    cart,
+    isLoading,
+    fetchCart,
+    updateCartItem,
+    removeCartItem,
+    clearCart,
+  } = useCartStore();
   const containerRef = useRef(null);
-
-  const rows = useMemo(() => {
-    const map = new Map(products.map((p) => [String(p.id), p]));
-    return items.map((it) => ({ ...map.get(String(it.id)), qty: it.qty })).filter(Boolean);
-  }, [items]);
-
-  const subtotal = rows.reduce((sum, r) => sum + (r.price || 0) * (r.qty || 0), 0);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      fetchCart();
+    }
+  }, [fetchCart]);
+
+  const items = cart?.items || [];
+  const subtotal = parseFloat(cart?.total_price || 0);
+
+  useEffect(() => {
+    if (!items.length) return;
     const ctx = gsap.context(() => {
       gsap.from(".cart-hero", { opacity: 0, duration: 0.4 });
       gsap.from(".cart-row", { opacity: 0, duration: 0.3, stagger: 0.05, delay: 0.05 });
     }, containerRef);
     return () => ctx.revert();
-  }, [rows.length]);
+  }, [items.length]);
 
-  if (!rows.length) {
+  const handleIncrement = async (item) => {
+    const result = await updateCartItem(item.id, item.quantity + 1);
+    if (!result.success) toast.error(result.error);
+  };
+
+  const handleDecrement = async (item) => {
+    if (item.quantity <= 1) {
+      handleRemove(item.id);
+      return;
+    }
+    const result = await updateCartItem(item.id, item.quantity - 1);
+    if (!result.success) toast.error(result.error);
+  };
+
+  const handleRemove = async (itemId) => {
+    const result = await removeCartItem(itemId);
+    if (result.success) toast.success("Item removed");
+    else toast.error(result.error);
+  };
+
+  const handleClear = async () => {
+    await clearCart();
+    toast.success("Cart cleared");
+  };
+
+  // Show loader on first load
+  if (isLoading && !cart) {
+    return <Loader variant="page" text="Loading your cart…" />;
+  }
+
+  if (!items.length) {
     return (
       <section ref={containerRef} className="cart-page">
         <div className="cart-hero empty">
@@ -40,33 +83,45 @@ export default function Cart() {
     <section ref={containerRef} className="cart-page">
       <div className="cart-hero">
         <h1>Your Cart</h1>
-        <button className="cart-clear" onClick={clear}>Clear all</button>
+        <button className="cart-clear" onClick={handleClear} disabled={isLoading}>Clear all</button>
       </div>
       <div className="cart-grid">
         <div className="cart-list">
-          {rows.map((p) => (
-            <div className="cart-row" key={p.id}>
-              <Link to={`/products/${p.slug}`} className="cart-thumb">
-                <img src={p.image} alt={p.name} loading="lazy" />
-              </Link>
-              <div className="cart-info">
-                <h3>{p.name}</h3>
-                <div className="cart-price">${p.price?.toFixed(2)}</div>
-                <div className="cart-qty">
-                  <button onClick={() => decrement(p.id)} aria-label="Decrease">−</button>
-                  <span>{p.qty}</span>
-                  <button onClick={() => increment(p.id)} aria-label="Increase">+</button>
+          {items.map((item) => {
+            const product = item.product || {};
+            const thumbnail = product.thumbnail;
+            const name = product.name || item.product_name || "Product";
+            const price = parseFloat(product.selling_price || product.base_price || item.price || 0);
+            const slug = product.slug || "";
+
+            return (
+              <div className="cart-row" key={item.id}>
+                <Link to={slug ? `/products/${slug}` : "#"} className="cart-thumb">
+                  {thumbnail ? (
+                    <img src={thumbnail} alt={name} loading="lazy" />
+                  ) : (
+                    <div style={{ width: "100%", height: "100%", background: "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", color: "#999" }}>No image</div>
+                  )}
+                </Link>
+                <div className="cart-info">
+                  <h3>{name}</h3>
+                  <div className="cart-price">₹{price.toFixed(2)}</div>
+                  <div className="cart-qty">
+                    <button onClick={() => handleDecrement(item)} aria-label="Decrease" disabled={isLoading}>−</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => handleIncrement(item)} aria-label="Increase" disabled={isLoading}>+</button>
+                  </div>
+                  <button className="cart-remove" onClick={() => handleRemove(item.id)} disabled={isLoading}>Remove</button>
                 </div>
-                <button className="cart-remove" onClick={() => remove(p.id)}>Remove</button>
+                <div className="cart-line-total">₹{parseFloat(item.line_total || 0).toFixed(2)}</div>
               </div>
-              <div className="cart-line-total">${(p.price * p.qty).toFixed(2)}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <aside className="cart-summary">
           <div className="sum-row">
             <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>₹{subtotal.toFixed(2)}</span>
           </div>
           <div className="sum-row">
             <span>Shipping</span>

@@ -3,6 +3,7 @@ import gsap from "gsap";
 import "../assets/styles/canvas.css";
 import { Link, useNavigate } from "react-router-dom";
 import ProductPopup from "./ProductPopup";
+import Loader from "@/components/Loader";
 
 export default function CanvasView({ products }) {
   const wrapperRef = useRef(null);
@@ -406,6 +407,11 @@ export default function CanvasView({ products }) {
     });
   };
 
+  // Show loader while products are being fetched
+  if (!products || !products.length) {
+    return <Loader variant="page" text="Loading experience…" />;
+  }
+
   return (
     <>
       <div
@@ -482,7 +488,7 @@ export default function CanvasView({ products }) {
                         <Link to={`/products/${product.slug}`}>
                           <img
                             // onClick={(e) => handleItemClick(e, product)}
-                            src={product.image}
+                            src={product.thumbnail}
                             alt={`product-${i}`}
                             loading="lazy"
                           />

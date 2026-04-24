@@ -383,6 +383,7 @@
     aspect-ratio: 1 / 1;
     max-height: 40vh;
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .item-img img {
@@ -441,8 +442,31 @@
 
 @media only screen and (max-width:767px) {
     .grid-suggestion {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 2.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+        padding: 1rem;
+    }
+
+    .grid-suggestion .item-img {
+        aspect-ratio: unset;
+        max-height: 18vh;
+        border-radius: 4px;
+    }
+
+    .grid-suggestion .item-img img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .grid-suggestion .item-name h3 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+        margin-top: 0.2rem;
+    }
+
+    .grid-suggestion .suggestion-item {
+        gap: 0.2rem;
     }
 
     .detail-wrapper .section-subtitle h2 {
@@ -575,6 +599,13 @@
         align-items: start;
         flex-direction: column;
     }
+
+
+    .pd-heart,
+    .pd-cart {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 /* Fancybox UI overrides: keep only arrows, counter and close */
@@ -600,4 +631,59 @@
 
 .reverse-flex {
     flex-direction: column-reverse !important;
+}
+
+/* Price displayed after product name */
+.pd-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.pd-price {
+    font-family: 'open-sauce', Arial, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* "Add to cart" text button (replaces SVG icon) */
+.pd-add-to-cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.2rem;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--primary-color);
+    font-family: 'open-sauce', Arial, sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.pd-add-to-cart:hover {
+    background: var(--orange-color);
+    border-color: var(--orange-color);
+    color: #fff;
+}
+
+.pd-add-to-cart.active {
+    background: var(--orange-color);
+    border-color: var(--orange-color);
+    color: #fff;
+}
+
+@media only screen and (max-width: 991px) {
+    .pd-price {
+        font-size: 2.2rem;
+    }
+
+    .pd-add-to-cart {
+        font-size: 1.2rem;
+        padding: 0.6rem 1.5rem;
+    }
 }

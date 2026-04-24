@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import SplitHoverText from "@/components/SplitHoverText";
+import Loader from "@/components/Loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,8 +82,11 @@ export default function GridView({ products }) {
   return (
     <div className="">
       <div className="page-title" ref={titleRef}>
-        <h2>Explore collections</h2>
+        <h2>Explore categories</h2>
       </div>
+      {(!products || !products.length) ? (
+        <Loader variant="page" text="Loading categories…" />
+      ) : (
       <div className="grid-wrapper">
         {products.map((p, i) => (
           <div
@@ -93,9 +97,9 @@ export default function GridView({ products }) {
             <div className="item-img">
               {/* On mobile/tablet, image itself is the link (overlay button is hidden via CSS) */}
               {window.innerWidth <= 991 ? (<Link className="img-link" to={`/products/${p.slug}`} aria-label={`Open ${p.name}`}>
-                <img src={p.image} alt={p.name} />
+                <img src={p.thumbnail} alt={p.name} />
               </Link>) : (
-                <img src={p.image} alt={p.name} />
+                <img src={p.thumbnail} alt={p.name} />
               )}
               <Link className="explore-btn" to={`/products/${p.slug}`} aria-label={`Explore ${p.name}`}>
                 <span className="explore-box text-box">
@@ -110,11 +114,12 @@ export default function GridView({ products }) {
             </div>
             <div className="info">
               <h3>{p.name}</h3>
-              <p>{p.description}</p>
+              <p>{p.description || `₹${p.selling_price || p.base_price}`}</p>
             </div>
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

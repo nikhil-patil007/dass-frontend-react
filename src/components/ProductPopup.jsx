@@ -113,14 +113,19 @@ const ProductPopup = React.forwardRef(({ product, onClose }, closeRef) => {
               <img src={product.image} alt={product.name} />
             </div>
           </SwiperSlide> */}
-            {product.images &&
-              product.images.map((img, idx) => (
+            {(() => {
+              // Handle both API format (objects) and plain URL strings
+              const imgs = product.images && product.images.length
+                ? product.images.map(img => typeof img === 'string' ? img : img.image).filter(Boolean)
+                : [product.thumbnail || product.image].filter(Boolean);
+              return imgs.map((src, idx) => (
                 <SwiperSlide key={idx}>
                   <div className="swiper_image">
-                    <img src={img} alt={`${product.name} ${idx}`} />
+                    <img src={src} alt={`${product.name} ${idx}`} />
                   </div>
                 </SwiperSlide>
-              ))}
+              ));
+            })()}
           </Swiper>
           <Swiper
             onSwiper={setThumbsSwiper}
@@ -137,14 +142,18 @@ const ProductPopup = React.forwardRef(({ product, onClose }, closeRef) => {
               <img src={product.image} alt={product.name} />
             </div>
           </SwiperSlide> */}
-            {product.images &&
-              product.images.map((img, idx) => (
+            {(() => {
+              const imgs = product.images && product.images.length
+                ? product.images.map(img => typeof img === 'string' ? img : img.image).filter(Boolean)
+                : [product.thumbnail || product.image].filter(Boolean);
+              return imgs.map((src, idx) => (
                 <SwiperSlide key={idx}>
                   <div className="swiper_image">
-                    <img src={img} alt={`${product.name} ${idx}`} />
+                    <img src={src} alt={`${product.name} ${idx}`} />
                   </div>
                 </SwiperSlide>
-              ))}
+              ));
+            })()}
           </Swiper>
           <Link
             className="explore-btn"

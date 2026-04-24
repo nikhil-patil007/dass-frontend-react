@@ -1,0 +1,228 @@
+1 > Product List API
+  >>> Endpoint
+GET / api / products
+
+  >>> Example Response
+{
+  "success": true,
+  "total": 120,
+  "data": [
+        {
+          "id": 1,
+          "name": "Rose Cut Gemstone Ring",
+          "slug": "rose-cut-gemstone-ring",
+          "category": "Rings",
+          "price": 459.99,
+          "image": "/assets/need_to_repair/_DSC0014-266.png",
+          "description": "Rose gemstone on gold ring",
+          "inStock": true,
+          "rating": 4.4
+        },
+        {
+          "id": 2,
+          "name": "Rose Cut Gemstone Ring",
+          "slug": "rose-cut-gemstone-ring",
+          "category": "Rings",
+          "price": 459.99,
+          "image": "/assets/need_to_repair/_DSC0014-266.png",
+          "description": "Rose gemstone on gold ring",
+          "inStock": true,
+          "rating": 4.4
+        }
+      ]
+}
+
+2 > Get Single Product
+  >>> Endpoint
+GET / api / products /: slug
+
+  >>> Response(Output)
+type Product = {
+  id: number
+  name: string
+  slug: string
+  category: string
+  price: number
+  image: string
+  description: string
+  inStock: boolean
+  rating: number
+}
+
+3 > Get Cart
+  >>> Endpoint
+GET / api / cart
+
+  >>> Response(Output)
+{
+  "success": true,
+    "summary": {
+    "subtotal": 919.98,
+    "totalItems": 2
+  },
+  "data": {
+    "items": [
+      {
+        "id": "cart_1",
+        "productId": 1,
+        "slug": "rose-cut-gemstone-ring",
+        "name": "Rose Cut Gemstone Ring",
+        "image": "/assets/need_to_repair/_DSC0014-266.png",
+        "price": 459.99,
+        "qty": 2,
+        "inStock": true
+      }
+    ]
+  }
+}
+
+4 > Add to Cart
+  >>> Endpoint
+POST / api / cart
+
+  >>> Body
+{
+  productId: number,
+  qty ?: number // default 1
+}
+
+  >>> Response(Output)
+{
+  "success": true,
+  "message": "Product added to cart successfully",
+}
+
+5 > Update Quantity
+  >>> Endpoint
+PATCH / api / cart /: itemId
+
+  >>> Body
+{
+  qty: number
+}
+
+ >>> Response(Output)
+{
+  "success": true,
+  "message": "Cart item quantity updated successfully",
+}
+
+6 > Remove Item From Cart
+  >>> Endpoint
+DELETE / api / cart /: itemId
+
+  >>> Response(Output)
+{
+  "success": true,
+  "message": "Cart item removed successfully",
+}
+
+7 > Clear Cart(optional but pro)
+  >>> Endpoint
+DELETE / api / cart
+
+  >>> Response(Output)
+{
+  "success": true,
+  "message": "Cart cleared successfully",
+}
+
+8 > Get Wishlist
+  >>> Endpoint
+GET / api / wishlist
+
+  >>> Response(Output)
+{
+  "success": true,
+  "data": {
+    "totalItems": 1,
+    "items": [
+        {
+          "id": "wl_1",
+          "productId": 1,
+          "slug": "rose-cut-gemstone-ring",
+          "name": "Rose Cut Gemstone Ring",
+          "image": "/assets/need_to_repair/_DSC0014-266.png",
+          "price": 459.99,
+          "inStock": true
+        }
+      ]
+  }
+}
+
+9 > Add to Wishlist
+  >>> Endpoint
+POST / api / wishlist
+
+  >>> Body
+{
+  productId: number
+}
+
+  >>> Response(Output)
+{
+  "success": true,
+  "message": "Product added to wishlist successfully",
+}
+
+10 > Remove from Wishlist
+  >>> Endpoint
+DELETE / api / wishlist /: itemId
+
+  >>> Response(Output)
+{
+  "success": true,
+  "message": "Product removed from wishlist successfully",
+}
+
+
+11 > Login API(Core)
+
+  >>> Endpoint
+POST / api / auth / login
+
+  >>> Body
+type LoginRequest = {
+  email: string
+  password: string
+  remember?: boolean
+}
+
+  >>> Response(Output)
+type LoginResponse = {
+  success: boolean
+  data?: {
+    user: {
+      id: string
+      name: string
+      email: string
+    }
+    accessToken?: string   // if using JWT
+  }
+  error?: string
+}
+
+12 > Register API
+  >>> Endpoint
+POST / api / auth / signup
+
+  >>> Body
+type SignupRequest = {
+  name: string
+  email: string
+  password: string
+  confirm: string
+}
+
+  >>> Response
+type SignupResponse = {
+  success: boolean
+  data?: {
+    user: {
+      id: string
+      name: string
+      email: string
+    }
+  }
+  error?: string
+}

@@ -28,8 +28,7 @@
     align-items: center;
 }
 
-.cart-btn,
-.cart-clear {
+.cart-btn {
     border: 1px solid var(--orange-color);
     background: transparent;
     border-radius: 999px;
@@ -37,7 +36,24 @@
     cursor: pointer;
     text-decoration: none;
     color: var(--orange-color);
-    font-size: 2.3rem;
+    font-size: 1.1rem;
+}
+
+.cart-clear {
+    border: none;
+    background: transparent;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--secondary-color, #575757);
+    font-size: 0.85rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.cart-clear:hover {
+    opacity: 1;
+    color: var(--orange-color);
 }
 
 .cart-grid {

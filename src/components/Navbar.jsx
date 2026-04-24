@@ -3,10 +3,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import "@/assets/styles/nav.css";
 import ToggleButton from "./navbar/ToggleButton";
-import { useCart } from "@/context/CartContext";
+import useCartStore from "@/store/useCartStore";
 
 export default function Navbar() {
-  const { count } = useCart();
+  const cartCount = useCartStore((s) => {
+    if (s.cart?.items) return s.cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    return s.guestItems.reduce((sum, item) => sum + (item.qty || 0), 0);
+  });
   const location = useLocation();
   const navigate = useNavigate();
   const [isExperienceView, setIsExperienceView] = useState(
@@ -105,7 +108,7 @@ export default function Navbar() {
     <>
       <nav
         // className={`navbar ${location.pathname === "/" || (window.innerWidth > 991 && location.pathname.includes("/products")) ? "navbar-fix" : ""}`}
-        className={`navbar ${location.pathname === "/" || !location.pathname.includes("/products") ? "navbar-fix" : ""}`}
+        className={`navbar ${location.pathname === "/" || !(location.pathname.includes("/products") || location.pathname.includes("/login") || location.pathname.includes("/signup")) ? "navbar-fix" : ""}`}
       >
         <div className="logo-wrapper">
           <Link

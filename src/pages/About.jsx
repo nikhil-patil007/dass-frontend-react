@@ -246,7 +246,7 @@ const About = ({ products }) => {
         <div className="section-subtitle-btn cp">
           <Link to="/">
             <h2>
-              Explore collections
+              Explore categories
               <span className="btn-arrow">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
