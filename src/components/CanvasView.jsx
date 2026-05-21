@@ -487,7 +487,7 @@ export default function CanvasView({ products }) {
                       {isVisible && (
                         <Link to={`/products/${product.slug}`}>
                           <img
-                            // onClick={(e) => handleItemClick(e, product)}
+                            // onClick={(e) => handleItemClpython manage.py createsuperuserick(e, product)}
                             src={product.thumbnail}
                             alt={`product-${i}`}
                             loading="lazy"

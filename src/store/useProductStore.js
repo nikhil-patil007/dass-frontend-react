@@ -3,11 +3,18 @@
  *
  * Manages: product lists, single product detail, categories, materials,
  * search / filter state, and loading flags.
+ *
+ * Demo mode: When VITE_DEMO_MODE=true OR the backend is unreachable,
+ * the store automatically falls back to local dummy data so the app
+ * can be showcased without a running server.
  */
 
 import { create } from "zustand";
 import api from "@/lib/axios";
 import ENDPOINTS from "@/lib/endpoints";
+import demoProducts, { demoCategories, demoMaterials } from "@/assets/data/demoData";
+
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "true";
 
 const useProductStore = create((set, get) => ({
   // ── State ───────────────────────────────────────────────────────────
@@ -52,8 +59,14 @@ const useProductStore = create((set, get) => ({
 
   /**
    * GET /api/products/ — fetch products with current filter state.
+   * Falls back to demo data when in demo mode or API unreachable.
    */
   fetchProducts: async (overrideParams = {}) => {
+    if (DEMO_MODE) {
+      set({ products: demoProducts, isLoading: false });
+      return demoProducts;
+    }
+
     set({ isLoading: true, error: null });
     try {
       const { filters } = get();
@@ -72,8 +85,10 @@ const useProductStore = create((set, get) => ({
       set({ products: data, isLoading: false });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage, isLoading: false });
-      return [];
+      // Fallback to demo data on network error
+      console.warn("[ProductStore] API unreachable, using demo data:", err.message);
+      set({ products: demoProducts, error: null, isLoading: false });
+      return demoProducts;
     }
   },
 
@@ -81,14 +96,21 @@ const useProductStore = create((set, get) => ({
    * GET /api/products/featured/
    */
   fetchFeaturedProducts: async () => {
+    if (DEMO_MODE) {
+      const featured = demoProducts.filter((p) => p.is_featured);
+      set({ featuredProducts: featured, isLoading: false });
+      return featured;
+    }
+
     set({ isLoading: true, error: null });
     try {
       const { data } = await api.get(ENDPOINTS.PRODUCTS.FEATURED);
       set({ featuredProducts: data, isLoading: false });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage, isLoading: false });
-      return [];
+      const featured = demoProducts.filter((p) => p.is_featured);
+      set({ featuredProducts: featured, error: null, isLoading: false });
+      return featured;
     }
   },
 
@@ -96,14 +118,22 @@ const useProductStore = create((set, get) => ({
    * GET /api/products/:slug/
    */
   fetchProductDetail: async (slug) => {
+    if (DEMO_MODE) {
+      const found = demoProducts.find((p) => p.slug === slug) || null;
+      set({ productDetail: found, isDetailLoading: false });
+      return found;
+    }
+
     set({ isDetailLoading: true, productDetail: null, error: null });
     try {
       const { data } = await api.get(ENDPOINTS.PRODUCTS.DETAIL(slug));
       set({ productDetail: data, isDetailLoading: false });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage, isDetailLoading: false });
-      return null;
+      // Fallback to demo data
+      const found = demoProducts.find((p) => p.slug === slug) || null;
+      set({ productDetail: found, error: found ? null : err.apiMessage, isDetailLoading: false });
+      return found;
     }
   },
 
@@ -111,6 +141,12 @@ const useProductStore = create((set, get) => ({
    * GET /api/products/category/:slug/
    */
   fetchProductsByCategory: async (categorySlug) => {
+    if (DEMO_MODE) {
+      const filtered = demoProducts.filter((p) => p.category?.slug === categorySlug);
+      set({ products: filtered, isLoading: false });
+      return filtered;
+    }
+
     set({ isLoading: true, error: null });
     try {
       const { data } = await api.get(
@@ -119,8 +155,9 @@ const useProductStore = create((set, get) => ({
       set({ products: data, isLoading: false });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage, isLoading: false });
-      return [];
+      const filtered = demoProducts.filter((p) => p.category?.slug === categorySlug);
+      set({ products: filtered, error: null, isLoading: false });
+      return filtered;
     }
   },
 
@@ -128,13 +165,18 @@ const useProductStore = create((set, get) => ({
    * GET /api/categories/
    */
   fetchCategories: async () => {
+    if (DEMO_MODE) {
+      set({ categories: demoCategories });
+      return demoCategories;
+    }
+
     try {
       const { data } = await api.get(ENDPOINTS.CATEGORIES.LIST);
       set({ categories: data });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage });
-      return [];
+      set({ categories: demoCategories, error: null });
+      return demoCategories;
     }
   },
 
@@ -142,13 +184,18 @@ const useProductStore = create((set, get) => ({
    * GET /api/materials/
    */
   fetchMaterials: async () => {
+    if (DEMO_MODE) {
+      set({ materials: demoMaterials });
+      return demoMaterials;
+    }
+
     try {
       const { data } = await api.get(ENDPOINTS.MATERIALS.LIST);
       set({ materials: data });
       return data;
     } catch (err) {
-      set({ error: err.apiMessage });
-      return [];
+      set({ materials: demoMaterials, error: null });
+      return demoMaterials;
     }
   },
 
